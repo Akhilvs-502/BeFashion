@@ -1,0 +1,52 @@
+<%- include('../partials/adminHeader.ejs') %>
+
+<section class="flex">
+
+<%- include('../partials/adminSlideBar.ejs') %>
+
+<div class=" my-auto mx-auto w-6/12">
+    
+<form id="category" action="/admin/addCategory" method="post" class="">
+    <div class="flex gap-x-6 mb-6">
+    <div class="w-full relative">
+      <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium ">Category Name <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
+        </svg>
+    </label>
+    <input type="text" id="categoryName" value="<%=category %>" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
+    <p class="text-red-500" id="err"></p>
+    </div>
+    </div>
+ 
+   
+  
+    <button class="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7">Submit</button>
+    </form>
+
+</div>
+
+
+</section>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+
+    document.getElementById('category').addEventListener('submit',(event)=>{
+        event.preventDefault();
+        const categoryName=document.getElementById('categoryName').value
+        const err=document.getElementById('err')
+        console.log(categoryName);
+        const regex = /^[^\d][\w\s]*$/;
+        if (regex.test(categoryName)) {
+        axios.post('/admin/editCategory',{categoryName}).then(data=>{
+            console.log(data); 
+
+
+            window.location.href="/admin/category"  
+        }).catch(data=>{console.log(data);
+        })
+        }else {
+            err.textContent="Invalid name (starts with a number)"
+        }
+        })
+</script>

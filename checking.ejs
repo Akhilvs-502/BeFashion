@@ -1,0 +1,631 @@
+<%- include('adminHeader') %>
+
+<div style="display: flex; background-color: #000000">
+  <%- include('sidebar') %>
+
+  <div class="w-full h-full p-8">
+    <h4 class="font-bold text-white text-2xl mb-8">Add Product Details</h4>
+
+    <form
+      id="productForm"
+      method="POST"
+      enctype="multipart/form-data"
+      class="bg-[#1f1f1f] p-10 rounded-lg shadow-md max-w-4xl mx-auto font-[sans-serif]"
+    >
+      <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Product Name</label
+          >
+          <input
+            required
+            id="product_name"
+            type="text"
+            name="product_name"
+            placeholder="Enter Product Name"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Release Date</label
+          >
+          <input
+            required
+            id="release_date"
+            type="date"
+            name="release_date"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Genre</label
+          >
+          <input
+            id="genre"
+            type="text"
+            name="genre"
+            placeholder="Enter Genre"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Developer Name</label
+          >
+          <input
+            required
+            id="developer"
+            type="text"
+            name="developer"
+            placeholder="Enter Developer Name"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Category</label
+          >
+          <button
+            type="button"
+            id="dropdownToggle"
+            class="border border-gray-700 bg-black text-white px-5 py-2 w-full text-left"
+          >
+            Dropdown Menu
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="ml-2 inline w-3 fill-white"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+
+          <ul
+            id="dropdownMenu"
+            class="absolute z-50 hidden max-h-96 w-full divide-y overflow-auto bg-[#1f1f1f] py-2 shadow-lg text-white"
+          >
+            <% categories.forEach((category)=>{ %>
+            <li
+              name="category"
+              class="cursor-pointer px-5 py-3 text-sm hover:bg-gray-600"
+              onclick="selectCategory('<%= category.collectionName %>')"
+            >
+              <%= category.collectionName %>
+            </li>
+            <% }) %>
+          </ul>
+        </div>
+
+        <!-- Other form fields (same structure as above) -->
+
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >PEGI Rating</label
+          >
+          <input
+            required
+            min="0"
+            id="PEGI"
+            name="PEGI_rating"
+            type="number"
+            placeholder="Enter age limit"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Quantity</label
+          >
+          <input
+            required
+            min="0"
+            id="stock"
+            type="number"
+            name="stock"
+            placeholder="Enter the stock"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Price</label
+          >
+          <input
+            required
+            min="100"
+            id="price"
+            type="number"
+            name="price"
+            placeholder="Enter price"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Discount</label
+          >
+          <input
+            required
+            min="0"
+            max="100"
+            id="discount"
+            type="number"
+            name="discount"
+            placeholder="Enter discount percentage"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Gameplay Hour</label
+          >
+          <input
+            required
+            min="1"
+            id="game_Play_hour"
+            type="number"
+            name="game_Play_hour"
+            placeholder="Enter hour"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Country of orgin</label
+          >
+          <input
+            required
+            id="country_of_orgin"
+            type="text"
+            name="country_of_orgin"
+            placeholder="Enter country name"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Publisher</label
+          >
+          <input
+            required
+            id="publisher"
+            name="publisher"
+            type="text"
+            placeholder="Enter Publisher name"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Playable on</label
+          >
+          <input
+            required
+            id="playable_on"
+            type="text"
+            name="playable_on"
+            placeholder="Enter Playable devices"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+        <div class="relative">
+          <label
+            class="absolute left-3 top-[-10px] bg-[#1f1f1f] px-2 text-sm text-white"
+            >Trailer</label
+          >
+          <input
+            required
+            id="trailer_link"
+            type="text"
+            name="trailer_link"
+            placeholder="Enter Trailer link"
+            class="w-full rounded border border-gray-700 bg-black text-white px-4 py-3 focus:outline-none focus:border-blue-500"
+          />
+        </div>
+
+        <!-- Internet Requirement radio -->
+        <div class="relative">
+          <label class="block text-white text-sm">Internet Requirement</label>
+          <div class="mt-2 flex items-center">
+            <input
+              required
+              class="mr-2"
+              type="radio"
+              id="yes"
+              value="true"
+              name="internet_requirement"
+            />
+            <label for="yes" class="text-white">Yes</label>
+
+            <input
+              required
+              class="ml-6 mr-2"
+              type="radio"
+              value="false"
+              id="no"
+              name="internet_requirement"
+            />
+            <label for="no" class="text-white">No</label>
+          </div>
+        </div>
+
+        <div class="relative flex items-center">
+          <label
+            class="absolute left-[18px] top-[-10px] bg-black px-2 text-[13px] text-white"
+            >Description</label
+          >
+          <textarea
+            required
+            id="product_description"
+            name="discription"
+            placeholder="Type Description"
+            class="mx-auto block w-full max-w-md rounded border border-gray-300 text-white bg-black p-4 text-sm outline-[#007bff]"
+            rows="4"
+          ></textarea>
+        </div>
+
+        <!-- Spinner -->
+        <div
+          id="spinner"
+          class="hidden fixed inset-0 flex justify-center items-center z-[1000]"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-10 animate-spin fill-blue-600 block mx-auto"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M12 22c5.421 0 10-4.579 10-10h-2c0 4.337-3.663 8-8 8s-8-3.663-8-8c0-4.336 3.663-8 8-8V2C6.579 2 2 6.58 2 12c0 5.421 4.579 10 10 10z"
+              data-original="#000000"
+            />
+          </svg>
+        </div>
+
+        <!-- Success Modal -->
+
+        <div
+          id="successModal"
+          class="hidden fixed inset-0 flex justify-center items-center z-[1000]"
+        >
+          <!-- Modal Background Overlay -->
+          <div class="absolute inset-0 bg-[rgba(0,0,0,0.5)]"></div>
+
+          <!-- Modal Content -->
+          <div
+            class="relative w-full max-w-md bg-gray-800 shadow-lg rounded-lg p-6 text-center z-[1001]"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-20 h-20 fill-green-500 absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2"
+              viewBox="0 0 60 60"
+            >
+              <circle cx="30" cy="30" r="29" />
+              <path
+                fill="#fff"
+                d="m
+                24.262 42.07-6.8-6.642a1.534 1.534 0 0 1 0-2.2l2.255-2.2a1.621 1.621 0 0 1 2.256 0l4.048 3.957 11.353-17.26a1.617 1.617 0 0 1 2.2-.468l2.684 1.686a1.537 1.537 0 0 1 .479 2.154L29.294 41.541a3.3 3.3 0 0 1-5.032.529z"
+              />
+            </svg>
+
+            <div class="mt-12">
+              <h3 class="text-white text-2xl font-bold">Success</h3>
+              <p class="text-sm text-white mt-3">Product added successfully</p>
+              <button
+                id="successBtn"
+                type="button"
+                class="px-6 py-2.5 mt-8 w-full rounded-md text-white text-sm font-semibold bg-green-500 hover:bg-green-600"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+
+
+        <!-- ----------------------------------------File Upload with Preview & Crop --------------------------------------------->
+        <div class="col-span-2">
+          <label class="block text-sm text-white mb-2">Upload Files</label>
+          <input
+            id="fileInput"
+            type="file"
+            name="image"
+            accept="image/*"
+            multiple
+            required
+            class="block w-full text-sm text-gray-400 file:bg-gray-700 file:border-none file:rounded file:text-white file:cursor-pointer file:px-4 file:py-2 hover:file:bg-gray-600"
+          />
+          <p class="mt-2 text-xs text-gray-400">
+            Allowed formats: PNG, JPG, SVG, WEBP, GIF (Max: 3 files).
+          </p>
+
+          <!-- Preview section -->
+          <div id="previewContainer" class="grid grid-cols-3 gap-4 mt-4">
+            <!-- Cropped Image Preview will appear here -->
+          </div>
+
+          <!-- Crop Modal -->
+          <div
+            id="cropModal"
+            class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+          >
+            <div class="bg-[#1f1f1f] p-8 rounded-lg">
+              <div id="imagePreviewContainer" class="max-w-md">
+                <img id="imageToCrop" class="w-full" src="" alt="To Crop" />
+              </div>
+              <div class="flex justify-between mt-4">
+                <button
+                  type="button"
+                  id="cropButton"
+                  class="bg-blue-500 px-4 py-2 text-white rounded hover:bg-blue-600 transition"
+                >
+                  Crop
+                </button>
+                <button
+                  type="button"
+                  id="cancelCropButton"
+                  class="bg-red-500 px-4 py-2 text-white rounded hover:bg-red-600 transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+
+           <!-- Crop Modal -->
+        </div>
+
+
+
+
+
+ <!-- ----------------------------------------File Upload with Preview & Crop --------------------------------------------->
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"
+        />
+      </div>
+
+      <button
+        id="addProductBtn"
+        type="submit"
+        class="mt-8 w-full rounded bg-blue-500 px-6 py-3 text-sm text-white hover:bg-blue-600 transition"
+      >
+        Add Product
+      </button>
+    </form>
+  </div>
+</div>
+
+<script>
+  //-----------------------------------Image croping adding----------------------------
+
+  const fileInput = document.getElementById("fileInput");
+  const previewContainer = document.getElementById("previewContainer");
+  const cropModal = document.getElementById("cropModal");
+  const imageToCrop = document.getElementById("imageToCrop");
+  const addProductBtn = document.getElementById("addProductBtn"); // Add Product button
+  const productForm = document.getElementById("productForm");
+  const spinner = document.getElementById("spinner");
+  const successModal = document.getElementById("successModal");
+
+  let cropper;
+  let fileCount = 0;
+  let croppedImages = []; // To store all cropped images
+
+  // File input handling
+  fileInput.addEventListener("change", handleFiles);
+
+  function handleFiles(event) {
+    const files = event.target.files;
+    const maxFiles = 3;
+
+    if (files.length > maxFiles) {
+      alert("You can upload a maximum of 3 files.");
+      return;
+    }
+
+    Array.from(files).forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        imageToCrop.src = e.target.result;
+        cropModal.classList.remove("hidden");
+        cropper = new Cropper(imageToCrop, {
+          aspectRatio: 1,
+          viewMode: 1,
+          background: false,
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // Handle the crop button click
+  document.getElementById("cropButton").addEventListener("click", function () {
+    const croppedCanvas = cropper.getCroppedCanvas();
+    const croppedImageURL = croppedCanvas.toDataURL();
+
+    const imgWrapper = document.createElement("div");
+    imgWrapper.classList.add("relative", "inline-block");
+
+    const imgElement = document.createElement("img");
+    imgElement.src = croppedImageURL;
+    imgElement.classList.add("rounded", "border", "border-gray-700", "p-2");
+
+
+    const removeBtn = document.createElement("button");
+    removeBtn.innerHTML = "&times;"; // Cross icon
+    removeBtn.classList.add(
+    "absolute",
+    "top-0",
+    "right-0",
+    "bg-red-500",
+    "text-white",
+    "rounded-full",
+    "p-1",
+    "cursor-pointer"
+  );
+  removeBtn.title = "Remove Image";
+
+  removeBtn.addEventListener('click', function(){
+
+    // Remove the image element from the DOM
+    previewContainer.removeChild(imgWrapper);
+
+    // Remove the image from the croppedImages array
+    const imageIndex = croppedImages.indexOf(croppedImageURL);
+    if (imageIndex > -1) {
+      croppedImages.splice(imageIndex, 1);
+    }
+
+    // Decrement file count
+    fileCount -= 1;
+
+    // Notify user that an image has been removed
+    alert(`Image removed. You can now upload ${3 - fileCount} more image(s).`);
+
+  })
+
+
+    imgWrapper.appendChild(imgElement);
+    imgWrapper.appendChild(removeBtn);
+
+
+// Append the wrapper to the preview container
+  previewContainer.appendChild(imgWrapper);
+
+  // Store the cropped image in an array for submission
+  croppedImages.push(croppedImageURL);
+
+  // Hide the modal and destroy the cropper instance
+  cropper.destroy();
+  cropModal.classList.add("hidden");
+
+  // Increment file count
+  fileCount += 1;
+
+  // Check if the maximum file count has been reached
+  if (fileCount === 3) {
+    alert("All images cropped");
+  }
+  });
+
+  // Form validation and submission handler
+  productForm.addEventListener("submit", function (e) {
+    e.preventDefault(); // Prevent default form submission
+
+    // Validate YouTube link
+    const youtubeLink = document.getElementById("trailer_link").value;
+    const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+
+    if (!youtubeRegex.test(youtubeLink)) {
+      alert("Please enter a valid YouTube link.");
+      return;
+    }
+
+    // Validate image upload (exactly 3 images should be cropped)
+    if (croppedImages.length !== 3) {
+      alert("Please upload and crop exactly 3 images.");
+      return;
+    }
+
+    spinner.classList.remove("hidden");
+
+    // If validation passes, submit the form via fetch
+    const formData = new FormData(productForm);
+
+    // Append the cropped images as Base64 strings
+    croppedImages.forEach((img, index) => {
+      formData.append(`croppedImage${index + 1}`, img);
+    });
+
+    // Submit form data with fetch API
+    fetch("/admin/addProduct", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // Hide the spinner
+        spinner.classList.add("hidden");
+        if (data.message) {
+          // Show success modal
+          successModal.classList.remove("hidden");
+          // Optionally reset the form or redirect the user
+          productForm.reset();
+          previewContainer.innerHTML = ""; // Clear the image preview
+          croppedImages = []; // Clear the cropped image array
+          fileCount = 0;
+        }
+      })
+      .catch((error) => {
+        console.error("Error adding product:", error);
+        alert("An error occurred while adding the product.");
+      });
+  });
+
+  successBtn.addEventListener("click", function () {
+    successModal.classList.add("hidden");
+  });
+  //-----------------------------------Category dropdwon ----------------------------
+
+  let dropdownToggle = document.getElementById("dropdownToggle");
+  let dropdownMenu = document.getElementById("dropdownMenu");
+
+  // Toggle dropdown visibility
+  function handleClick() {
+    dropdownMenu.classList.toggle("hidden");
+  }
+
+  dropdownToggle.addEventListener("click", handleClick);
+
+  // Select category and update button with SVG icon
+  function selectCategory(categoryName) {
+    dropdownToggle.innerHTML =
+      categoryName +
+      `
+      <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 inline w-3 fill-white" viewBox="0 0 24 24">
+        <path fill-rule="evenodd"
+          d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+          clip-rule="evenodd" />
+      </svg>`;
+    dropdownMenu.classList.add("hidden");
+  }
+</script>

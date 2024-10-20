@@ -1,0 +1,136 @@
+<div class=" fixed  top-0 left-0 w-full z-50">
+
+  <%- include('../partials/header') %>
+</div>
+
+
+<div class="flex mt-[72px] relative">
+
+  <div class="fixed ">
+    <%- include('../partials/userSlidebar') %>
+  </div>
+
+  <section class="ml-64">
+    <div class="font-sans  p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
+
+      <h2 class="text-2xl font-extrabold text-gray-800 mb-12">Wishlist</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <div
+          class="w-8/12 absolute flex flex-col items-center justify-center <%=products.length> 0 ? 'hidden' : '' %>">
+          <div> "Your wishlist is empty. Start exploring and add your favorite products!"</div>
+
+          <div class=" mt-2 h-10 text-cyan-500 ">
+            <a href="/user/home">
+              Go to homepage
+            </a>
+          </div>
+        </div>
+
+        <% products.forEach(product=>{%>
+          <!-- <a href="/user/productView/<%=product.productId._id %>"> -->
+
+          <div id="product"
+            class="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
+            <div class="w-full aspect-w-4 aspect-h-3 lg:h-60">
+              <img src="<%=product.productId.images[0] %>" alt="Product 1"
+                class="h-full w-full object-cover object-top" />
+            </div>
+            <div class="p-4">
+              <h3 class="text-lg font-bold text-gray-800">
+                <%=product.productId.productName %>
+              </h3>
+              <p>
+                <%=product.productId.description %>
+              </p>
+              <div class="mt-4 flex items-center flex-wrap gap-2">
+                <h4 class="text-lg font-bold text-gray-800">₹<%=product.productId.price %>
+                </h4>
+                <h4 class="text-lg font-light line-through text-red-500">
+                  <%=product.productId.discount %>%
+                </h4>
+
+                <div id="remove"
+                  class="bg-gray-100 w-20 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
+                  Remove
+                  <div class="hidden" id="productID">
+                    <%=product.productId._id %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- </a> -->
+          <%}) %>
+
+
+
+
+      </div>
+    </div>
+
+  </section>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+
+
+
+  document.querySelectorAll("#product").forEach(results => results.addEventListener("click", () => {
+    const productID = results.querySelector("#productID").innerHTML.trim()
+    window.location.href = `/user/productView/${productID}`
+    console.log("outer");
+    console.log(productID);
+
+
+  }))
+  document.querySelectorAll("#remove").forEach(results => results.addEventListener("click", function (event) {
+    event.stopPropagation();
+
+    const productID = results.querySelector("#productID").innerHTML
+
+    axios.post("/user/removeFromWhishlist", { productID }).then(async response => {
+      const Toast = await Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      await Toast.fire({
+        icon: "success",
+        title: "product removed from wishlist"
+      });
+      window.location.reload()
+    })
+      .catch(err => {
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+        Toast.fire({
+          icon: "info",
+          title: "something wrong"
+        });
+
+      })
+  }))
+
+</script>

@@ -1,0 +1,268 @@
+
+
+
+
+
+
+
+
+
+
+<%- include('../partials/adminHeader.ejs') %>
+
+
+
+
+
+<section class="flex">
+
+
+<%- include('../partials/adminSlideBar.ejs') %>
+
+
+
+
+<div class="w-full">
+  <form action="/admin/searchProduct" method="POST" id="searchForm"> 
+<div class="bg-white flex px-1 py-1 rounded-full border border-blue-500 overflow-hidden max-w-md  font-[sans-serif]">
+    <input id="search" name="search" type='text' placeholder='Search Something...' class="w-full outline-none bg-white pl-4 text-sm" />
+    <button type='submit' id="searchButton" 
+      class="bg-blue-600 hover:bg-blue-700 transition-all text-white text-sm rounded-full px-5 py-2.5">Search</button>
+  </div>
+</form>
+
+  <p class="font-extrabold ml-1 mt-6">Product List</p> 
+  <a href="/admin/addProduct"> <button class="btn rounded-full py-3 text-white text-sm  float-right px-4 bg-poppy-red">ADD NEW PRODUCT</button></a>
+  
+    <div class="font-sans  right-0">
+        <table class="w-full bg-white">
+          <thead class="bg-gray-100 whitespace-nowrap">
+            <tr>
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+                Sl no
+              </th>
+              
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+               Product
+              </th>
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+                Image
+              </th>
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+                Discription
+              </th>
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+                Price
+              </th>
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+                Stock
+              </th>
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+               Status
+              </th>
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+               Block/Unblock
+              </th>
+              <th class="p-4 text-left text-xs font-semibold text-gray-800">
+              Edit
+              </th>
+            </tr>
+          </thead>
+    
+          <tbody class="whitespace-nowrap">
+              <%products.forEach((product,index)=>{ %> 
+                <tr class="hover:bg-gray-50">
+
+                    <td class="p-4 text-[15px] text-gray-800">
+                    <p>  <%= (currentPage - 1) * limit + index + 1 %></p>
+                  </td>
+                
+                  <td class="   text-[15px] text-gray-800">
+                    <p class="w-40 overflow-hidden  whitespace-nowrap" >  <%- product.productName %></p>
+                  </td>
+
+                    <td  class="p-4 text-[15px] text-gray-800">
+                     
+                      <img style="height: 60px;" src="<%- product.images[0] %>" alt="">
+                     
+                    </td>
+                    <td class="p-4 text-[15px] text-gray-800">
+                      <p>  <%- product.description %></p>
+                    </td>
+                    <td class="p-4 text-[15px] text-gray-800">
+                      <p>  <%- product.price %></p>
+                    </td>
+                    <td class="p-4 text-[15px] text-gray-800">
+                      <p>  <%- product.stock %></p>
+                    </td>
+                    <td class="p-4 text-[15px] text-gray-800">
+                      <% if(product.block) {%>
+                        <p>Blocked</p>
+                        <%}
+                        else{%>
+
+                            <p> Active</p>
+                            <%} %>
+                    </td>
+                    <td class="p-4">
+                      <div class="flex items-center">
+                          
+                          <label class="relative cursor-pointer"   >
+                            <input type="checkbox" id="toggleBtn" data-email="<%- product._id %>" class="sr-only peer" <% if(product.block) {%> checked <%} %> />
+                            <div
+                              class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007bff]">
+                            </div>
+                          </label>
+                        </div>
+                    </td>
+
+                    
+<td class="p-4">
+    <button class="mr-4" title="Edit">
+      <a href="/admin/editProduct/<%- product._id %>">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"
+        viewBox="0 0 348.882 348.882">
+        <path
+          d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
+          data-original="#000000" />
+        <path
+          d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
+          data-original="#000000" />
+      </svg>
+    </a>
+    </button>
+    
+  </td>
+                </tr>
+                    <% }) %>
+                    
+
+           
+          </tbody>
+
+
+
+        </table>
+
+
+        <div class="pagination flex items-center justify-center mt-12 space-x-2">
+          <% if(route =='productList'){%>
+
+            <% if (currentPage > 1) { %>
+              <a href="/admin/<%-route %>?page=<%= currentPage - 1 %>&limit=<%= limit %>" 
+                 class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+                  Previous
+              </a>
+          <% } %>
+      
+          <!-- Loop through the total number of pages -->
+          <% for (let i = 1; i <= totalPages; i++) { %>
+              <% if (i === currentPage) { %>
+                  <span class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded">
+                      <%= i %>
+                  </span>
+              <% } else { %>
+                  <a href="/admin/<%-route %>?page=<%= i %>&limit=<%= limit %>" 
+                     class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+                      <%= i %>
+                  </a>
+              <% } %>
+          <% } %>
+      
+          <% if (currentPage < totalPages) { %>
+              <a href="/admin/<%-route %>?page=<%= currentPage + 1 %>&limit=<%= limit %>" 
+                 class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+                  Next
+              </a>
+          <% } %>
+
+
+
+
+
+        <%  } %>
+         
+      </div>
+
+
+
+
+
+
+
+      </div>
+</div>
+   
+
+</section>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+
+      document.querySelectorAll('#toggleBtn').forEach(btn => {
+        const productID = btn.getAttribute('data-email')
+        btn.addEventListener('change', () => {
+
+          Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Change!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              axios.patch('/admin/blockProduct', { productID })
+                .then(data => {
+                  Swal.fire({
+                    title: "Updated!",
+                    icon: "success"
+                  });
+                  setTimeout(() => {
+                    location.reload()
+                  }, 1000)
+
+                }).catch(data => {
+
+                })
+
+            }
+            else if(result.dismiss){
+              location.reload()
+              
+            }
+          });
+   
+        
+        
+    })
+    })
+
+    // document.getElementById('searchButton').addEventListener('click',(event)=>{
+    // const search=  document.getElementById("search").value
+    // console.log(search);
+    
+    //   axios.post('/admin/searchProduct',{ search}).then((data)=>{
+    //     console.log(data);
+        
+    //   }).catch((data)=>{
+
+    //   })
+    //   console.log("search working");
+      
+
+    // })
+
+
+</script>
+
+
+
+
+
+

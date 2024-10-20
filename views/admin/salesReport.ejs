@@ -1,0 +1,117 @@
+<link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet">
+
+
+
+
+
+
+<div class=" fixed  top-0 left-0 w-full z-50">
+    <%- include('../partials/adminHeader.ejs') %>
+</div>
+
+
+<div class="flex mt-10">
+    <div class="fixed">
+        <%- include('../partials/adminSlideBar.ejs') %>
+    </div>
+<div  class=" absolute w-[1020px] right-0 ">
+
+<div class="container mx-auto mt-10 p-5 bg-white rounded-lg shadow-md">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-5">Sales Report</h1>
+
+    <div class="mb-4 flex justify-end items-center">
+       
+        <div>
+            <button id="exportPdf" class="bg-blue-500 text-white px-4 py-2 rounded">Export as pdf</button>
+            <button id="exportExcel" class="bg-blue-500 text-white px-4 py-2 rounded">Export as excel</button>
+        </div>
+    </div>
+
+    <table id="myTable" class=" w-full bg-white border border-gray-300">
+        <thead>
+            <tr>
+                <th class="py-3  px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600">User</th>
+                <th class="py-3 px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600">Product</th>
+                <th class="py-3 px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600">Quantity</th>
+                <th class="py-3 px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600"> Product Discount</th>
+                <th class="py-3 px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600">Coupon Discount</th>
+                <th class="py-3 px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600">Total amount</th>
+                <th class="py-3 px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600">Order Status</th>
+                <th class="py-3 px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600">Payment Status</th>
+                <th class="py-3 px-4 border-b border-gray-300 bg-gray-200 text-left text-sm text-gray-600">Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% orders.forEach(order=>{%>
+            <tr>
+                <td class="py-2 px-4 w-1 border-b border-gray-300  text-sm text-gray-700"><%=order.user%></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-700"><%=order.products[0]._id%></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-700"><%=order.products[0].quantity%></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-700">₹ <%=(order.products[0].price-order.products[0].discountedPrice).toFixed(2)%></td> <!-- Coupon Discount -->
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-700">₹ <%=order.products[0].couponAdded%></td> <!-- Coupon Discount -->
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-700">₹ <%=order.products[0].totalPay %></td> <!-- Discount Applied -->
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-700"><%=order.products[0].orderStatus%></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-700"><%=order.products[0].paymentStatus%></td>
+                <td class="py-2 px-4 border-b border-gray-300 text-sm text-gray-700"><%=order.createdAt.toLocaleString()%></td>
+            </tr>
+            <%})%>
+            <!-- Add more rows as needed -->
+        </tbody>
+    </table>
+</div>
+</div>
+</div>
+
+<script>
+    document.getElementById("exportPdf").addEventListener("click",()=>{
+        console.log("sending requiest");
+        
+        axios.get("/admin/downloadPdf",{ responseType: 'blob'}  ).then(response => {
+            console.log(response);
+            
+            const blob = new Blob([response.data], { type: 'application/pdf' });
+            console.log(blob);
+            
+            // Create a link element to trigger the download
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'sales-report.pdf'; // Specify the file name
+            link.click();
+
+            // Cleanup
+            window.URL.revokeObjectURL(link.href);
+        })
+    })
+    document.getElementById("exportExcel").addEventListener("click",()=>{
+        console.log("sending requiest");
+        
+        axios.get("/admin/downloadExcel",{ responseType: 'blob'}  ).then(response => {
+            console.log(response);
+            
+            const blob = new Blob([response.data], { type: 'application/xlsx' });
+            console.log(blob);
+            
+            // Create a link element to trigger the download
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'sales-report.xlsx'; // Specify the file name
+            link.click();
+
+            // Cleanup
+            window.URL.revokeObjectURL(link.href);
+        })
+    })
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<script>
+  // Initialize DataTable
+  $(document).ready(function() {
+    $('#myTable').DataTable({
+      responsive: true
+    });
+  });
+</script>

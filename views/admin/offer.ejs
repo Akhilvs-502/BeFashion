@@ -1,0 +1,209 @@
+
+
+<div class=" fixed  top-0 left-0 w-full z-50">
+    <%- include('../partials/adminHeader.ejs') %>
+</div>
+
+
+<div class="flex mt-10">
+    <div class="fixed">
+        <%- include('../partials/adminSlideBar.ejs') %>
+    </div>
+<div class="bg-gray-100 6 ">
+    <div class=" absolute w-8/12 right-20 py-10">
+        <!-- Header -->
+        <h1 class="text-3xl font-bold mb-6 text-center">Admin Offer Management</h1>
+
+        <!-- Tabs for different offer types -->
+        <div class="flex justify-center space-x-4 mb-8">
+            <button id="productTab" class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded" onclick="switchTab('product')">
+                Product Offer
+            </button>
+            <button id="categoryTab" class="bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded" onclick="switchTab('category')">
+                Category Offer
+            </button>
+            <!-- <button id="referralTab" class="bg-purple-500 hover:bg-purple-700 text-white py-2 px-4 rounded" onclick="switchTab('referral')">
+                Referral Offer
+            </button> -->
+        </div>
+
+        <!-- Product Offer Form -->
+        <div id="productForm" class="offer-form hidden  ">
+            <h2 class="text-2xl font-bold mb-4">Add Product Offer</h2>
+            <form id="addProductOffer">
+                <!-- Product Selection -->
+                <div class="mb-4">
+                    <label for="product" class="block text-gray-700 text-sm font-bold mb-2">Product:</label>
+                    <select id="product" required  name="productId" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        <option disabled selected value="" >select product</option>
+                    <% products.forEach(product=>{%>
+                            <option id="productId"  value="<%=product._id%>"><%=product.productName%></option>
+                            <%})%>
+             
+                    </select>
+                </div>
+
+                <!-- Discount -->
+                <div class="mb-4">
+                    <label for="discount" class="block text-gray-700 text-sm font-bold mb-2">Discount Percentage:</label>
+                    <input type="number" min="1" max="100" id="productDiscount" name="discount" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                </div>
+
+                <!-- Date Range
+                <div class="mb-4 flex justify-between space-x-4">
+                    <div class="w-1/2">
+                        <label for="startDate" class="block text-gray-700 text-sm font-bold mb-2">Start Date:</label>
+                        <input type="date" id="startDate" name="startDate" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="endDate" class="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
+                        <input type="date" id="endDate" name="endDate" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                    </div>
+                </div> -->
+
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Add Product Offer
+                </button>
+            </form>
+        </div>
+
+        <!-- Category Offer Form -->
+        <div id="categoryForm" class="offer-form hidden ">
+            <h2 class="text-2xl font-bold mb-4">Add Category Offer</h2>
+            <form id="addCategoryOffer">
+                <!-- Category Selection -->
+                <div class="mb-4">
+                    <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
+                    <select id="category" required name="categoryId" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white">
+                        <option disabled selected value=""  >select category</option>
+                       <% categories.forEach(category=>{%>
+                            <option value="<%=category.categoryName%>"><%=category.categoryName%></option>
+                            <%})%>
+                  
+                    </select>
+                </div>
+
+                <!-- Discount -->
+                <div class="mb-4">
+                    <label for="discount" class="block text-gray-700 text-sm font-bold mb-2">Discount Percentage:</label>
+                    <input type="number" min="1" max="100" id="categoryDiscount" name="discount" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                </div>
+
+                <!-- Date Range
+                <div class="mb-4 flex justify-between space-x-4">
+                    <div class="w-1/2">
+                        <label for="startDate" class="block text-gray-700 text-sm font-bold mb-2">Start Date:</label>
+                        <input type="date" id="startDate" name="startDate" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="endDate" class="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
+                        <input type="date" id="endDate" name="endDate" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                    </div>
+                </div> -->
+
+                <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Add Category Offer
+                </button>
+            </form>
+        </div>
+
+        <!-- Referral Offer Form -->
+        <div id="referralForm" class="offer-form hidden ">
+            <h2 class="text-2xl font-bold mb-4">Add Referral Offer</h2>
+            <form>
+                <!-- Referral Code -->
+                <div class="mb-4">
+                    <label for="referralCode" class="block text-gray-700 text-sm font-bold mb-2">Referral Code:</label>
+                    <input type="text" id="referralCode" name="referralCode" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                </div>
+
+                <!-- Discount -->
+                <div class="mb-4">
+                    <label for="discount" class="block text-gray-700 text-sm font-bold mb-2">Discount Percentage:</label>
+                    <input type="number" min="1" max="100" id="discount" name="discount" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                </div>
+
+                <!-- Referral Bonus -->
+                <div class="mb-4">
+                    <label for="bonus" class="block text-gray-700 text-sm font-bold mb-2">Referral Bonus for Referrer:</label>
+                    <input type="number" id="bonus" name="bonus" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                </div>
+
+                <!-- Date Range -->
+                <div class="mb-4 flex justify-between space-x-4">
+                    <div class="w-1/2">
+                        <label for="startDate" class="block text-gray-700 text-sm font-bold mb-2">Start Date:</label>
+                        <input type="date" id="startDate" name="startDate" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                    </div>
+                    <div class="w-1/2">
+                        <label for="endDate" class="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
+                        <input type="date" id="endDate" name="endDate" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                    Add Referral Offer
+                </button>
+            </form>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            document.querySelectorAll('.offer-form').forEach(form => form.classList.add('hidden'));
+            document.getElementById(`${tab}Form`).classList.remove('hidden');
+        }
+
+        document.getElementById("addProductOffer").addEventListener("submit",(event)=>{
+            event.preventDefault()
+        const product_id=document.querySelector("select[name='productId']").value
+        const discount=document.getElementById("productDiscount").value
+            axios.post("addProductOffer",{product_id,discount}).then(async response=>{
+                const Toast = await Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        await Toast.fire({
+            icon: "success",
+            title: "Offer Added"
+        });
+        window.location.reload()
+                }).catch(err=>{})
+            })
+        document.getElementById("addCategoryOffer").addEventListener("submit",(event)=>{
+            event.preventDefault()
+        const category=document.querySelector("select[name='categoryId']").value
+        console.log(category);
+        
+        const discount=document.getElementById("categoryDiscount").value
+            axios.post("addCategoryOffer",{category,discount}).then(async response=>{
+                const Toast = await Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        await Toast.fire({
+            icon: "success",
+            title: "Offer Added"
+        });
+        window.location.reload()
+                }).catch(err=>{})
+            })
+        
+    </script>
+

@@ -1,0 +1,102 @@
+<%- include('../partials/header') %>
+
+<div class="flex justify-center">
+
+<div class="">
+  <%- include('../partials/userSlidebar') %>
+</div>
+
+<div class="w-full bg-white overflow-hidden shadow rounded-lg border flex-wrap ">
+
+  <div class="flex items-center ">
+
+    <div class="px-4 py-5 sm:px-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900">
+           Profile Details
+      </h3>
+      <p class="mt-1 max-w-2xl text-sm text-gray-500">
+        Overview of your profile and preferences.
+      </p>
+     </div>
+     <a href="/user/editProfile">
+      <div class="justify-center">
+        <button  class="text-white bg-poppy-red hover:bg-red-700   font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Edit Profile</button>
+      </div>
+     </a>
+
+  </div>
+<div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+    <dl class="sm:divide-y sm:divide-gray-200">
+        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+                Full name
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= dataBase.name %>
+            </dd>
+        </div>
+        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+                Email address
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= dataBase.email %>
+            </dd>
+        </div>
+        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+                Phone
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= dataBase.phone  ?  dataBase.phone  : ' - not added -' %>
+            </dd>
+        </div>
+        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Gender
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= dataBase.gender  ?  dataBase.gender  : ' - not added -' %>
+            </dd>
+        </div>
+        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+                Date of Birth
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= dataBase.dob  ?  dataBase.dob  : ' - not added -' %>
+            </dd>
+        </div>
+        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Alternate Mobile
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <%= dataBase.phone  ?  dataBase.phone  : ' - not added -' %>
+            </dd>
+        </div>
+        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+                Address
+            </dt>
+            <a href="/user/address">
+              <dd class="mt-1 text-sm text-blue-600 sm:mt-0 sm:col-span-2 font-medium ">
+                View Address
+              </dd>
+            </a>
+           
+        </div>
+        <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-m font-medium text-blue-600 font-medium">
+              <a href="/user/changePassword">
+                Change Password
+              </a>  
+            </dt>
+           
+           
+        </div>
+    </dl>
+</div>
+</div>
+
+</div>

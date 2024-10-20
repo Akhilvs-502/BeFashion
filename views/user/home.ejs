@@ -1,0 +1,232 @@
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+
+
+
+<%- include('../partials/header') %>
+
+
+
+  <div id="default-carousel" class="relative w-full " data-carousel="slide">
+    <!-- Carousel wrapper -->
+    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+         <!-- Item 1 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="/images/bannercart.gif" class="absolute  w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <!-- Item 2 -->
+        <div class="hidden duration-100000 ease-in-out" data-carousel-item>
+            <img src="/images/bannercart.gif" class="absolute  w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <!-- Item 3 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="/images/bannercart.gif" class="absolute  w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <!-- Item 4 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="/images/2-1._CB565867124_.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+        <!-- Item 5 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="/images/bannercart.gif" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+        </div>
+    </div>
+    <!-- Slider indicators -->
+    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
+        <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
+    </div>
+    <!-- Slider controls -->
+    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+            </svg>
+            <span class="sr-only">Previous</span>
+        </span>
+    </button>
+    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+            </svg>
+            <span class="sr-only">Next</span>
+        </span>
+    </button>
+</div>
+
+
+
+
+<section class="flex ">
+  <div  class="flex-initial" >
+    <div class="relative">
+      <img  src="/images/category-1.jpg" alt="">
+      <h2 class=" absolute top-11 left-1 py-4 text-2xl font-bold ">Women’s fashion</h2>
+      <h2 class="absolute top-12 left-1 py-12">"Shop our range of stylish dresses and quality <br>
+        cosmetics for women. Find looks <br>
+        that are both trendy and <br>
+        timeless, perfect for any occasion."</h2>
+      </div>
+    </div>
+    <a href="" class="absolute pt-56 pl-2 ">ShopNow</a>
+  <div class="flex ">
+    
+    <div class="flex-initial ">
+      <h2 class=" pt-10 pl-2 absolute font-bold ">Men's fashion <br> <a class="text-blue-400 font-light" href="">ShopNow</a></h2>
+      <img  src="/images/category-2.jpg"   alt="">
+    
+      <h2 class=" pt-10 pl-2 absolute font-bold ">Kid's <br> <a class="text-blue-400 font-light" href="">ShopNow</a></h2>
+      <img src="/images/category-3.jpg" alt="">
+    </div>
+    <div class="flex-initial">
+      <h2 class=" pt-10 pl-2 absolute font-bold ">Cosmetics <br> <a class="text-blue-400 font-light" href="">ShopNow</a></h2>
+
+      <img src="/images/category-4.jpg" alt="">
+      <h2 class=" pt-10 pl-2 absolute font-bold ">Accessories <br> <a class="text-blue-400 font-light" href="">ShopNow</a></h2>
+
+      <img src="/images/category-5 (1).jpg"  alt="">
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+<section>
+  <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
+
+    <h2 class="text-2xl font-extrabold text-gray-800 mb-12">All products</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <% products.forEach(product=>{%>
+        <!-- <a href="/user/productView/<%=product._id %>"> -->
+          <div id="product"
+            class="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
+            <div class="w-full aspect-w-4 aspect-h-3 lg:h-60">
+              <img src="<%=product.images[0] %>" alt="Product 1" class="h-full w-full object-cover object-top" />
+            </div>
+
+            <div class="p-4">
+              <h3 class="text-lg font-bold text-gray-800">
+                <%=product.productName %>
+              </h3>
+              <p>
+                <%=product.description %>
+              </p>
+              <div class="mt-4 flex items-center flex-wrap gap-2">
+                <h4 class="text-lg font-bold text-gray-800">₹<%=product.price %>
+                </h4>
+                <h4 class="text-lg font-light line-through text-red-500">
+                  <%=product.discount %>%
+                </h4>
+                <!-- <a href="/user/addToWishlist" > -->
+                <div id="Wishlist"
+                  class="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16px" class="fill-gray-800 inline-block"
+                    viewBox="0 0 64 64">
+                    <path
+                      d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
+                      data-original="#000000"></path>
+                  </svg>
+
+                  <div id="productID" class="hidden"><%=product._id %></div>
+                </div>
+              <!-- </a> -->
+
+              </div>
+            </div>
+          </div>
+        <!-- </a> -->
+        <%}) %>
+
+
+
+
+    </div>
+  </div>
+
+</section>
+
+
+
+  <div class=" bg-[#2e0249] py-16 px-6 font-[sans-serif]">
+    <div class="max-w-5xl mx-auto text-center">
+      <h2 class="text-4xl font-bold mb-6 text-white">Subscribe to Our Newsletter</h2>
+      <p class="text-base text-gray-300">Stay updated with the latest news, trends, and special offers. Don't miss out on our exciting updates.</p>
+      <div class="mt-12 flex items-center overflow-hidden bg-gray-50 rounded-md max-w-xl mx-auto">
+        <input type="email" placeholder="Enter your email" class="w-full bg-transparent py-3.5 px-4 text-gray-800 text-base focus:outline-none" />
+        <button class="bg-[#a91079] hover:bg-[#a91079e2] text-white text-base tracking-wide py-3.5 px-6 hover:shadow-md hover:transition-transform transition-transform hover:scale-105 focus:outline-none">
+          Subscribe
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+          document.querySelectorAll("#product").forEach(results=>results.addEventListener("click",()=>{
+     const productID= results.querySelector("#productID").innerHTML
+      window.location.href=`/user/productView/${productID}`
+      console.log("outer");
+      console.log(productID);
+      
+      
+    }))
+
+    document.querySelectorAll("#Wishlist").forEach(results=>results.addEventListener("click",function(event){
+      event.stopPropagation();
+    
+      const productID= results.querySelector("#productID").innerHTML
+
+      axios.post("/user/addToWhishlist",{productID}).then(response=>{
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "product added to wishlist"
+      });
+
+    })
+    .catch(err => { 
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "info",
+        title: "already added wishlist"
+      });
+
+    })
+  }))
+    
+</script>

@@ -1,0 +1,209 @@
+<%- include('../partials/header') %>
+    <div class="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
+        <h1 class="text-2xl font-extrabold text-gray-800">payment Method</h1>
+        <div class="grid md:grid-cols-3 gap-4 mt-8">
+            <div class="md:col-span-2 space-y-4">
+
+
+
+
+
+                <!-- //////////////////////STEPPER -->
+                <div class="flex items-start max-w-screen-lg mx-auto">
+                    <div class="w-full">
+                        <div class="flex items-center w-full">
+                            <div
+                                class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
+                                <span class="text-base text-white font-bold">1</span>
+                            </div>
+                            <div class="w-full h-1 mx-4 rounded-lg bg-gray-600"></div>
+                        </div>
+                        <div class="mt-2 mr-4">
+                            <h6 class="text-base font-bold text-cyan-800">Delivery Address</h6>
+                            <p class="text-xs text-gray-400">Completed</p>
+
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <div class="flex items-center w-full">
+                            <div
+                                class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                                <span class="text-base text-white font-bold">2</span>
+                            </div>
+                            <div class="w-full h-1 mx-4 rounded-lg bg-gray-400"></div>
+                        </div>
+                        <div class="mt-2 mr-4">
+                            <h6 class="text-base font-bold text-cyan-800">Order Summary</h6>
+
+                            <p class="text-xs text-gray-400">Completed</p>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <div class="flex items-center w-full">
+                            <div
+                                class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                                <span class="text-base text-white font-bold">2</span>
+                            </div>
+
+                        </div>
+                        <div class="mt-2 mr-4">
+                            <h6 class="text-base font-bold text-cyan-800">Payment Method</h6>
+                            <p class="text-xs text-gray-400">Pending</p>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /////////////////////////////////////////////// -->
+                <div class=" mx-auto mt-34 p-6 bg-white shadow-lg rounded-lg">
+                    <h2 class=" font- mb-6 font-bold ">Select Payment Method</h2>
+
+                    <form id="form" method="POST" class="space-y-4">
+                        <!-- Razorpay Option -->
+                        <div class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
+                            <input id="razorpay" type="radio" name="payment_method" value="razorpay"
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                            <label for="razorpay" class="ml-3 text-lg font-medium text-gray-700 flex items-center">
+                                <img src="/images/razorpay-logo.svg" alt="Razorpay" class="w-15 h-12 mr-2 ml-3">
+
+                            </label>
+                        </div>
+
+                        <!-- Cash on Delivery Option -->
+                        <div class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
+                            <input id="cod" type="radio" name="payment_method" checked value="cod"
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                            <label for="cod" class="ml-8 text-lg font-medium text-gray-700 flex items-center">
+                                Cash on Delivery
+                            </label>
+                        </div>
+
+                        <!-- Wallet Option -->
+                        <div class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
+                            <input id="wallet" type="radio" name="payment_method" value="wallet"
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                            <label for="wallet" class="ml-8 text-lg font-medium text-gray-700 flex items-center">
+
+                                Wallet
+                            </label>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="mt-6">
+                            <button type="submit"
+                                class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">Continue</button>
+                        </div>
+                    </form>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div>
+            <input hidden id="addressID" type="text" value="<%=addressID%>">
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+
+            document.addEventListener("DOMContentLoaded", () => {
+
+
+                const form = document.getElementById("form")
+                form.addEventListener("submit", (event) => {
+                    event.preventDefault()
+                    const input = form.querySelector("input[name='payment_method']:checked")
+                    //    console.log(input.value);
+                    const orderType = input.value
+                    const addressID = document.getElementById('addressID').value
+            
+                
+                    axios.post('/user/orderUpdate', { orderType, addressID }).then(async response => {
+
+                        console.log(response.data.user);
+                        const orderId=response.data.orderId
+                        const totalOrderPrice=response.data.totalOrderPrice
+                        const userName=response.data.user.name
+                        const userEmail=response.data.user.email
+                        const RAZORPAY_KEY_ID=response.data.RAZORPAY_KEY_ID
+                        console.log(totalOrderPrice);
+                        
+                        if (response.data.orderType =="razorpay") {
+                            console.log("thisi is woked");
+
+                            var options = {
+                                "key": RAZORPAY_KEY_ID, // Enter your Key ID generated from the Dashboard
+                                // "amount": 100000, // Amount is in paise (50000 = ₹500)   i amount set in backend
+                                "currency": "INR",
+                                "name": response.data.currency,
+                                "description": "Test Transaction",
+                                "image": "https://example.com/your_logo",
+                                "order_id": response.data.razorpayOrderId,
+                                "method": {
+                                    "upi": true,
+                                },
+                                "handler": function (response) {
+                                    // Handle the payment success response
+                                    console.log(response.razorpay_payment_id);
+                                    console.log(response.razorpay_order_id);
+                                    console.log(response.razorpay_signature);
+                                    const payment_id = response.razorpay_payment_id
+                                    const order_id = response.razorpay_order_id
+                                    const signature = response.razorpay_signature
+                                    axios.post("/user/paymentVerificaton", { payment_id, order_id, signature,orderId }).then(response => {
+                                    
+                                        window.location.href =`/user/orderSuccess/${orderId}`
+                                    }).catch(err => { 
+
+                                    })
+                                },
+                                "prefill": {
+                                    "name":userName ,
+                                    "email":userEmail,
+                                    "contact": response.data.user.phone
+                                },
+                                "theme": {
+                                    "color": "#F37254"
+                                }
+                            };
+                            var rzp1 = new Razorpay(options);
+
+                            // document.getElementById('rzp-button').onclick = function (e) {
+                          await  rzp1.open();
+                          event.preventDefault();
+                            // }
+                        }
+                        if (response.data.orderType =="cod") {
+                                console.log("cod");
+
+                            const orderId = response.data.orderId
+                            window.location.href = `/user/orderSuccess/${orderId}`
+                        }
+
+                        if(response.data.orderType =="wallet"){
+                            const orderId = response.data.orderId
+                            window.location.href = `/user/orderSuccess/${orderId}`
+                        }
+
+                    }).catch(async err => {
+                        console.log(err);
+                        if (err.response.data.status = "noBalance") {
+                          await  Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Insufficient wallet balance to complete the order!",
+                            });
+                        }else{
+                            await  Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "something went wrong !",
+                            });
+                        }    
+                        window.location.href="/user/showCart"
+                    })
+                })
+            })
+        </script>

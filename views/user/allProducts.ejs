@@ -1,0 +1,324 @@
+<%- include('../partials/header') %>
+
+
+
+
+
+
+
+  <!-- Breadcrumb -->
+  <div class="flex ml-14">
+
+    <ul class="flex items-center justify-center font-[sans-serif] space-x-4 mt-4">
+      <a href="/user/home">
+        <li class="text-gray-500 text-base cursor-pointer">
+          Home
+        </li>
+      </a>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400 w-3.5 -rotate-90" viewBox="0 0 24 24">
+          <path fill-rule="evenodd"
+            d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+            clip-rule="evenodd" data-original="#000000"></path>
+        </svg>
+      </li>
+      <a href="/user/allProducts">
+        <li class="text-gray-500 text-base cursor-pointer">
+          All product
+        </li>
+      </a>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400 w-3.5 -rotate-90" viewBox="0 0 24 24">
+          <path fill-rule="evenodd"
+            d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+            clip-rule="evenodd" data-original="#000000"></path>
+        </svg>
+      </li>
+
+    </ul>
+
+  </div>
+
+  <div class="flex ">
+
+    <!-- Filters -->
+    <div class="w-52 mt-12 ml-2">
+      <div class=" flex justify-between">
+        <h1 class="font-bold text-2xl">Filters</h1>
+        <% if(filters.length>0){%> <a href="/user/allProducts">
+            <div class="text-red-400 mt-1">Clear all </div>
+          </a>
+          <%} %>
+      </div>
+      <div class="flex flex-wrap ">
+        <% filters.forEach(filter=>{%>
+
+          <div class="ml-1 rounded-full border-2 w-20 text-center ">
+            <%=filter%>
+          </div>
+          <%}) %>
+      </div>
+      <div id="categoryFilter">
+        <h1 class="font-bold mt-6 ">Categories</h1>
+        <input class="mt-4" value="men" type="checkbox" <% if(filters.includes("mens")){%> checked<% }%> >
+          <label for="">Men</label> <br>
+          <input class="mt-4" value="women" type="checkbox" <% if(filters.includes("womens")){%> checked<% }%> >
+            <label for="">Women</label><br>
+            <input class="mt-4" value="kids" type="checkbox" <% if(filters.includes("kids")){%> checked<% }%> >
+              <label for="">Kids</label>
+      </div>
+      <div class="mt-4">
+        <h1 class="font-bold">Price</h1>
+        <select id="selectPrice" class=" w-full p-2 border rounded-md  focus:ring-2 ">
+          <option class="  " value="">select</option>
+
+          <option class="price" value="high-low" <% if(filters.includes("high-low")){%> selected <% }%>>High-Low
+          </option>
+          <option class="price  " value="low-high" <% if(filters.includes("low-high")){%> selected <% }%>>Low-High
+          </option>
+        </select>
+      </div>
+      <!-- <div class="mt-4">
+        <h1 class="font-bold">Popularity</h1>
+        <select class=" w-full p-2 border rounded-md  focus:ring-2 ">
+          <option class="  " value="">select</option>
+
+          <option class="  " value="high-low">High-Low</option>
+          <option class="  " value="low-high">Low-High</option>
+        </select>
+      </div> -->
+      <div class="mt-4">
+        <h1 class="font-bold">Product Name</h1>
+        <select id="sortProduct" class=" w-full p-2 border rounded-md  focus:ring-2 ">
+          <option class="  " value="">select</option>
+          <option class="  " value="aA-zZ"<% if(filters.includes("aA-zZ")){%> selected <% }%>>aA-zZ</option>
+          <option class="  " value="zZ-aA"<% if(filters.includes("zZ-aA")){%> selected <% }%>>zZ-aA</option>
+        </select>
+      </div>
+      <!-- <div>
+        <h1 class="font-bold mt-6 ">Customer Rating</h1>
+        <input class="mt-4" type="checkbox">
+        <label for="">4★ & above</label> <br>
+        <input class="mt-4" type="checkbox">
+        <label for="">3★ & above</label><br>
+      </div> -->
+      <div id="lastFilter">
+        <h1>_____________________________</h1>
+        <input class="mt-4" value="newArrivals" type="checkbox" <% if(filters.includes("newArrivals")){%> checked<% }%> >
+        <label for="">New Arrivals</label> <br>
+        <input class="mt-4" value="stock" type="checkbox" <% if(filters.includes("stock")){%> checked<% }%> >
+        <label for="">Include outof stock</label> <br>
+
+      </div>
+
+    </div>
+
+    <div>
+      <section>
+        <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
+
+          <h2 class="text-2xl font-extrabold text-gray-800 mb-12">All products</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <% products.forEach(product=>{%>
+              <!-- <a href="/user/productView/<%=product._id %>"> -->
+                <div id="product"
+                  class="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
+                  <div class="w-full aspect-w-4 aspect-h-3 lg:h-60">
+                    <img src="<%=product.images[0] %>" alt="Product 1" class="h-full w-full object-cover object-top" />
+                  </div>
+
+                  <div class="p-4">
+                    <h3 class="text-lg font-bold text-gray-800">
+                      <%=product.productName %>
+                    </h3>
+                    <p>
+                      <%=product.description %>
+                    </p>
+                    <div class="mt-4 flex items-center flex-wrap gap-2">
+                      <h4 class="text-lg font-bold text-gray-800">₹<%=product.price %>
+                      </h4>
+                      <h4 class="text-lg font-light line-through text-red-500">
+                        <%=product.discount %>%
+                      </h4>
+                      <!-- <a href="/user/addToWishlist" > -->
+                      <div id="Wishlist"
+                        class="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16px" class="fill-gray-800 inline-block"
+                          viewBox="0 0 64 64">
+                          <path
+                            d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
+                            data-original="#000000"></path>
+                        </svg>
+
+                        <div id="productID" class="hidden"><%=product._id %></div>
+                      </div>
+                    <!-- </a> -->
+      
+                    </div>
+                  </div>
+                </div>
+              <!-- </a> -->
+              <%}) %>
+
+
+
+
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </div>
+
+  <div class="pagination flex items-center justify-center mt-12 space-x-2">
+    <% if (currentPage> 1) { %>
+      <a href="/user/allProducts?men=<%=filters.includes('mens') ? 'true' :'false'%>&&women=<%=filters.includes('womens') ? 'true':'false'%>&&kids=<%=filters.includes('kids') ? 'true' :'false'%>&&price=<%=filters.includes('high-low') ? 'high-low' : (filters.includes('low-high') ? 'low-high' : 'false')%> &&page=<%= currentPage - 1 %>&limit=<%= limit %>&&stock=<%=filters.includes('stock') ? 'true' :'false'%>&&newArrivals=<%=filters.includes('newArrivals') ? 'true' :'false'%>"
+        class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+        Previous
+      </a>
+      <% } %>
+
+        <!-- Loop through the total number of pages -->
+        <% for (let i=1; i <=totalPages; i++) { %>
+          <% if (i===currentPage) { %>
+            <span class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded">
+              <%= i %>
+            </span>
+            <% } else { %>
+              <a href="/user/allProducts?men=<%=filters.includes('mens') ? 'true' :'false'%>&&women=<%=filters.includes('womens') ? 'true':'false'%>&&kids=<%=filters.includes('kids') ? 'true' :'false'%>&&price=<%=filters.includes('high-low') ? 'high-low' : (filters.includes('low-high') ? 'low-high' : 'false')%>&&page=<%= i %>&limit=<%= limit %>&&stock=<%=filters.includes('stock') ? 'true' :'false'%>&&newArrivals=<%=filters.includes('newArrivals') ? 'true' :'false'%>"
+                class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+                <%= i %>
+              </a>
+              <% } %>
+                <% } %>
+
+                  <% if (currentPage < totalPages) { %>
+                    <a href="/user/allProducts?men=<%=filters.includes('mens') ? 'true' :'false'%>&&women=<%=filters.includes('womens') ? 'true':'false'%>&&kids=<%=filters.includes('kids') ? 'true' :'false'%>&&price=<%=filters.includes('high-low') ? 'high-low' : (filters.includes('low-high') ? 'low-high' : 'false')%>&&page=<%= currentPage + 1 %>&limit=<%= limit %>&&stock=<%=filters.includes('stock') ? 'true' :'false'%>&&newArrivals=<%=filters.includes('newArrivals') ? 'true' :'false'%>"
+                      class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+                      Next
+                    </a>
+                    <% } %>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+
+    // const filters=JSON.parse(<%=JSON.stringify(filters[0]) %>)
+    // console.log(filters);
+    const filters = <%- JSON.stringify(filters) %>
+      console.log(filters);
+
+    let men = filters.includes('mens') ? true : false
+    let women = filters.includes('womens') ? true : false
+    let kids = filters.includes('kids') ? true : false
+    let price = filters.includes('low-high') ? 'low-high' : false
+    price = filters.includes('high-low') ? 'high-low' : false
+    let sort = filters.includes('aA-zZ') ? 'aA-zZ' : false
+    sort = filters.includes('zZ-aA') ? 'zZ-aA' : false
+    let stock = filters.includes('stock') ? true : false
+    let newArrivals = filters.includes('newArrivals') ? true : false
+    
+
+    document.getElementById("categoryFilter").addEventListener('change', (event) => {
+      const categoryFilter = document.getElementById("categoryFilter").querySelectorAll("input[type='checkbox']:checked")
+      const categoryList = Array.from(categoryFilter).map(filter => filter.value)
+      men = categoryList.includes('men') ? true : false
+      women = categoryList.includes('women') ? true : false
+      kids = categoryList.includes('kids') ? true : false
+      window.location.href = `/user/allProducts?men=${men}&&women=${women}&&kids=${kids}&&price=${price}&&sort=${sort}&&stock=${stock}&&newArrivals=${newArrivals}`
+
+
+
+
+      // if (event.target.type === 'checkbox' && event.target.checked) {
+      //     console.log(event.target.value);
+      //     const men = event.target.value == 'men' ? true : false
+      //     const women = event.target.value == 'women' ? true : false
+      //     const kids = event.target.value == 'kids' ? true : false
+      //     // window.location.href=`/user/allProducts?men=${men}&&women=${women}&&kids=${kids}`
+
+      //   }
+
+    })
+
+    document.getElementById("selectPrice").addEventListener("change", (event) => {
+      console.log(event.target.value);
+      price = event.target.value
+      window.location.href = `/user/allProducts?men=${men}&&women=${women}&&kids=${kids}&&price=${price}&&sort=${sort}&&stock=${stock}&&newArrivals=${newArrivals}`
+    })
+    document.getElementById("sortProduct").addEventListener("change", (event) => {
+      console.log(event.target.value);
+      sort = event.target.value
+      console.log(sort);
+      window.location.href = `/user/allProducts?men=${men}&&women=${women}&&kids=${kids}&&price=${price}&&sort=${sort}&&stock=${stock}&&newArrivals=${newArrivals}`
+    })
+   
+    document.getElementById("lastFilter").addEventListener('change', (event) => {
+      const lastFilter = document.getElementById("lastFilter").querySelectorAll("input[type='checkbox']:checked")
+      const categoryList = Array.from(lastFilter).map(filter => filter.value)
+      stock = categoryList.includes('stock') ? true : false
+      newArrivals = categoryList.includes('newArrivals') ? true : false
+      window.location.href = `/user/allProducts?men=${men}&&women=${women}&&kids=${kids}&&price=${price}&&sort=${sort}&&stock=${stock}&&newArrivals=${newArrivals}`
+    })
+     
+
+    document.querySelectorAll("#product").forEach(results=>results.addEventListener("click",()=>{
+     const productID= results.querySelector("#productID").innerHTML
+      window.location.href=`/user/productView/${productID}`
+      console.log("outer");
+      console.log(productID);
+      
+      
+    }))
+
+    document.querySelectorAll("#Wishlist").forEach(results=>results.addEventListener("click",function(event){
+      event.stopPropagation();
+    
+      const productID= results.querySelector("#productID").innerHTML
+
+      axios.post("/user/addToWhishlist",{productID}).then(response=>{
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "product added to wishlist"
+      });
+
+    })
+    .catch(err => { 
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "info",
+        title: "already added wishlist"
+      });
+
+    })
+  }))
+    
+
+
+  </script>

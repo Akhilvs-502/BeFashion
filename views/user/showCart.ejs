@@ -1,0 +1,513 @@
+<%- include('../partials/header') %>
+    <div class="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
+        <h1 class="text-2xl font-extrabold text-gray-800">Your Cart</h1>
+        <div class="grid md:grid-cols-3 gap-4 mt-8">
+            <div class="md:col-span-2 space-y-4">
+
+                <% if(cart){%>
+
+                    <% if(cart.products.length>0){%>
+                        <% cart.products.forEach(product=>{%>
+
+
+                            <div id="products"
+                                class="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+                                <div class="flex gap-4">
+                                    <div class="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
+                                        <img src='<%=product.productId.images[0]%>'
+                                            class="w-full h-full object-contain" />
+                                        <p></p>
+                                    </div>
+                                    <div class="flex flex-col gap-4">
+                                        <div>
+                                            <h3 class="text-base font-bold text-gray-800">
+                                                <%=product.productId.productName%>
+                                            </h3>
+                                            <p class="text-sm font-semibold text-gray-500 mt-2 flex items-center gap-2">
+                                                Color:
+                                                <%=product.productId.color[0]%><span
+                                                        class="inline-block w-5 h-5 rounded-md bg-<%=product.productId.color[0]%>-600"></span>
+                                            </p>
+                                            <div>
+                                                <label for="">Size</label>
+                                                <select id="selectSize">
+                                                    <% product.productId.size.forEach(value=>{%>
+
+                                                        <option value="<%=value%>" <%=product.size===value ? 'selected'
+                                                            :" " %> ><%= value %></option>
+                                    <%}) %>
+                                </select>
+                               
+                            </div>
+                        </div>
+
+                        <div class=" mt-auto flex items-center gap-3">
+                                                            <button id="quantityDecreasing" type="button"
+                                                                class="   flex items-center justify-center w-5 h-5 bg-gray-400 outline-none rounded-full">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="w-2 fill-white" viewBox="0 0 124 124">
+                                                                    <path
+                                                                        d="M112 50H12C5.4 50 0 55.4 0 62s5.4 12 12 12h100c6.6 0 12-5.4 12-12s-5.4-12-12-12z"
+                                                                        data-original="#000000"></path>
+                                                                </svg>
+                                                            </button>
+                                                            <span id="quantity"
+                                                                class="font-bold text-sm leading-[18px]">
+                                                                <%=product.quantity%>
+                                                            </span>
+                                                            <button id="quantityAdding" type="button"
+                                                                class="flex items-center justify-center w-5 h-5 bg-gray-400 outline-none rounded-full">
+                                                                <svg xmlns="http://www.w3.org/2000/svg"
+                                                                    class="w-2 fill-white" viewBox="0 0 42 42">
+                                                                    <path
+                                                                        d="M37.059 16H26V4.941C26 2.224 23.718 0 21 0s-5 2.224-5 4.941V16H4.941C2.224 16 0 18.282 0 21s2.224 5 4.941 5H16v11.059C16 39.776 18.282 42 21 42s5-2.224 5-4.941V26h11.059C39.776 26 42 23.718 42 21s-2.224-5-4.941-5z"
+                                                                        data-original="#000000"></path>
+                                                                </svg>
+                                                            </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="ml-auto flex flex-col">
+                                        <div class="flex items-start gap-4 justify-end">
+                                            <svg id="" xmlns="http://www.w3.org/2000/svg"
+                                                class="w-4 cursor-pointer fill-gray-400 inline-block"
+                                                viewBox="0 0 64 64">
+                                                <path
+                                                    d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
+                                                    data-original="#000000"></path>
+                                            </svg>
+
+                                            <svg id="delete" xmlns="http://www.w3.org/2000/svg"
+                                                class="w-4 cursor-pointer fill-gray-400 inline-block"
+                                                viewBox="0 0 24 24">
+                                                <path
+                                                    d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
+                                                    data-original="#000000"></path>
+                                                <path
+                                                    d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
+                                                    data-original="#000000"></path>
+                                            </svg>
+                                        </div>
+                                        <div class="mt-auto flex p-4">
+                                            <h3 id="discountPrice" class="text-base font-bold text-gray-800 p-1">
+                                                ₹<%=((product.productId.price-(product.productId.price)*(product.productId.discount
+                                                    /100))*product.quantity).toFixed(2)%></h3>
+                                            <strike>
+                                                <h3 id="orginal" class="text-base font-semibold text-gray-800 p-1 ">
+                                                    ₹<%=(product.productId.price)*product.quantity.toLocaleString('en-IN')%>
+                                                </h3>
+                                            </strike>
+                                            <h3 id="" class="text-base font-bold text-red-600 p-1">
+                                                <%=(product.productId.discount)%>%Off
+                                            </h3>
+
+                                        </div>
+
+                                        <% if(Number(product.productId.stock) <=0){%>
+                                            <div class="text-red-400">currently product is outof stock</div>
+                                            <%}%>
+                                                <div hidden id="stock">
+                                                    <%=product.productId.stock%>
+                                                </div>
+                                    </div>
+                                    <input hidden value="<%=product.productId._id%>" id="product_id" type="text">
+                                </div>
+                                <% }) %>
+                                    <% }else{%>
+                                        <h1 class="text-1xl font-light">"Your cart is currently empty. Discover products
+                                            to add!"</h1>
+
+                                        <% }%>
+
+
+                                            <% }else{%>
+                                                <h1 class="text-1xl font-light">"Your cart is currently empty. Discover
+                                                    products to add!"</h1>
+
+                                                <% }%>
+
+
+
+
+                            </div>
+
+                            <div
+                                class="bg-white rounded-md px-4 py-6 h-max shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+                                <ul class="text-gray-800 space-y-4">
+                                    <li>
+                                        <!-- <div class="flex">
+                                            <input
+                                                class="w-25   h-9 rounded-full px-3  uppercase  border-2 border-green-600  border-dashed "
+                                                type="text" name="" id="">
+                                            <button class="font-light text-xs">Apply Coupon</button>
+                                        </div> -->
+                                        <div class="flex">
+                                            <input
+                                                class="w-25 h-9 rounded-full px-3 uppercase border-2 border-green-600 border-dashed"
+                                                type="text" placeholder="Enter coupon" id="couponInput">
+                                            <button class="font-light text-xs" id="applyCouponBtn">Apply Coupon</button>
+                                        </div>
+                                        
+                                        <!-- Button to open modal -->
+                                        <button id="openCouponModal" class="font-light text-xs mt-2">Available Coupons</button>
+                                        
+                                        <!-- Modal -->
+                                        <div id="couponModal" class="flex fixed hidden inset-0  bg-black bg-opacity-50  justify-center items-center">
+                                            <div class="bg-white p-5 rounded-lg w-1/3 ">
+                                                <h2 class="text-lg font-bold mb-4">Available Coupons</h2>
+                                                <ul id="couponList">
+                                                    <!-- Coupon list items will go here -->
+                                                </ul>
+                                                <button id="closeModal" class="mt-4 bg-red-500 text-white py-2 px-4 rounded">Close</button>
+                                            </div>
+                                        </div>
+                                        
+                                    </li>
+                                    <li class="flex flex-wrap gap-4 text-sm">Total MRP <span id="totalMrp"
+                                            class="ml-auto font-bold">₹<%=totalPrice%></span></li>
+                                    <li class="flex flex-wrap gap-4 text-sm">Discount on MRP <span id="discountOnMrp"
+                                            class="ml-auto  text-green-500">-₹<%=(discountPrice)%></span>
+                                    </li>
+                                    <li class="flex flex-wrap gap-4 text-sm">Coupon discount <span id="discountOnMrp"
+                                            class="ml-auto  text-green-500">-₹<%=(couponDiscount)%></span>
+                                            <span id="removeCoupon" class="right-0 bg-red-500 text-white rounded-full px-2 <%= couponDiscount <= 0 ? 'hidden' :' ' %>  ">remove Coupon</span>
+                                    </li>
+                                    <li  class="flex flex-wrap gap-4 text-sm">Shipping Fee <span
+                                         id="shippingFee"   class="ml-auto font-bold">₹
+                                            <%=shippingFee%>
+                                        </span>
+                                    </li>
+                                    <hr class="border-gray-300" />
+                                    <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span id="total"
+                                            class="ml-auto">₹<%=total%></span>
+                                    </li>
+                                </ul>
+
+                                <div class="mt-8 space-y-2">
+                                    <div class="orderBtn ">
+                                        <a href="/user/cart/checkOutStep1">
+
+                                            <button id="palceOrder" type="button"
+                                                class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md">Place
+                                                Order</button>
+                                        </a>
+                                    </div>
+                                    <a href="/user/home">
+                                        <button type="button"
+                                            class="text-sm px-4 mt-4 py-2.5 w-full font-semibold tracking-wide bg-transparent hover:bg-gray-100 text-gray-800 border border-gray-300 rounded-md">Continue
+                                            Shopping </button>
+                                    </a>
+                                </div>
+
+                                <div class="mt-4 flex flex-wrap justify-center gap-4">
+                                    <img src='https://readymadeui.com/images/master.webp' alt="card1"
+                                        class="w-10 object-contain" />
+                                    <img src='https://readymadeui.com/images/visa.webp' alt="card2"
+                                        class="w-10 object-contain" />
+                                    <img src='https://readymadeui.com/images/american-express.webp' alt="card3"
+                                        class="w-10 object-contain" />
+                                </div>
+                            </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+
+            // document.addEventListener("DOMContentLoaded", () => {
+            window.onload = () => {
+                let total = document.getElementById("total").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                total = parseFloat(total)
+
+                if (total < 1) {
+                    document.getElementById("palceOrder").disabled = true
+                }
+
+
+                document.querySelectorAll("#products").forEach((product) => {
+                    const quantity = Number(product.querySelector("#quantity").innerHTML)
+                    if (quantity > 4) {
+                        const quantityAdding = product.querySelector("#quantityAdding").classList.add("invisible")
+                    }
+                    if (quantity < 2) {
+                        const quantityAdding = product.querySelector("#quantityDecreasing").classList.add("invisible")
+                    }
+
+                    // ADDING COMMAS TO THE INDIAN RUPEE
+                    let discountPrice = product.querySelector("#discountPrice").innerHTML.replace('₹', "")
+                    discountPrice = parseFloat(discountPrice).toLocaleString("en-IN")
+                    product.querySelector("#discountPrice").innerHTML = "₹" + discountPrice
+                    let orginal = product.querySelector("#orginal").innerHTML.replace('₹', "")
+                    orginal = parseFloat(orginal).toLocaleString("en-IN")
+                    product.querySelector("#orginal").innerHTML = "₹" + orginal
+
+                    let total = document.getElementById("total").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                    total = parseFloat(total).toLocaleString("en-IN")
+                    document.getElementById("total").innerHTML = "₹" + total
+
+                    let totalMrp = document.getElementById("totalMrp").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                    totalMrp = parseFloat(totalMrp).toLocaleString("en-IN")
+                    document.getElementById("totalMrp").innerHTML = "₹" + totalMrp
+
+
+                    let discountOnMrp = document.getElementById("discountOnMrp").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                    discountOnMrp = parseFloat(discountOnMrp).toLocaleString("en-IN")
+                    document.getElementById("discountOnMrp").innerHTML = "₹" + discountOnMrp
+                    //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+                    product.querySelector('#quantityAdding').addEventListener("click", async () => {
+                        const productId = product.querySelector("#product_id").value
+                        const quantity = Number(product.querySelector("#quantity").textContent)
+                        console.log('qua', quantity);
+
+                        if (quantity > 4) {
+                            const quantityAdding = product.querySelector("#quantityAdding").classList.add("invisible")
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.onmouseenter = Swal.stopTimer;
+                                    toast.onmouseleave = Swal.resumeTimer;
+                                }
+                            });
+                            Toast.fire({
+                                icon: "info",
+                                title: "Only 5 quantites allowed to buy"
+                            });
+
+                        } else {
+                            const quantityDecreasing = product.querySelector("#quantityDecreasing").classList.remove("invisible")
+                            const value = quantity
+                            const action = "quantityAdding"
+                            // let discountPrice = product.querySelector("#discountPrice").innerHTML.replace('₹', "")
+                            // discountPrice=Number(discountPrice)*2
+                            // let orginal = product.querySelector("#orginal").innerHTML.replace('₹', "")
+                            // orginal=Number(orginal)*2
+
+                            const data = await update(action, productId, value)
+                            // console.log(data);
+                            // each product data changing
+
+                            product.querySelector("#discountPrice").innerHTML = "₹" + ((data.productDiscountPrice * (quantity + 1)).toLocaleString("en-IN"))
+                            product.querySelector("#orginal").innerHTML = "₹" + (data.productPrice * (quantity + 1)).toLocaleString("en-IN")
+
+                            //right side price change
+                            totalMrp = parseFloat(data.totalPrice).toLocaleString("en-IN")
+                            document.getElementById("totalMrp").innerHTML = "₹" + totalMrp
+
+
+                            discountOnMrp = parseFloat(data.discountPrice).toLocaleString("en-IN")
+                            document.getElementById("discountOnMrp").innerHTML = "₹" + discountOnMrp
+
+                            total = parseFloat((data.total)).toLocaleString("en-IN")
+                            document.getElementById("total").innerHTML = "₹" + total
+
+                            product.querySelector("#quantity").innerHTML = quantity + 1
+
+                            document.getElementById("shippingFee").innerHTML="₹" +data.shippingFee
+
+
+                        }
+
+
+                    })
+                    product.querySelector('#quantityDecreasing').addEventListener("click", async () => {
+                        const productId = product.querySelector("#product_id").value
+                        const quantity = Number(product.querySelector("#quantity").innerHTML)
+
+                        if (quantity-1 < 1) {
+
+                            const quantityDecreasing = product.querySelector("#quantityDecreasing").classList.add("invisible")
+                        } else {
+                            const quantityAdding = product.querySelector("#quantityAdding").classList.remove("invisible")
+                            const action = "quantityDecreasing"
+                            product.querySelector("#quantity").innerHTML = quantity - 1
+
+                            const data = await update(action, productId)
+                           const updateQuantity= product.querySelector("#quantity").innerHTML = quantity - 1
+                            product.querySelector("#discountPrice").innerHTML = "₹" + ((data.productDiscountPrice * (quantity - 1)).toLocaleString("en-IN"))
+                            product.querySelector("#orginal").innerHTML = "₹" + (data.productPrice * (quantity - 1)).toLocaleString("en-IN")
+
+                            //right side price change
+                            totalMrp = parseFloat(data.totalPrice).toLocaleString("en-IN")
+                            document.getElementById("totalMrp").innerHTML = "₹" + totalMrp
+
+
+                            discountOnMrp = parseFloat(data.discountPrice).toLocaleString("en-IN")
+                            document.getElementById("discountOnMrp").innerHTML = "₹" + discountOnMrp
+
+                            total = parseFloat((data.total)).toLocaleString("en-IN")
+                            document.getElementById("total").innerHTML = "₹" + total
+                            document.getElementById("shippingFee").innerHTML="₹" +data.shippingFee
+
+                            if(updateQuantity<2){
+                                const quantityDecreasing = product.querySelector("#quantityDecreasing").classList.add("invisible")
+                            }
+
+                        }
+
+                    })
+                    product.querySelector('#selectSize').addEventListener("change", async () => {
+                        const productId = product.querySelector("#product_id").value
+                        let value = product.querySelector("#selectSize").value
+                        const action = "selectSize"
+                        const data = await update(action, productId, value)
+
+                    })
+                    product.querySelector('#delete').addEventListener("click", () => {
+                        const productId = product.querySelector("#product_id").value
+                        const action = "delete"
+                        Swal.fire({
+                            title: "Remove from cart ?",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes",
+                            width: '500px',
+                        }).then(async (result) => {
+                            if (result.isConfirmed) {
+                                const data = await update(action, productId)
+                                window.location.reload()
+
+                            }
+                        });
+
+                    })
+                })
+
+
+                function update(action, productId, value) {
+
+                    return axios.post('/user/cart/updateQuantity', { productId, action, value }).then(response => {
+                        const data = response.data
+                        return data   //retrun the update function
+
+                    }).catch(response => {
+                        console.log(response.response.data);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: response.response.data.message,
+                            // footer: '<a href="#">Why do I have this issue?</a>'
+                        });
+                    })
+                }
+
+            }
+            // })
+            let outOfStock = false
+            document.querySelectorAll("#products").forEach((product) => {
+                const stock = product.querySelector("#stock")
+                console.log(Number(stock.innerHTML));
+                if (Number(stock.innerHTML) == 0) {
+                    outOfStock = true
+                }
+            })
+
+            if (outOfStock) {
+                document.getElementById("palceOrder").addEventListener("click", (event) => {
+                    event.preventDefault()
+
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                    Toast.fire({
+                        icon: "info",
+                        title: "Remove out of stock product from cart"
+                    });
+                })
+
+            }
+
+
+            //coupon adding
+    
+    document.getElementById("openCouponModal").addEventListener("click",()=>{
+        document.getElementById("couponModal").classList.remove("hidden")
+    })
+    
+    document.getElementById("closeModal").addEventListener("click",()=>{
+        document.getElementById("couponModal").classList.add("hidden")
+    })
+
+    document.getElementById("applyCouponBtn").addEventListener("click",()=>{
+     const couponCode =  document.getElementById("couponInput").value
+     if(couponCode){
+        axios.post("applyCoupon",{couponCode}).then(async respone=>{
+            
+
+            const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                await  Toast.fire({
+                        icon: "success",
+                        title: " coupon is successfully applied"
+                    });
+
+                    window.location.reload()
+
+        }).catch(async err=>{
+            console.log(err.response.data);
+            let title=""
+            if(err.response.data.status=="noMinium"){
+                title=`Minimum cart value of ₹${err.response.data.minimumAmount} is required`
+            }
+            if(err.response.data.status=="noCoupn"){
+                title="The code you entered is not valid or not available"
+            }
+            if(err.response.data.status=="expireCoupn"){
+                title="The code you entered is expired"
+            }
+            const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+                    });
+                await  Toast.fire({
+                        icon: "info",
+                        title: title
+                    });
+        })
+     }
+    })
+
+    document.getElementById("removeCoupon").addEventListener("click",()=>{
+        axios.post("removeCoupon").then(response=>{
+            window.location.reload()
+        }).catch(err=>{})
+    })
+        </script>
+
+   

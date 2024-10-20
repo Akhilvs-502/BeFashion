@@ -1,0 +1,183 @@
+<%- include('../partials/header') %>
+
+    <div class="flex ">
+
+        <div class="">
+            <%- include('../partials/userSlidebar') %>
+        </div>
+
+
+
+
+        <% if(dataBase){%>
+
+         
+
+        <div class="w-full">
+
+            <div class="w-6/12 mt-6 ml-12">
+                <labe class="mb-2 text-base block">Full name</labe>
+                <input id="fullname" required type='text' value="<%=dataBase.name %>" placeholder='Full name'
+                    class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                <span class="text-red-500" id="nameErr"></span>
+            </div>
+            <div class="w-6/12 mt-6 ml-12">
+                <labe class="mb-2 text-base block">Email address</labe>
+                <input id="email" readonly value="<%=dataBase.email %>" placeholder='Email address'
+                    class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+            </div>
+            <div class="w-6/12 mt-6 ml-12">
+                <labe class="mb-2 text-base block">Phone</labe>
+                <input id="phone" type='number' value="<%=dataBase.phone %>" placeholder='Phone'
+                    class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                <span class="text-red-500" id="phoneErr"></span>
+            </div>
+            <div class="w-6/12 mt-6 ml-12">
+                <labe class="mb-2 text-base block">Gender</labe>
+                <input type="radio" id="" name="gender" value="Male" <%=dataBase.gender==='Male' ? 'checked' : '' %>>
+                <label for="">Male</label>
+                <input type="radio" name="gender" class="ml-3" value="Female" <%=dataBase.gender==='Female' ? 'checked'
+                    : '' %> > <label for="">Female</label>
+            </div>
+            <div class="w-6/12 mt-6 ml-12">
+                <labe class="mb-2 text-base block">Date of Birth</labe>
+                <input type="date" value="<%=dataBase.dob %>" id="dob" name="dob"
+                    class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500">
+                <span class="text-red-500" id="dobErr"></span>
+
+            </div>
+            <div class="w-6/12 mt-6 ml-12">
+                <labe class="mb-2 text-base block">Alternate Phone</labe>
+                <input type='text' value="<%=dataBase.alternativePhone %>" id="altPhone" placeholder='Alternate Phone'
+                    class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                <span class="text-red-500" id="altPhoneErr"></span>
+
+            </div>
+
+
+
+            <div class=" mt-6 ml-12">
+                <button id="saveChanges"
+                    class="text-white bg-poppy-red hover:bg-red-700   font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Save
+                    Change</button>
+            </div>
+
+        </div>
+
+        <%}else{%>
+         
+                <div class="mt-40 ml-20  text-2xl font-light ">
+                    No user data available !
+        
+            </div>
+        <%} %>
+
+
+    </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+
+        document.getElementById('saveChanges').addEventListener("click", (event) => {
+            const name = document.getElementById('fullname').value
+            const phone = document.getElementById('phone').value
+            const email = document.getElementById('email').value
+            const dob = document.getElementById('dob').value
+            const altPhone = document.getElementById('altPhone').value
+            const selectGender = document.querySelector('input[name="gender"]:checked')
+            const currentYear=new Date().getFullYear()
+            let customerYear=new Date(dob).getFullYear()
+            let age=currentYear-customerYear
+            
+            console.log(age,customerYear);
+
+
+
+
+            const nameErr = document.getElementById('nameErr')
+            const phoneErr = document.getElementById('phoneErr')
+            const altPhoneErr = document.getElementById('altPhoneErr')
+
+            nameErr.textContent = " "
+            phoneErr.textContent = " "
+            altPhoneErr.textContent = " "
+
+            const phonePattern = /^[789]\d{9}$/;
+            const nameRegex =/^(?=(.*[a-zA-Z]){3,})[a-zA-Z0-9 ]{3,}$/;
+            let valid = true
+            if (name.length < 3) {
+                nameErr.textContent = "minimum 3 charater required*"
+                valid = false
+            }
+            if (!nameRegex.test(name)) {
+                nameErr.textContent = "Minimum 3 alphabetic characters required*";
+                valid = false;
+            }
+            if (phone != "") {
+                if (!phonePattern.test(phone)) {
+                    phoneErr.textContent = "enter valid phone number*"
+                    valid = false
+                }
+            }
+
+            if (altPhone != "") {
+                if (!phonePattern.test(altPhone)) {
+                    altPhoneErr.textContent = "enter valid phone number*"
+                    valid = false
+                }
+                if(phone===altPhone){
+                    altPhoneErr.textContent = "entered phone number already exits*"
+                    valid=false
+                    
+                }
+            }
+            if(age<18){
+                document.getElementById("dobErr").textContent="Please enter a valid date of birth for users aged 18 or older."
+                valid=false
+            }
+        
+
+
+            let gender = ""
+            if (valid) {
+                if (selectGender) {
+                    gender = selectGender.value
+                    console.log(gender);
+                }
+                Swal.fire({
+                    title: "Do you want to save the changes?",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                    denyButtonText: `Don't save`
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        Swal.fire("Saved!", "", "success");
+                      axios.patch('/user/editProfile', { name, phone, dob, altPhone, gender, email }).then(data => {
+                            console.log(data);
+                            window.location.href = '/user/profile'
+
+                        }).catch(data => {
+                            Swal.fire("Something went wrong try again", "", "info");
+                        })
+
+                    } else if (result.isDenied) {
+                        Swal.fire("Changes are not saved", "", "info");
+                    }
+                });
+
+
+
+
+
+            }
+
+        })
+
+
+
+    </script>

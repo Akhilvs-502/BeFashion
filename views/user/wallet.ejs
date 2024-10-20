@@ -1,0 +1,82 @@
+    <link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet">
+
+
+<div class=" fixed  top-0 left-0 w-full z-50">
+
+    <%- include('../partials/header') %>
+</div>
+
+
+<div class="flex mt-[72px] relative">
+
+    <div class="fixed ">
+        <%- include('../partials/userSlidebar') %>
+    </div>
+    
+    <div class="w-6/12  mx-auto p-6">
+        
+        <h1 class="text-2xl font-bold text-center mb-6">Wallet</h1>
+
+        <!-- Balance Section -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h2 class="text-lg font-semibold">Current Balance</h2>
+            <p class="text-3xl font-bold text-green-500">₹ <%=wallet.balance.toLocaleString("en-IN")%></p>
+        </div>
+
+        <!-- Transactions Section -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-6">
+            <h2 class="text-lg font-semibold mb-4">Transaction History</h2>
+            <table id="myTable" class="min-w-full bg-white">
+                <thead>
+                    <tr class="border-b">
+                        <th class="py-2 px-4 text-left">Date</th>
+                        <th class="py-2 px-4 text-left">Type</th>
+                        <th class="py-2 px-4 text-left">Order ID</th>
+                        <th class="py-2 px-4 text-left">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% wallet.transactions.forEach(transation=>{%>
+                        <tr class="border-b hover:bg-gray-100">
+                            <td class="py-2 px-4">
+                                <%=transation.trasactionsDate.toLocaleString()%>
+                            </td>
+                            <td class="py-2 px-4 text-green-500">
+                                <%=transation.trasactionType%>
+                            </td>
+                            <td class="py-2 px-4">
+                                <%=transation.orderId%>
+                            </td>
+                            <td class="py-2 px-4 text-green-500">
+                                <%=transation.wallectAmount%>
+                            </td>
+                        </tr>
+                        <%})%>
+
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex justify-between">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                Add Money
+            </button>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+
+<script>
+  // Initialize DataTable
+  $(document).ready(function() {
+    $('#myTable').DataTable({
+      responsive: true
+    });
+  });
+</script>

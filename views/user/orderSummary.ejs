@@ -1,0 +1,282 @@
+<%- include('../partials/header') %>
+    <div class="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
+        <h1 class="text-2xl font-extrabold text-gray-800">Order Summary</h1>
+        <div class="grid md:grid-cols-3 gap-4 mt-8">
+            <div class="md:col-span-2 space-y-4">
+
+
+
+
+
+                <!-- //////////////////////STEPPER -->
+                <div class="flex items-start max-w-screen-lg mx-auto">
+                    <div class="w-full">
+                        <div class="flex items-center w-full">
+                            <div
+                                class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
+                                <span class="text-base text-white font-bold">1</span>
+                            </div>
+                            <div class="w-full h-1 mx-4 rounded-lg bg-gray-600"></div>
+                        </div>
+                        <div class="mt-2 mr-4">
+                            <h6 class="text-base font-bold text-cyan-800">Delivery Address</h6>
+                            <p class="text-xs text-gray-400">Completed</p>
+
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <div class="flex items-center w-full">
+                            <div
+                                class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                                <span class="text-base text-white font-bold">2</span>
+                            </div>
+                            <div class="w-full h-1 mx-4 rounded-lg bg-gray-400"></div>
+                        </div>
+                        <div class="mt-2 mr-4">
+                            <h6 class="text-base font-bold text-cyan-800">Order Summary</h6>
+                        
+                            <p class="text-xs text-gray-400">Pending</p>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <div class="flex items-center w-full">
+                            <div
+                                class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                                <span class="text-base text-white font-bold">2</span>
+                            </div>
+                        
+                        </div>
+                        <div class="mt-2 mr-4">
+                            <h6 class="text-base font-bold text-cyan-800">Payment Method</h6>
+                            <p class="text-xs text-gray-400">Pending</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-center">
+                        
+                        </div>
+                      
+                    </div>
+                </div>
+                <!-- /////////////////////////////////////////////// -->
+
+                <% cart.products.forEach(product=>{%>
+
+
+                    <div id="products"
+                        class="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+                        <div class="flex gap-4">
+                            <div class="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
+                                <img src='<%=product.productId.images[0]%>' class="w-full h-full object-contain" />
+                                <p></p>
+                            </div>
+                            <div class="flex flex-col gap-4">
+                                <div>
+                                    <h3 class="text-base font-bold text-gray-800">
+                                        <%=product.productId.productName%>
+                                    </h3>
+                                    <p class="text-sm font-semibold text-gray-500 mt-2 flex items-center gap-2">Color:
+                                        <%=product.productId.color[0]%><span
+                                                class="inline-block w-5 h-5 rounded-md bg-<%=product.productId.color[0]%>-600"></span>
+                                    </p>
+                                    <div>
+                                        <label for="">Size</label>
+                                        <select id="selectSize">
+                                            <% product.productId.size.forEach(value=>{%>
+
+                                                <option value="<%=value%>" <%=product.size===value ? 'selected' :" " %> ><%= value %></option>
+                                    <%}) %>
+                                </select>
+                               
+                            </div>
+                        </div>
+
+                        <div class=" mt-auto flex items-center gap-3">
+                                                  
+                                                    <span id="quantity" class="font-bold text-sm leading-[18px]">
+                                                      Quantity:  <%=product.quantity%>
+                                                    </span>
+                                                   
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ml-auto flex flex-col">
+                                <div class="flex items-start gap-4 justify-end">
+                                    <svg id="" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-4 cursor-pointer fill-gray-400 inline-block" viewBox="0 0 64 64">
+                                        <path
+                                            d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
+                                            data-original="#000000"></path>
+                                    </svg>
+
+                                    <svg id="delete" xmlns="http://www.w3.org/2000/svg"
+                                        class="w-4 cursor-pointer fill-gray-400 inline-block" viewBox="0 0 24 24">
+                                        <path
+                                            d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
+                                            data-original="#000000"></path>
+                                        <path
+                                            d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
+                                            data-original="#000000"></path>
+                                    </svg>
+                                </div>
+                                <div class="mt-auto flex p-4">
+                                    <h3 id="discountPrice" class="text-base font-bold text-gray-800 p-1">
+                                        ₹<%=((product.productId.price-(product.productId.price)*(product.productId.discount
+                                            /100))*product.quantity).toFixed(2)%></h3>
+                                    <strike>
+                                        <h3 id="orginal" class="text-base font-semibold text-gray-800 p-1 ">
+                                            ₹<%=(product.productId.price)*product.quantity.toLocaleString('en-IN')%>
+                                        </h3>
+                                    </strike>
+                                    <h3 id="" class="text-base font-bold text-red-600 p-1">
+                                        <%=(product.productId.discount)%>%Off
+                                    </h3>
+
+                                </div>
+                            </div>
+                            <input hidden value="<%=product.productId._id%>" id="product_id" type="text">
+                        </div>
+
+                        <% }) %>
+
+
+
+
+
+
+
+
+                    </div>
+
+                    <div class="bg-white rounded-md px-4 py-6 h-max shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+                        <ul class="text-gray-800 space-y-4">
+                            <li class="flex flex-wrap gap-4 text-sm">Total MRP <span id="totalMrp"
+                                    class="ml-auto font-bold">₹<%=totalPrice%></span></li>
+                            <li class="flex flex-wrap gap-4 text-sm">Discount on MRP <span id="discountOnMrp"
+                                    class="ml-auto  text-green-500">-₹<%=(discountPrice).toFixed(2)%></span></li>
+                                    <li class="flex flex-wrap gap-4 text-sm">Coupon discount <span id="discountOnMrp"
+                                        class="ml-auto  text-green-500">-₹<%=(couponDiscount)%></span>
+                            
+                                </li>
+                            <li class="flex flex-wrap gap-4 text-sm">Shipping Fee <span class="ml-auto font-bold">₹
+                                    <%=shippingFee%>
+                                </span></li>
+                            <hr class="border-gray-300" />
+                            <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span id="total"
+                                    class="ml-auto">₹<%=total%></span>
+                            </li>
+                        </ul>
+
+                        <div class="mt-8 space-y-2">
+                            <a href="/user/selectPayment/<%=addressID%>">
+                                <button type="button"
+                                    class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md">Contine</button>
+                            </a>
+                          
+                        </div>
+
+                        <div class="mt-4 flex flex-wrap justify-center gap-4">
+                            <img src='https://readymadeui.com/images/master.webp' alt="card1"
+                                class="w-10 object-contain" />
+                            <img src='https://readymadeui.com/images/visa.webp' alt="card2"
+                                class="w-10 object-contain" />
+                            <img src='https://readymadeui.com/images/american-express.webp' alt="card3"
+                                class="w-10 object-contain" />
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div>
+            <input hidden id="addressID" type="text" value="<%=addressID%>">
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script>
+
+            document.addEventListener("DOMContentLoaded", () => {
+                window.onload = () => {
+
+                    document.querySelectorAll("#products").forEach((product) => {
+                        const quantity = Number(product.querySelector("#quantity").innerHTML)
+                        console.log(quantity);
+
+                        if (quantity > 4) {
+                            const quantityAdding = product.querySelector("#quantityAdding").classList.add("invisible")
+                        }
+                        if (quantity < 2) {
+                            const quantityAdding = product.querySelector("#quantityDecreasing").classList.add("invisible")
+                        }
+
+                        // ADDING COMMAS TO THE INDIAN RUPEE
+                        let discountPrice = product.querySelector("#discountPrice").innerHTML.replace('₹', "")
+                        discountPrice = parseFloat(discountPrice).toLocaleString("en-IN")
+                        product.querySelector("#discountPrice").innerHTML = "₹" + discountPrice
+                        let orginal = product.querySelector("#orginal").innerHTML.replace('₹', "")
+                        orginal = parseFloat(orginal).toLocaleString("en-IN")
+                        product.querySelector("#orginal").innerHTML = "₹" + orginal
+
+                        let total = document.getElementById("total").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                        total = parseFloat(total).toLocaleString("en-IN")
+                        document.getElementById("total").innerHTML = "₹" + total
+
+                        let totalMrp = document.getElementById("totalMrp").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                        totalMrp = parseFloat(totalMrp).toLocaleString("en-IN")
+                        document.getElementById("totalMrp").innerHTML = "₹" + totalMrp
+
+
+                        let discountOnMrp = document.getElementById("discountOnMrp").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                        discountOnMrp = parseFloat(discountOnMrp).toLocaleString("en-IN")
+                        document.getElementById("discountOnMrp").innerHTML = "₹" + discountOnMrp
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////
+                      
+                        
+
+
+
+                    
+                      
+                        product.querySelector('#selectSize').addEventListener("change", () => {
+                            const productId = product.querySelector("#product_id").value
+                            let size = product.querySelector("#selectSize").value
+                            console.log(size);
+
+                            const action = "selectSize"
+                            update(action, productId, size)
+
+                        })
+                        product.querySelector('#delete').addEventListener("click", () => {
+                            const productId = product.querySelector("#product_id").value
+                            const action = "delete"
+                            update(action, productId)
+
+                        })
+                    })
+
+
+                    function update(action, productId, size) {
+                        const addressID=document.getElementById("addressID").value
+                        console.log(addressID);
+                        axios.post('/user/cart/updateQuantity', { productId, action, size }).then(data => {
+                            Swal.fire({
+                                toast: true,
+                                position: "bottom-end",
+                                icon: "success",
+                                title: "Product updated",
+                                showConfirmButton: false,
+                                
+                            });
+                        
+                            setTimeout(() => {
+                                window.location.href =`/user/cartSummary/${addressID}`
+                            }, 800)
+
+                        }).catch(data => {
+                            window.location.href = '/user/home'
+                        })
+                    }
+
+                }
+            })
+        </script>

@@ -1,0 +1,241 @@
+<%- include('../partials/header') %>
+
+    <div class="flex ">
+
+        <div class="">
+            <%- include('../partials/userSlidebar') %>
+        </div>
+
+
+
+
+
+
+        <div class="w-full">
+            <form id="saveChanges">
+                <div class="w-6/12 mt-6 ml-12">
+                    <labe class="mb-2 text-base block">Full name</labe>
+                    <input id="fullname" value="<%=dataBase.address.name %>" required type='text' placeholder='Full name'
+                        class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                    <span class="text-red-500" id="nameErr"></span>
+                </div>
+
+                <div class="w-6/12 mt-3 ml-12">
+                    <labe class="mb-2 text-base block">Phone</labe>
+                    <input id="phone" value="<%=dataBase.address.phone  %>" type='number' required placeholder='Phone'
+                        class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                    <span class="text-red-500" id="phoneErr"></span>
+                </div>
+                <div class="w-6/12 mt-3 ml-12 flex justify-between ">
+                    <div class="w-5/12">
+                        <labe class="mb-2 text-base block">Pincode</labe>
+                        <input required id="pincode"  value="<%=dataBase.address.pincode %>" type='text' placeholder='Pincode'
+                            class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                        <span class="text-red-500" id="pincodeErr"></span>
+                    </div>
+                    <div class="w-6/12">
+                        <labe class="mb-2 text-base block">State</labe>
+                        <input id="state" value="<%=dataBase.address.state %>" type='text' readonly placeholder='State'
+                            class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                    </div>
+                </div>
+                <div class="w-6/12 mt-6 ml-12">
+                    <label class="mb-2 text-base block">Address(House NO, Building,Street,Area)</labe>
+                        <input id="address" value="<%=dataBase.address.address  %>" required type='text' placeholder='House NO, Building,Street,Area'
+                            class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                        <span class="text-red-500" id="addressErr"></span>
+                </div>
+                <div>
+                    <input id="addressID" hidden type="text" value="<%=dataBase.address._id  %>">
+                </div>
+                <div class="w-6/12 mt-6 ml-12">
+                    <labe class="mb-2 text-base block">Locality/Town</labe>
+                    <select id="locality"  required
+                        class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500">
+                        <option value="" disabled >Select your locality</option> <!-- Default option -->
+                        <option value="<%=dataBase.address.locality %>" selected><%=dataBase.address.locality %></option> <!-- Default option -->
+                    
+                        
+                        <!-- Add more options as needed -->
+                    </select>
+                    <span class="text-red-500" id="localityErr"></span>
+
+                </div>
+                <div class="w-6/12 mt-6 ml-12">
+                    <labe class="mb-2 text-base block">City/District</labe>
+                    <input id="city"  type='text' readonly placeholder='Full name'
+                        class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                </div>
+                <div class="w-6/12 mt-6 ml-12">
+                    <labe class="mb-2 text-base block">Type of Address *</labe>
+                    <input required type="radio"  id="typeofAddress" name="typeofAddress" value="Home" <%= dataBase.address.addressType ==='Home' ? 'checked'  : '' %>>
+                    <label for="">Home</label>
+                    <input type="radio" name="typeofAddress" class="ml-3" value="Office" <%= dataBase.address.addressType ==='Office' ? 'checked'  : '' %>>
+                    <label for="">Office</label>
+                </div>
+
+
+
+
+                <div class=" mt-6 ml-12">
+                    <button type="submit"
+                        class="text-white bg-poppy-red hover:bg-red-700   font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Save
+                        Change</button>
+                </div>
+            </form>
+        </div>
+
+
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+function pincode() { 
+            const pincode = document.getElementById('pincode').value
+
+
+            const pincodePattern = /^[1-9][0-9]{5}$/;
+
+            if (!pincodePattern.test(pincode)) {
+                console.log("calling");
+                pincodeErr.textContent = "enter valid pincode*"
+                valid = false
+            }
+            else {
+                console.log("else");
+                pincodeErr.textContent = " "
+                console.log(pincode);
+
+                const apiURL = `https://api.postalpincode.in/pincode/${pincode}`;
+                axios.get(apiURL).then(response => {
+
+
+                    if (response.data[0].Status === 'Success') {
+                        const postOffice = response.data[0].PostOffice[0]
+                        document.getElementById('state').value = postOffice.State
+                        document.getElementById('city').value = postOffice.District
+                        response.data[0].PostOffice.forEach(element => {
+                            const option = document.createElement("option")
+                            option.value = element.Name
+                            option.textContent = element.Name
+                            document.getElementById('locality').appendChild(option)
+
+
+                        });
+
+
+
+                    } else {
+                        console.log("No address found for this pincode.");
+                    }
+                }).catch(error => {
+                    console.error("Error fetching address:", error);
+                });
+            }
+        }
+       
+
+
+
+        document.getElementById('pincode').addEventListener("input", pincode)
+        window.addEventListener("load", pincode)  //calling pincode function when  browser load
+        document.getElementById('saveChanges').addEventListener("submit", (event) => {
+            event.preventDefault()
+
+
+            const name = document.getElementById('fullname').value
+            const phone = document.getElementById('phone').value
+            const pincode = document.getElementById('pincode').value
+            const state = document.getElementById('state').value
+            const locality = document.getElementById('locality').value
+            const city = document.getElementById('city').value
+            const address = document.getElementById('address').value
+            const addressID = document.getElementById('addressID').value
+            console.log(name, phone, pincode,state,locality,city,address);
+            const typeofAddress = document.querySelector('input[name="typeofAddress"]:checked').value
+
+
+            const nameErr = document.getElementById('nameErr')
+            const phoneErr = document.getElementById('phoneErr')
+            const pincodeErr = document.getElementById('pincodeErr')
+            const addressErr = document.getElementById('addressErr')
+            const localityErr = document.getElementById('localityErr')
+
+            nameErr.textContent = " "
+            phoneErr.textContent = " "
+            pincodeErr.textContent = " "
+            addressErr.textContent = " "
+            localityErr.textContent = " "
+
+            const phonePattern = /^[789]\d{9}$/;
+            const nameRegex = /^[a-zA-Z0-9 ]{3,}$/;
+            const pincodePattern = /^[1-9][0-9]{5}$/;
+
+            let valid = true
+            if (name.length < 3) {
+                nameErr.textContent = "minimum 3 charater required*"
+                valid = false
+            }
+            if (address.length < 3) {
+                addressErr.textContent = "minimum 3 charater required*"
+                valid = false
+            }
+            if (locality.length < 1) {
+                localityErr.textContent = "feild is required*"
+                valid = false
+            }
+            if (!nameRegex.test(name)) {
+                nameErr.textContent = "Minimum 3 alphabetic characters required*";
+                valid = false;
+            }
+            if (!phonePattern.test(phone)) {
+                phoneErr.textContent = "enter valid phone number*"
+                valid = false
+            }
+
+            if (!pincodePattern.test(pincode)) {
+                pincodeErr.textContent = "enter valid pincode*"
+                valid = false
+            }
+
+
+            if (valid) {
+
+                Swal.fire({
+                    title: "Do you want to save the changes?",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                    denyButtonText: `Don't save`
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        Swal.fire("Saved!", "", "success");
+                        axios.patch('/user/addAddress', {name, phone, pincode,state,locality,city,address,typeofAddress,addressID }).then(data => {
+                            console.log(data);
+                            window.location.href = '/user/address'
+
+                        }).catch(data => {
+                            console.log(data);
+                        })
+
+                    } else if (result.isDenied) {
+                        Swal.fire("Changes are not saved", "", "info");
+                    }
+                });
+
+
+
+
+
+            }
+
+        })
+
+
+
+    </script>

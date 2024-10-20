@@ -1,0 +1,532 @@
+<style>
+  /* * {box-sizing: border-box;} */
+
+  .img-zoom-container {
+    position: relative;
+  }
+
+  .img-zoom-lens {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    /*set the size of the lens:*/
+    width: 80px;
+    height: 80px;
+  }
+
+  .img-zoom-result {
+    border: 0px solid #d4d4d4;
+    /*set the size of the result div:*/
+    width: 400px;
+    height: 400px;
+  }
+</style>
+
+
+
+<%- include('../partials/header') %>
+
+
+
+  <!-- Breadcrumb -->
+  <div class="flex ml-14">
+
+    <ul class="flex items-center justify-center font-[sans-serif] space-x-4 mt-4">
+      <a href="/user/home">
+        <li class="text-gray-500 text-base cursor-pointer">
+          Home
+        </li>
+      </a>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400 w-3.5 -rotate-90" viewBox="0 0 24 24">
+          <path fill-rule="evenodd"
+            d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+            clip-rule="evenodd" data-original="#000000"></path>
+        </svg>
+      </li>
+      <a href="/user/allProducts">
+        <li class="text-gray-500 text-base cursor-pointer">
+          All product
+        </li>
+      </a>
+      <li>
+        <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400 w-3.5 -rotate-90" viewBox="0 0 24 24">
+          <path fill-rule="evenodd"
+            d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
+            clip-rule="evenodd" data-original="#000000"></path>
+        </svg>
+      </li>
+      <li class="text-gray-800 text-base font-bold cursor-pointer">
+        <%= product.productName %>
+      </li>
+    </ul>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="font-sans">
+    <div class="p-4 lg:max-w-5xl max-w-lg mx-auto">
+      <div class="grid items-start grid-cols-1 lg:grid-cols-2 gap-6 max-lg:gap-12">
+        <!-- Left side: Images -->
+        <div class="w-full lg:sticky top-0 sm:flex gap-2">
+          <!-- Thumbnail Images -->
+          <div class="sm:space-y-3 w-16 max-sm:w-12 max-sm:flex max-sm:mb-4 max-sm:gap-4">
+            <img src="<%=product.images[0] %>" alt="Product1"
+              class="w-full cursor-pointer rounded-md outline product-thumb" />
+            <img src="<%=product.images[1] %>" class="w-full cursor-pointer rounded-md product-thumb" />
+            <img src="<%=product.images[2] %>" class="w-full cursor-pointer rounded-md product-thumb" />
+            <img src="<%=product.images[3] %>" class="w-full cursor-pointer rounded-md product-thumb" />
+          </div>
+          <!-- Main Image -->
+          <div class="flex  img-zoom-container" id="img-zoom-container">
+            <img id="mainImage" src="<%=product.images[0] %>" alt="Product" class="w-4/5 rounded-md object-cover" />
+            <div id="myresult"  class="img-zoom-result md:ml-96 absolute hidden "></div>
+          </div>
+
+        </div>
+
+
+
+        <% const originalPrice=product.price; %>
+          <% const discountPercentage=product.discount; %>
+            <% const discountAmount=(originalPrice * (discountPercentage / 100)).toFixed(2); %>
+              <% const discountedPrice=(originalPrice - discountAmount).toFixed(2); %>
+
+                <!-- Right side: Product details -->
+                <div>
+                  <div class="flex justify-between">
+                    <div>
+                      <h2 class="text-2xl font-bold text-gray-800">
+                        <%=product.productName %>
+                      </h2>
+                    </div>
+                    <div>
+                      <div class="flex  justify-end">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32px" class="fill-gray-800 inline-block"
+                          viewBox="0 0 64 64">
+                          <path
+                            d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
+                            data-original="#000000"></path>
+                        </svg>
+    
+                      </div>
+    
+                    </div>
+                  </div>
+                  
+                  <div class="flex flex-wrap gap-4 mt-4">
+                    <p class="text-gray-800 text-xl font-bold">₹<%= discountedPrice %>
+                    </p>
+                    <p class="text-red-400 text-xl "><strike>₹<%=product.price %></strike></p> 
+                    <p class="text-red-800 text-xl ">(<%=product.discount %>%)</p> 
+                  </div>
+                  <span class="text-sm text-green-500 ml-1.5">inclusive of all taxes</span>
+
+                  <!-- Sizes -->
+                  <div class="mt-3">
+                    <h3 class="text-xl font-bold text-gray-800">Sizes</h3>
+                    <div class="flex flex-wrap gap-4 mt-2">
+                      <% product.size.forEach((size, index)=> { %>
+                        <label class="cursor-pointer">
+                          <input type="radio" name="selectedSize" value="<%= size %>" class="hidden peer select"
+                            required />
+                          <div
+                            class="w-10 h-10 border-2 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">
+                            <%= size %>
+                          </div>
+                        </label>
+                        <% }) %>
+                          <p class="text-red-400" id="selectErr"></p>
+                    </div>
+
+                  </div>
+                  <div class="mt-3 ">
+                    <p class="font-light">Available colors</p>
+                    <!-- //changing the color with respect to the color in fields -->
+                    <button  type="button"
+                      class="w-10 mt-2 h-10 bg-<%=product.color%>-500 border-2 hover:border-blue-600 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">red</button>
+
+                  </div>
+
+              
+                  <!-- ////RATING -->
+
+
+                  <div class="flex justify-end space-x-2">
+                    <svg class="w-6 fill-[#facc15]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                    </svg>
+                    <svg class="w-6 fill-[#facc15]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                    </svg>
+                    <svg class="w-6 fill-[#facc15]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                    </svg>
+                    <svg class="w-6 fill-[#CED5D8]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                    </svg>
+                    <svg class="w-6 fill-[#CED5D8]" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                    </svg>
+                    <p class="text-xl font-bold text-gray-400 !ml-4">3.0</p>
+                  </div>
+
+
+                  <!-- /////////// -->
+
+
+
+
+
+
+                  <!-- Add to Cart Button -->
+
+                  <% if (product.stock===0) { %>
+                    <p class="mt-2 font-medium text-red-400">Out of stock</p>
+                    <% }%>
+                    <% if(product.stock< 6 && product.stock>0){%>
+                    <p class="text-green-500 font-medium">Only <%= product.stock%> product left</p>
+                    <% } %>
+                      <a id="goCart">
+                        <button type="button" id="addToCart" class="w-full mt-8 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md
+                         disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
+                          <%=product.stock===0 ? 'disabled' : '' %>
+                          >
+                          Add to cart
+                        </button>
+                      </a>
+
+
+                      <!-- Product Description -->
+                      <div class="mt-8">
+                        <h3 class="text-xl font-bold text-gray-800">About the item</h3>
+                        <ul class="space-y-3 list-disc mt-4 pl-4 text-sm text-gray-800">
+                          <li>
+                            <%=product.description %>
+                          </li>
+                          <li>100% Original Products</li>
+                          <li>Pay on delivery might be available</li>
+                          <li>Easy 14 days returns and exchanges</li>
+                        </ul>
+                      </div>
+                      <!-- REVIEWS/////////////////////////////////////////////////////////////////////// -->
+                      <div class="mt-8">
+                        <h3 class="text-xl font-bold text-gray-800">Reviews(10)</h3>
+                        <div class="space-y-3 mt-4">
+                            <div class="flex items-center">
+                                <p class="text-sm text-gray-800 font-bold">5.0</p>
+                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                </svg>
+                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
+                                    <div class="w-2/3 h-full rounded bg-orange-400"></div>
+                                </div>
+                                <p class="text-sm text-gray-800 font-bold ml-3">66%</p>
+                            </div>
+
+                            <div class="flex items-center">
+                                <p class="text-sm text-gray-800 font-bold">4.0</p>
+                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                </svg>
+                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
+                                    <div class="w-1/3 h-full rounded bg-orange-400"></div>
+                                </div>
+                                <p class="text-sm text-gray-800 font-bold ml-3">33%</p>
+                            </div>
+
+                            <div class="flex items-center">
+                                <p class="text-sm text-gray-800 font-bold">3.0</p>
+                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                </svg>
+                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
+                                    <div class="w-1/6 h-full rounded bg-orange-400"></div>
+                                </div>
+                                <p class="text-sm text-gray-800 font-bold ml-3">16%</p>
+                            </div>
+
+                            <div class="flex items-center">
+                                <p class="text-sm text-gray-800 font-bold">2.0</p>
+                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                </svg>
+                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
+                                    <div class="w-1/12 h-full rounded bg-orange-400"></div>
+                                </div>
+                                <p class="text-sm text-gray-800 font-bold ml-3">8%</p>
+                            </div>
+
+                            <div class="flex items-center">
+                                <p class="text-sm text-gray-800 font-bold">1.0</p>
+                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                </svg>
+                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
+                                    <div class="w-[6%] h-full rounded bg-orange-400"></div>
+                                </div>
+                                <p class="text-sm text-gray-800 font-bold ml-3">6%</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start mt-8">
+                            <img src="https://readymadeui.com/team-2.webp" class="w-12 h-12 rounded-full border-2 border-white" />
+                            <div class="ml-3">
+                                <h4 class="text-sm font-bold">John Doe</h4>
+                                <div class="flex space-x-1 mt-1">
+                                    <svg class="w-4 fill-orange-400" viewBox="0 0 14 13" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                    </svg>
+                                    <svg class="w-4 fill-orange-400" viewBox="0 0 14 13" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                    </svg>
+                                    <svg class="w-4 fill-orange-400" viewBox="0 0 14 13" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                    </svg>
+                                    <svg class="w-4 fill-[#CED5D8]" viewBox="0 0 14 13" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                    </svg>
+                                    <svg class="w-4 fill-[#CED5D8]" viewBox="0 0 14 13" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
+                                    </svg>
+                                    <p class="text-xs !ml-2 font-semibold">2 mins ago</p>
+                                </div>
+                                <p class="text-xs mt-4">The service was amazing. I never had to wait that long for my food. The staff was friendly and attentive, and the delivery was impressively prompt.</p>
+                            </div>
+                        </div>
+                        <button type="button" class="w-full mt-8 px-4 py-2.5 bg-transparent border border-orange-400 text-gray-800 font-semibold rounded-lg">Read all reviews</button>
+                    </div>
+                      <!-- ////////////////////////////////////////////////////////// -->
+
+
+
+
+
+
+                </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <section>
+    <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
+      <h2 class="text-2xl font-extrabold text-gray-800 mb-12">Similar products</h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <% products.forEach(product=>{%>
+          <a href="/user/productView/<%=product._id %>">
+            <div class="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
+              <div class="w-full aspect-w-4 aspect-h-3 lg:h-60">
+                <img src="<%=product.images[0] %>" alt="Product 1" class="h-full w-full object-cover object-top" />
+              </div>
+
+            
+              <div class="p-4">
+                <h3 class="text-lg font-bold text-gray-800">
+                  <%=product.productName %>
+                </h3>
+                <p>
+                  <%=product.description %>
+                </p>
+                <div class="mt-4 flex items-center flex-wrap gap-2">
+                  <h4 class="text-lg font-bold text-gray-800">₹<%=product.price %>
+                  </h4>
+                  <h4 class="text-lg font-light line-through text-red-500">
+                    <%=product.discount %>%
+                  </h4>
+
+                  <div
+                    class="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" class="fill-gray-800 inline-block"
+                      viewBox="0 0 64 64">
+                      <path
+                        d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
+                        data-original="#000000"></path>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </a>
+          
+          <%}) %>
+
+            <div>
+              <input type="text" value="<%=product._id %>" id="productId" hidden>
+            </div>
+
+
+      </div>
+    </div>
+
+  </section>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+
+
+    // Get the main image and all thumbnail images
+    const mainImage = document.getElementById("mainImage");
+    const thumbnails = document.querySelectorAll(".product-thumb");
+    const result = document.getElementById('myresult');
+
+    // Add click event to each thumbnail to change the main image
+    thumbnails.forEach((thumbnail) => {
+      thumbnail.addEventListener("click", () => {
+        mainImage.src = thumbnail.src;
+        const result = document.getElementById('myresult');
+        result.style.backgroundImage = thumbnail.src; // Update zoom result
+      });
+    });
+    // Initiate zoom effect:
+
+
+    document.getElementById('img-zoom-container').addEventListener('mouseenter', () => {
+      const result = document.getElementById('myresult');
+      result.classList.remove('hidden')
+      imageZoom("mainImage", "myresult");
+    })
+    document.getElementById('img-zoom-container').addEventListener('mouseleave', () => {
+      result.classList.add('hidden')
+      document.getElementById("imageZoom").remove()
+
+    })
+
+
+    let selectSize=""
+    document.querySelectorAll('.select').forEach(selecter => {
+        selecter.addEventListener('change', (req, res) => {
+           selectSize = document.querySelector('input[name="selectedSize"]:checked').value
+        })
+      })
+      
+    document.getElementById("addToCart").addEventListener("click", () => {
+      document.getElementById("selectErr").textContent = ""
+      const productId = document.getElementById("productId").value
+      if (selectSize) {
+        console.log(selectSize);
+        
+        axios.post("/user/addToCart", { productId ,selectSize}).then(data => {
+          console.log(data);  
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Product added to the Cart",
+            showConfirmButton: false,
+            timer: 1500
+          });
+          document.getElementById("addToCart").textContent = "GO TO CART"
+          document.getElementById("goCart").href = "/user/showCart"
+        })
+          .catch(data => {
+            document.getElementById("addToCart").textContent = "GO TO CART"
+            document.getElementById("goCart").href = "/user/showCart"
+            Swal.fire("Already added to the Cart ");
+            console.log(data);
+
+          })
+      } else {
+        document.getElementById("selectErr").textContent = "Select any size*"
+      }
+    })
+
+
+  </script>
+  
+<script>
+  function imageZoom(imgID, resultID) {
+    var img, lens, result, cx, cy;
+    img = document.getElementById(imgID);
+    result = document.getElementById(resultID);
+    /*create lens:*/
+    lens = document.createElement("DIV");
+    
+    lens.setAttribute("class", "img-zoom-lens");
+    lens.setAttribute("id",'imageZoom');
+    /*insert lens:*/
+    img.parentElement.insertBefore(lens, img);
+    /*calculate the ratio between result DIV and lens:*/
+    cx = result.offsetWidth / lens.offsetWidth;
+    cy = result.offsetHeight / lens.offsetHeight;
+    /*set background properties for the result DIV:*/
+    result.style.backgroundImage = "url('" + img.src + "')";
+    result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+    /*execute a function when someone moves the cursor over the image, or the lens:*/
+    lens.addEventListener("mousemove", moveLens);
+    img.addEventListener("mousemove", moveLens);
+    /*and also for touch screens:*/
+    lens.addEventListener("touchmove", moveLens);
+    img.addEventListener("touchmove", moveLens);
+    function moveLens(e) {
+      var pos, x, y;
+      /*prevent any other actions that may occur when moving over the image:*/
+      e.preventDefault();
+      /*get the cursor's x and y positions:*/
+      pos = getCursorPos(e);
+      /*calculate the position of the lens:*/
+      x = pos.x - (lens.offsetWidth / 2);
+      y = pos.y - (lens.offsetHeight / 2);
+      /*prevent the lens from being positioned outside the image:*/
+      if (x > img.width - lens.offsetWidth) { x = img.width - lens.offsetWidth; }
+      if (x < 0) { x = 0; }
+      if (y > img.height - lens.offsetHeight) { y = img.height - lens.offsetHeight; }
+      if (y < 0) { y = 0; }
+      /*set the position of the lens:*/
+      lens.style.left = x + "px";
+      lens.style.top = y + "px";
+      /*display what the lens "sees":*/
+      result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+    }
+    function getCursorPos(e) {
+      var a, x = 0, y = 0;
+      e = e || window.event;
+      /*get the x and y positions of the image:*/
+      a = img.getBoundingClientRect();
+      /*calculate the cursor's x and y coordinates, relative to the image:*/
+      x = e.pageX - a.left;
+      y = e.pageY - a.top;
+      /*consider any page scrolling:*/
+      x = x - window.pageXOffset;
+      y = y - window.pageYOffset;
+      return { x: x, y: y };
+    }
+  }
+</script>

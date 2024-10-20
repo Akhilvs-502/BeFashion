@@ -1,0 +1,429 @@
+<%- include('../partials/header') %>
+    <div class="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
+        <h1 class="text-2xl font-extrabold text-gray-800">Select Delivery Address</h1>
+        <div class="grid md:grid-cols-3 gap-4 mt-8">
+            <div class="md:col-span-2 space-y-4">
+
+
+<!-- //////////////////////STEPPER -->
+                <div class="flex items-start max-w-screen-lg mx-auto">
+                    <div class="w-full">
+                      <div class="flex items-center w-full">
+                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
+                          <span class="text-base text-white font-bold">1</span>
+                        </div>
+                        <div class="w-full h-1 mx-4 rounded-lg bg-gray-600"></div>
+                      </div>
+                      <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Delivery Address</h6>
+                      </div>
+                    </div>
+                    <div class="w-full">
+                      <div class="flex items-center w-full">
+                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                          <span class="text-base text-white font-bold">2</span>
+                        </div>
+                        <div class="w-full h-1 mx-4 rounded-lg bg-gray-400"></div>
+                      </div>
+                      <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Order Summary</h6>
+                        <p class="text-xs text-gray-400">Pending</p>
+                      </div>
+                    </div>
+                    <div class="w-full">
+                      <div class="flex items-center w-full">
+                        <div class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                          <span class="text-base text-white font-bold">2</span>
+                        </div>
+                       
+                      </div>
+                      <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Payment Methord</h6>
+                        <p class="text-xs text-gray-400">Pending</p>
+                      </div>
+                    </div>
+                    <div>
+                      
+                   
+                    </div>
+                  </div>
+<!-- /////////////////////////////////////////////// -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <!--  Address -->
+                  <% if(dataBase.address.length>0){%>
+                <% dataBase.address.forEach(address=>{%>
+                    <div id="" class="mt-4 selectAddress border rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <input type="radio" name="address" value="<%=address._id %>"  checked class="accent-green-600">
+                                <span class="font-semibold">
+                                    <%=address.name %>
+                                </span>
+                                <span class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
+                                    <%=address.addressType %>
+                                </span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mt-2">
+                            <%=address.name %>, <%=address.locality %>,<%=address.city %>, <%=address.state %> -
+                                            <%=address.pincode %> <br>
+                                                Mobile: <span class="font-semibold">
+                                                    <%=address.phone %>
+                                                </span>
+                        </p>
+                    </div>
+                    <% })%>  <%}
+                    else{%>
+                        <div class="mt-4 p-4 text-center text-gray-600">
+                            <p>No saved addresses found. Please add a new address.</p>
+                        </div>
+                    <%} %>
+
+
+
+
+                        <!-- //////////////////////////////ADDRESS//////////////////////////////////////////////// -->
+
+                        <div id="addressbtn" class="w-full p-3 hidden">
+                            <form id="saveChanges">
+                                <div class="">
+                                    <div class="flex justify-between">
+                                        <labe class="text-base block">Full name</labe>
+                                        <svg id="addressClose" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke-width="4" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </div>
+                                    <input id="fullname" required type='text' placeholder='Full name'
+                                        class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                                    <span class="text-red-500" id="nameErr"></span>
+                                </div>
+
+                                <div class="">
+                                    <labe class="mb-2 text-base block">Phone</labe>
+                                    <input id="phone" type='number' required placeholder='Phone'
+                                        class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                                    <span class="text-red-500" id="phoneErr"></span>
+                                </div>
+                                <div class=" flex justify-between ">
+                                    <div class="w-5/12">
+                                        <labe class="mb-2 text-base block">Pincode</labe>
+                                        <input required id="pincode" type='text' placeholder='Pincode'
+                                            class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                                        <span class="text-red-500" id="pincodeErr"></span>
+                                    </div>
+                                    <div class="w-6/12">
+                                        <labe class="mb-2 text-base block">State</labe>
+                                        <input id="state" type='text' readonly placeholder='State'
+                                            class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <label class="mb-2 text-base block">Address(House NO, Building,Street,Area)</labe>
+                                        <input id="address" required type='text'
+                                            placeholder='House NO, Building,Street,Area'
+                                            class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                                        <span class="text-red-500" id="addressErr"></span>
+                                </div>
+                                <div class="">
+                                    <labe class="mb-2 text-base block">Locality/Town</labe>
+                                    <select id="locality" required
+                                        class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500">
+                                        <option value="" disabled selected>Select your locality</option>
+                                        <!-- Default option -->
+
+
+                                        <!-- Add more options as needed -->
+                                    </select>
+                                    <span class="text-red-500" id="localityErr"></span>
+
+                                </div>
+                                <div class="">
+                                    <labe class="mb-2 text-base block">City/District</labe>
+                                    <input id="city" type='text' readonly placeholder='Full name'
+                                        class="px-4 py-2 text-base rounded-md bg-white border border-gray-400 w-full outline-blue-500" />
+                                </div>
+                                <div class="">
+                                    <labe class="mb-2 text-base block">Type of Address *</labe>
+                                    <input required type="radio" id="typeofAddress" name="typeofAddress" value="Home">
+                                    <label for="">Home</label>
+                                    <input type="radio" name="typeofAddress" class="ml-3" value="Office"> <label
+                                        for="">Office</label>
+                                </div>
+                                <div class=" mt-6">
+                                    <button type="submit"
+                                        class="text-white bg-poppy-red hover:bg-red-700   font-medium rounded-full text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Save
+                                        Address</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- //////////////////////////////////////////////////////////////////// -->
+                         <div class="flex justify-between">
+                            <button id="addAddress"
+                            class="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500">ADD NEW
+                            ADDRESS</button>
+                            <a href="/user/address">
+                            <button class="mt-4 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-500">Edit Address</button>
+                             </a>
+                         </div>
+                        
+            </div>
+
+
+            <div class="bg-white rounded-md px-4 py-6 h-max shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+                <ul class="text-gray-800 space-y-4">
+                    <li class="flex flex-wrap gap-4 text-sm">Total MRP <span id="totalMrp" class="ml-auto font-bold">₹
+                            <%=totalPrice%>
+                        </span></li>
+                    <li class="flex flex-wrap gap-4 text-sm">Discount on MRP <span id="discountOnMrp"
+                            class="ml-auto  text-green-500">-₹<%=(discountPrice).toFixed(2)%></span></li>
+                             <li class="flex flex-wrap gap-4 text-sm">Coupon discount <span id="discountOnMrp"
+                                            class="ml-auto  text-green-500">-₹<%=(couponDiscount)%></span>
+                                
+                                    </li>
+                    <li class="flex flex-wrap gap-4 text-sm">Shipping Fee <span class="ml-auto font-bold">₹
+                            <%=shippingFee%>
+                        </span></li>
+                    <hr class="border-gray-300" />
+                    <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span id="total"
+                            class="ml-auto">₹<%=total%></span></li>
+                </ul>
+
+                <div class="mt-8 space-y-2">
+                    
+                        <button id="continue" type="button"
+                            class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md">
+                            Continue </button>
+                 
+                    
+                </div>
+
+                <div class="mt-4 flex flex-wrap justify-center gap-4">
+                    <img src='https://readymadeui.com/images/master.webp' alt="card1" class="w-10 object-contain" />
+                    <img src='https://readymadeui.com/images/visa.webp' alt="card2" class="w-10 object-contain" />
+                    <img src='https://readymadeui.com/images/american-express.webp' alt="card3"
+                        class="w-10 object-contain" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+        document.getElementById("addAddress").addEventListener("click", () => {
+            document.getElementById("addressbtn").classList.remove("hidden")
+            document.getElementById("addAddress").classList.add("hidden")
+
+        })
+
+        document.getElementById("addressClose").addEventListener("click",()=>{
+            document.getElementById("addressbtn").classList.add("hidden")
+            document.getElementById("addAddress").classList.remove("hidden")
+           
+        })
+
+        document.getElementById("continue").addEventListener("click",()=>{
+            document.querySelectorAll(".selectAddress").forEach(address=>{
+           const checked= address.querySelector("input[type='radio']:checked")
+           if(checked){
+                // console.log(checked.value);
+                const addressID=checked.value   
+                axios.post("/user/cart/checkOutStep1",{addressID}).then(response=>{
+                    const addressID=response.data.addressID
+                    
+                    window.location.href=`/user/cartSummary/${addressID}`
+                }).catch(data=>{
+
+                })
+                
+           }
+           
+            
+            
+        })
+
+        })
+     
+        //ADD ADDRESS /////////////////////////////////////////////////////////////////
+        document.getElementById('pincode').addEventListener("input", () => {
+            const pincode = document.getElementById('pincode').value
+            const pincodePattern = /^[1-9][0-9]{5}$/;
+            if (!pincodePattern.test(pincode)) {
+                console.log("calling");
+                pincodeErr.textContent = "enter valid pincode*"
+                valid = false
+            }
+            else {
+                console.log("else");
+                pincodeErr.textContent = " "
+                console.log(pincode);
+
+                const apiURL = `https://api.postalpincode.in/pincode/${pincode}`;
+                axios.get(apiURL).then(response => {
+
+
+                    if (response.data[0].Status === 'Success') {
+                        const postOffice = response.data[0].PostOffice[0]
+                        document.getElementById('state').value = postOffice.State
+                        document.getElementById('city').value = postOffice.District
+                        response.data[0].PostOffice.forEach(element => {
+                            const option = document.createElement("option")
+                            option.value = element.Name
+                            option.textContent = element.Name
+                            document.getElementById('locality').appendChild(option)
+
+
+                        });
+                    } else {
+                        console.log("No address found for this pincode.");
+                    }
+                }).catch(error => {
+                    console.error("Error fetching address:", error);
+                });
+            }
+
+        })
+        document.getElementById('saveChanges').addEventListener("submit", (event) => {
+            event.preventDefault()
+
+
+            const name = document.getElementById('fullname').value
+            const phone = document.getElementById('phone').value
+            const pincode = document.getElementById('pincode').value
+            const state = document.getElementById('state').value
+            const locality = document.getElementById('locality').value
+            const city = document.getElementById('city').value
+            const address = document.getElementById('address').value
+            console.log(address);
+            
+            const typeofAddress = document.querySelector('input[name="typeofAddress"]:checked').value
+            console.log(name, phone, pincode, state, locality, city, address, typeofAddress);
+
+
+            const nameErr = document.getElementById('nameErr')
+            const phoneErr = document.getElementById('phoneErr')
+            const pincodeErr = document.getElementById('pincodeErr')
+            const addressErr = document.getElementById('addressErr')
+            const localityErr = document.getElementById('localityErr')
+
+            nameErr.textContent = " "
+            phoneErr.textContent = " "
+            pincodeErr.textContent = " "
+            addressErr.textContent = " "
+            localityErr.textContent = " "
+
+            const phonePattern = /^[789]\d{9}$/;
+            const nameRegex = /^[a-zA-Z ]{3,}$/;
+            const pincodePattern = /^[1-9][0-9]{5}$/;
+
+            let valid = true
+            if (name.length < 3) {
+                nameErr.textContent = "minimum 3 charater required*"
+                valid = false
+            }
+            if (address.length < 3) {
+                addressErr.textContent = "minimum 3 charater required*"
+                valid = false
+            }
+            if (locality.length < 1) {
+                localityErr.textContent = "feild is required*"
+                valid = false
+            }
+            if (!nameRegex.test(name)) {
+                nameErr.textContent = "Minimum 3 alphabetic characters required*";
+                valid = false;
+            }
+            if (!phonePattern.test(phone)) {
+                phoneErr.textContent = "enter valid phone number*"
+                valid = false
+            }
+
+            if (!pincodePattern.test(pincode)) {
+                pincodeErr.textContent = "enter valid pincode*"
+                valid = false
+            }
+
+
+            if (valid) {
+
+                Swal.fire({
+                    title: "Do you want to save the changes?",
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: "Save",
+                    denyButtonText: `Don't save`
+                }).then((result) => {
+                    
+                    if (result.isConfirmed) {
+                        Swal.fire("Saved!", "", "success");
+                        axios.post('/user/addAddress', { name, phone, pincode, state, locality, city, address, typeofAddress }).then(data => {
+                            console.log(data);
+                            window.location.href = '/user/cart/checkOutStep1'
+
+                        }).catch(data => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Something went wrong!",
+                            });
+                        })
+
+                    } else if (result.isDenied) {
+                        Swal.fire("Changes are not saved", "", "info");
+                    }
+                });
+            }
+        })
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.onload = () => {
+
+                // ADDING COMMAS TO THE INDIAN RUPEE
+
+                let total = document.getElementById("total").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                total = parseFloat(total).toLocaleString("en-IN")
+                document.getElementById("total").innerHTML = "₹" + total
+
+                let totalMrp = document.getElementById("totalMrp").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                totalMrp = parseFloat(totalMrp).toLocaleString("en-IN")
+                document.getElementById("totalMrp").innerHTML = "₹" + totalMrp
+
+
+                let discountOnMrp = document.getElementById("discountOnMrp").innerHTML.replace('₹', "").replace(/,/g, '').trim()
+                discountOnMrp = parseFloat(discountOnMrp).toLocaleString("en-IN")
+                document.getElementById("discountOnMrp").innerHTML = "₹" + discountOnMrp
+                //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            }
+        })
+    </script>
