@@ -21,11 +21,38 @@
     <h1 class="text-2xl font-semibold text-gray-800 mb-5">Sales Report</h1>
 
     <div class="mb-4 flex justify-end items-center">
-       
+        <div class="bg-yellow-500 me-2 text-white p-2 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold">Total Revenue</h2>
+            <p class="mt-2 "><span id="salesCount"> RS: <%=totalRevenue%></span></p>
+          </div>
+        <div class="bg-yellow-500 me-2 text-white p-2 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold">Overall Discount</h2>
+            <p class="mt-2 "><span id="salesCount">RS: <%=overallDiscounted%></span></p>
+          </div>
+        <div class="bg-yellow-500 me-2 text-white p-2 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold">Sales Count</h2>
+            <p class="mt-2 "><span id="salesCount"><%=salesCount%></span> Sales</p>
+          </div>
         <div>
             <button id="exportPdf" class="bg-blue-500 text-white px-4 py-2 rounded">Export as pdf</button>
             <button id="exportExcel" class="bg-blue-500 text-white px-4 py-2 rounded">Export as excel</button>
         </div>
+    </div>
+ <div>
+    <div class="mb-6">
+        <label for="filter" class="text-lg font-semibold">Filter by:</label>
+        <select id="filter" class="ml-3 p-2 border border-gray-300 rounded-md">
+          <option selected disabled value="">Select filter</option>
+          <option value="daily">Daily</option>
+          <option value="weekly" >Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="Yearly">Yearly</option>
+          <option value="Custom">Custom Date</option>
+        </select>
+        <input class="hidden" required id="startDate" type="date">
+        <input class="hidden" required id="EndSate" type="date">
+        <div class="font-semibold mt-2"><span>Applied filter</span>: <span class="text-2xl text-gray-600"> <%= filter ? filter : "weekly" %></span></div>
+      </div>
     </div>
 
     <table id="myTable" class=" w-full bg-white border border-gray-300">
@@ -102,6 +129,29 @@
             window.URL.revokeObjectURL(link.href);
         })
     })
+
+    document.getElementById("filter").addEventListener("change",(event)=>{
+
+        const filter=event.target.value
+        if(filter=="Custom"){
+            // console.log(cust);
+
+            document.getElementById("date").classList.remove("hidden")
+        }else{
+
+        window.location.href=`/admin/salesReport?filter=${filter}`
+        }
+    })
+
+    document.getElementById("date").addEventListener("change",()=>{
+        const startDate=   document.getElementById("startDate").value
+        const datendDate=   document.getElementById("endDate").value
+        console.log(endDate);
+        window.location.href=`/admin/salesReport?date=${date}`
+
+    })
+
+
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>

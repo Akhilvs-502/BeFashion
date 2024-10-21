@@ -160,6 +160,43 @@
 
                 <%})%>
 </div></div>
+
+
+<div class="pagination flex items-center justify-center mt-12 space-x-2">
+
+
+    <% if (currentPage > 1) { %>
+      <a href="/admin/orderList?page=<%= currentPage - 1 %>&limit=<%= limit %>" 
+         class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+          Previous
+      </a>
+  <% } %>
+
+  <!-- Loop through the total number of pages -->
+  <% for (let i = 1; i <= totalPages; i++) { %>
+      <% if (i === currentPage) { %>
+          <span class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded">
+              <%= i %>
+          </span>
+      <% } else { %>
+          <a href="/admin/orderList?page=<%= i %>&limit=<%= limit %>" 
+             class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+              <%= i %>
+          </a>
+      <% } %>
+  <% } %>
+
+  <% if (currentPage < totalPages) { %>
+      <a href="/admin/orderList?page=<%= currentPage + 1 %>&limit=<%= limit %>" 
+         class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+          Next
+      </a>
+  <% } %>
+
+
+ 
+</div>
+
               
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

@@ -106,7 +106,7 @@
                             </div>
                             <div class="mt-auto flex p-4">
                                 <h3 id="discountPrice" class="text-base font-bold text-gray-800 p-1">
-                                    ₹<%=(((product.discountedPrice)*product.quantity)+(userOrders.shippingFee)).toFixed(2)%></h3>
+                                    ₹<%=((((product.discountedPrice)*product.quantity)+(userOrders.shippingFee))-product.couponAdded).toFixed(2)%></h3>
                             </div>
                         </div>
                         <input hidden value="<%=product._id%>" id="product_id" type="text">
@@ -165,6 +165,11 @@
                     <p class="text-sm font-light text-gray-600">Order Price: 
                         <span id="productOrderStatus" class="font-semibold text-gray-900">
                             <%=product.discountedPrice%>
+                        </span>
+                    </p>
+                    <p class="text-sm font-light text-gray-600">coupon discount: 
+                        <span id="productOrderStatus" class="font-semibold text-gray-900">
+                            <%=product.couponAdded%>
                         </span>
                     </p>
                     <p class="text-sm font-light text-gray-600">paymentmode: 

@@ -92,7 +92,7 @@
   document.querySelectorAll("#remove").forEach(results => results.addEventListener("click", function (event) {
     event.stopPropagation();
 
-    const productID = results.querySelector("#productID").innerHTML
+    const productID = results.querySelector("#productID").innerHTML.trim()
 
     axios.post("/user/removeFromWhishlist", { productID }).then(async response => {
       const Toast = await Swal.mixin({

@@ -397,18 +397,22 @@ export const adminOrderUpdate = async (req, res) => {
         const current= await orderModel.findOne({ 'products._id': product_id },{"products.$":1})
 console.log(current.products[0].orderStatus=="cancelled");
         if(current.products[0].orderStatus!=="cancelled"){
-        if (!status) {
             
-            if(status=="delivered"){
-            const update = await orderModel.findOneAndUpdate({ 'products._id': product_id ,'products.paymentmode':"cod"}, { 'products.$.paymentStatus': "paid" })
+            if (status) {
+                if(status=="delivered"){
+                    console.log("delivered");
+                    const update = await orderModel.findOneAndUpdate({'products._id': product_id ,'products.paymentMode':"cod"}, { 'products.$.paymentStatus':"paid" })
+                }
+                const update = await orderModel.findOneAndUpdate({ 'products._id': product_id }, { 'products.$.orderStatus': status })
+                return res.status(200).json({ message: "delivery address" })
             }
-            const update = await orderModel.findOneAndUpdate({ 'products._id': product_id }, { 'products.$.orderStatus': status })
-            return res.status(200).json({ message: "delivery address" })
-        }
+            console.log(status);
         const update = await orderModel.findOneAndUpdate({ 'products._id': product_id }, { 'products.$.returnStatus': returnStatus })
         res.status(200).json({ message: "delivery address" })
     }}
-    catch {
+    catch(err) {
+        console.log(err);
+        
         res.status(409).json({ message: "err" })
     }
 

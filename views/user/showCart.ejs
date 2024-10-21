@@ -157,7 +157,10 @@
                                             <div class="bg-white p-5 rounded-lg w-1/3 ">
                                                 <h2 class="text-lg font-bold mb-4">Available Coupons</h2>
                                                 <ul id="couponList">
-                                                    <!-- Coupon list items will go here -->
+                                                    <% coupon.forEach(each=>{%>
+                                                       <%= each.couponCode %>  <br>
+                                                        <%})%>
+                                    
                                                 </ul>
                                                 <button id="closeModal" class="mt-4 bg-red-500 text-white py-2 px-4 rounded">Close</button>
                                             </div>
@@ -211,6 +214,7 @@
                             </div>
             </div>
         </div>
+        
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script>

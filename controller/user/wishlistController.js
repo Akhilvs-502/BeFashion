@@ -62,6 +62,8 @@ export const removeFromWishlist=async(req,res)=>{
         const userEmail=req.userData.email
         const user=await usermodel.findOne({email:userEmail})
         const {productID}=req.body
+        console.log(productID);
+        
         await wishlistModel.findOneAndUpdate({userId:user._id},{ $pull:{products:{ productId: productID  }  }}) 
         res.json({message:"product removed form the whishlist"})
 

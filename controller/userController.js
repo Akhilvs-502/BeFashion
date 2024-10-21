@@ -13,6 +13,7 @@ const secretKey = process.env.SECRET_KEY
 import Razorpay from 'razorpay'
 import { createHmac } from 'crypto';  // for verifiction in razorpay 
 import walletModel from "../models/walletModel.js";
+import couponModel from "../models/couponSchema.js";
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
 
@@ -919,11 +920,15 @@ export const showCart = async (req, res) => {
             total=((totalPrice-discountPrice)+shippingFee).toFixed(2)
             total=total-couponDiscount
             discountPrice.toFixed(2)
-console.log("ShowCart");
-
-            res.render('user/showCart', { user, cart, totalPrice,total, discountPrice, shippingFee ,couponDiscount})
+            const coupon=await couponModel.find({block:false})
+            console.log(coupon);
+            
+            res.render('user/showCart', { user, cart, totalPrice,total, discountPrice, shippingFee ,couponDiscount,coupon})
         } else {
-            res.render('user/showCart', { user, cart, totalPrice,total, discountPrice, shippingFee,couponDiscount })
+            console.log("ShowCart");
+            const coupon=await couponModel.find({block:false})
+
+            res.render('user/showCart', { user, cart, totalPrice,total, discountPrice, shippingFee,couponDiscount,coupon })
 
         }
 
@@ -1157,6 +1162,7 @@ export const orderUpdate = async (req, res) => {
         let productArray = []
         let totalOrderPrice = 0;
         let shippingFee=0
+        let discountedPrice=0
         let productCoupon=(cart.couponDiscount)/((cart.products).length)
         if (cart.products) {
             cart.products.forEach(async product => {
@@ -1175,6 +1181,8 @@ export const orderUpdate = async (req, res) => {
                     couponAdded:productCoupon,
                     totalPay:((discountedPrice)*( product.quantity))-productCoupon
                 }
+      
+                
                 // console.log("stock:" + product.productId.stock);
                 const newStock = (product.productId.stock) - (product.quantity)
                 productArray.push(data)
@@ -1199,7 +1207,7 @@ export const orderUpdate = async (req, res) => {
 
             totalOrderPrice+=shippingFee
             console.log(shippingFee);
-            
+            totalOrderPrice=totalOrderPrice.toFixed(2)
             ////Response to cod
             if (orderType == 'cod') {
                 console.log(orderType);
@@ -1213,6 +1221,7 @@ export const orderUpdate = async (req, res) => {
                 console.log("json send to the axos");
 
                 console.log(totalOrderPrice);
+                console.log(discountedPrice);
 
                 const orderOptions = {
                     amount: ((totalOrderPrice)-(cart.couponDiscount))* 100,  // Amount is in smallest currency unit (50000 paise = ₹500)
@@ -1268,7 +1277,6 @@ export const orderUpdate = async (req, res) => {
             }
             else{
                 await orderModel.findOneAndUpdate({_id:order._id},{$set:{"products.$[].paymentStatus":"failed"}})
-                await orderModel.findOneAndUpdate({_id:order._id},{$set:{"products.$[].orderStatus":"failed"}})
 
                 res.status(404).json({message:"Insufficient wallet balance to complete the order",status:"noBalance"})
             }
@@ -1317,12 +1325,27 @@ export const orderSuccess = async (req, res) => {
 
 export const showOrders = async (req, res) => {
     try {
+        // Get page and limit from query parameters, set default values if not provided
+const page = parseInt(req.query.page) || 1;  // Current page, default is 1
+const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
+
+// Calculate the number of documents to skip
+const skip = (page - 1) * limit;
+const orderData2=  await orderModel.find({})
+let totalPages=0
+orderData2.forEach(userOrders=>{           
+     totalPages+= userOrders.products.length  
+  })
+  console.log(totalPages);
+  
         const user = req.userData
         const userData = await usermodel.find({ email: user.email })
         const userId = userData[0]._id
-        const orderData = await orderModel.find({ user: userId }).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel })
+        const orderData = await orderModel.find({ user: userId }).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel }).skip(skip).limit(limit)   
         console.log(orderData[0]);
-        res.render("user/showOrders", { user, orderData })
+        res.render("user/showOrders", { user, orderData ,totalPages:totalPages/limit,
+            currentPage: page,
+            limit: limit})
     } catch {
 
     }
@@ -1338,8 +1361,11 @@ export const orderCancel = async (req, res) => {
         const { product_id } = req.body
         console.log(product_id);
        const order= await orderModel.findOne({ user: userId, 'products._id': product_id },{'products.$':1})
+       const ship= await orderModel.findOne({ user: userId,'products._id': product_id })
        console.log(order.products[0].paymentStatus);
-       const RefundRupee=(order.products[0].discountedPrice)*(order.products[0].quantity)
+       console.log(ship.shippingFee);
+       const RefundRupee=(((order.products[0].discountedPrice)*(order.products[0].quantity))-order.products[0].couponAdded)+ship.shippingFee
+       
        //if paid refund
        if(order.products[0].paymentStatus=="paid"){
         await walletModel.findOneAndUpdate({ userId: userId }, {

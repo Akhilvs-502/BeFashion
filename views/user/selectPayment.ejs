@@ -189,7 +189,7 @@
 
                     }).catch(async err => {
                         console.log(err);
-                        if (err.response.data.status = "noBalance") {
+                        if (err.response.data.status == "noBalance") {
                           await  Swal.fire({
                                 icon: "error",
                                 title: "Oops...",
@@ -202,7 +202,7 @@
                                 text: "something went wrong !",
                             });
                         }    
-                        window.location.href="/user/showCart"
+                        // window.location.href="/user/showCart"
                     })
                 })
             })

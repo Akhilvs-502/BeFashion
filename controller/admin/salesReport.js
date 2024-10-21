@@ -5,15 +5,65 @@ import fs from 'fs';
 import path from 'path';
 import ExcelJS from 'exceljs';
 
+let orders=[]
+
 export const salesReport=async(req,res)=>{
 try{
+let filter=req.query.filter ? req.query.filter: ""
+   console.log(req.query);
+   if (req.query.filter == "daily") {
+      let now = new Date()
+      let startOfDay = new Date(now.setHours(0, 0, 0, 0));
+      let endOfDay = new Date(now.setHours(23, 59, 59, 999));
+      orders = await orderModel.find({ 'products.paymentStatus': "paid", createdAt: { $lt: endOfDay, $gte: startOfDay } })
+      console.log(orders);
+   }
+ else  if (req.query.filter =="monthly") {
+      let now = new Date()
+      let startOfMonth = new Date(now.getFullYear(),now.getMonth(),1);
+      let endOfMonth = new Date(now.getFullYear(),now.getMonth()+1,0);
+      endOfMonth.setHours(23, 59, 59, 999);
+      console.log(startOfMonth,endOfMonth);
+      
+      orders = await orderModel.find({'products.paymentStatus': "paid", createdAt:{$gte:startOfMonth, $lt:endOfMonth } })
+      console.log(orders);
+   }
+ else  if (req.query.filter == "Yearly") {
+      let now = new Date()
+      let startOfYear = new Date(now.getFullYear(),0,1);
+      let endOfYear = new Date(now.getFullYear(),11,31);
+      endOfYear.setHours(23, 59, 59, 999);
+      orders = await orderModel.find({ 'products.paymentStatus': "paid", createdAt: { $gte: startOfYear, $lt: endOfYear } })
+      console.log(orders);
+  }else{
+      let now = new Date()
+      let startOfWeek = new Date(now.setDate(now.getDate()-now.getDay()+1));
+      startOfWeek.setHours(0, 0, 0, 0);
+      let endOfWeek = new Date(now.setDate(startOfWeek.getDate()+6));
+      endOfWeek.setHours(23, 59, 59, 999);
+      orders=await orderModel.find({'products.paymentStatus':"paid",createdAt: { $gte:startOfWeek, $lt:endOfWeek } })
+      console.log(orders);
+      
+   }
+//  console.log(orders);
+let totalRevenue=0
+let overallDiscounted=0
+let salesCount=0
 
- const orders=await orderModel.find({'products.paymentStatus':"paid"})
- console.log(orders);
 
-//  const pdfPath = generatePDF(orders);
-//     res.download(pdfPath); // Send the file to the client
-    res.render("admin/salesReport",{orders})
+orders.forEach(order=>{
+order.products.forEach(product=>{
+console.log(product.totalPay);
+totalRevenue+=product.totalPay
+overallDiscounted+=product.discountedPrice
+salesCount++
+        });
+        
+    })
+    totalRevenue=totalRevenue.toFixed(2)
+    overallDiscounted=(totalRevenue-overallDiscounted).toFixed(2)
+    
+    res.render("admin/salesReport",{orders,totalRevenue,overallDiscounted,salesCount,filter})
 }catch(err){    
 console.log(err);
 
@@ -56,7 +106,7 @@ export const downloadPdf = async (req, res) => {
     };
  
     try {
-       const orders = await orderModel.find({ 'products.paymentStatus': "paid" });
+      //  const orders = await orderModel.find({ 'products.paymentStatus': "paid" });
  
        const pdfPath = await generatePDF(orders); // Wait for PDF generation
        res.download(pdfPath, (err) => {
@@ -116,12 +166,10 @@ orders.forEach(order => {
     return filePath; // Return the path to download later
 };
 
-const orders = await orderModel.find({ 'products.paymentStatus': "paid" });
+// const orders = await orderModel.find({ 'products.paymentStatus': "paid" });
 
 const excelPath = await generateExcel(orders);
 res.download(excelPath); // Send the file to the client
-
-
 
 
  }

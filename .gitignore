@@ -1,11 +1,1 @@
 .env
-PORT=8000
-MONGO_URL="mongodb://localhost:27017/fashion"
-SECRET_KEY="thisiskeyforjwttoken"
-Client_ID='518936302400-75eaqbimd8j7k070cer52r7ca8mqrpls.apps.googleusercontent.com'
-Client_Secret='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'
-CLOUDINARY_CLOUD_NAME='dmvffxx3d'
-CLOUDINARY_API_KEY=358892692867272
-CLOUDINARY_API_SECRET='yZMfZ3rURnOFo0t-ubOmDjbNy7Y'
-RAZORPAY_KEY_ID="rzp_test_WruaPuyjBCcKJs"
-RAZORPAY_KEY_SECRET="Oj8C7Cc4ETqAjrLRfwlN3LUF"
