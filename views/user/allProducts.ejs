@@ -232,8 +232,6 @@
       window.location.href = `/user/allProducts?men=${men}&&women=${women}&&kids=${kids}&&price=${price}&&sort=${sort}&&stock=${stock}&&newArrivals=${newArrivals}`
 
 
-
-
       // if (event.target.type === 'checkbox' && event.target.checked) {
       //     console.log(event.target.value);
       //     const men = event.target.value == 'men' ? true : false
@@ -256,7 +254,13 @@
       console.log(sort);
       window.location.href = `/user/allProducts?men=${men}&&women=${women}&&kids=${kids}&&price=${price}&&sort=${sort}&&stock=${stock}&&newArrivals=${newArrivals}`
     })
-   
+    document.getElementById("search").addEventListener("change",(event)=>{
+      console.log(event.target.value);
+      search = event.target.value
+      console.log(search);
+      window.location.href = `/user/allProducts?men=${men}&&women=${women}&&kids=${kids}&&price=${price}&&sort=${sort}&&search=${search}`
+      
+    })
     document.getElementById("lastFilter").addEventListener('change', (event) => {
       const lastFilter = document.getElementById("lastFilter").querySelectorAll("input[type='checkbox']:checked")
       const categoryList = Array.from(lastFilter).map(filter => filter.value)

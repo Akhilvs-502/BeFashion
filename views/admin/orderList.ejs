@@ -396,13 +396,30 @@
             const orderStatus= product.querySelector("#refund-btn").value
             const userOrders_id = product.querySelector("#userOrders_id").value
 
-            axios.post("/admin/refund",{product_id,userOrders_id}).then(response=>{
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+
+                    axios.post("/admin/refund", { product_id, userOrders_id }).then(response => {
                 window.location.reload()
-            }).catch(err=>{})
-       
+            }).catch(err => { })
+
+                    Swal.fire("Saved!", "", "success");
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+            
+
         })
     })
-    
+            
 
     function axiosCall(status, product_id,returnStatus) {
         Swal.fire({

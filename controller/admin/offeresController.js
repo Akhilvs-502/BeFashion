@@ -40,6 +40,5 @@ res.json({message:"discount updated"})
 
 }catch(err){
 console.log(err);
-
 }
 }

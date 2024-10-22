@@ -35,6 +35,16 @@ let filter=req.query.filter ? req.query.filter: ""
       endOfYear.setHours(23, 59, 59, 999);
       orders = await orderModel.find({ 'products.paymentStatus': "paid", createdAt: { $gte: startOfYear, $lt: endOfYear } })
       console.log(orders);
+  }
+ else  if (req.query.filter == "date") {
+   let startDate=req.query.startDate
+    startDate=new Date(startDate)
+    startDate=startDate.setHours(0, 0, 0, 0)
+   let  endDate=req.query.endDate
+       endDate=new Date(endDate)
+   endDate.setHours(23, 59, 59, 999)
+      orders = await orderModel.find({ 'products.paymentStatus': "paid", createdAt: { $gte: startDate, $lt: endDate } })
+      console.log(orders);
   }else{
       let now = new Date()
       let startOfWeek = new Date(now.setDate(now.getDate()-now.getDay()+1));

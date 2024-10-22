@@ -48,11 +48,8 @@ export const showWishlist=async(req,res)=>{
     console.log(user);
     
     let products=await wishlistModel.findOne({userId:user._id}).populate("products.productId")
-    products=products.products
-    console.log(products);
-    // console.log();
-
-    
+    // products=products.products
+    products=products ? products.products :  products=[]
     res.render("user/wishlist",{products,user})
 }
 

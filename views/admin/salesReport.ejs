@@ -49,11 +49,18 @@
           <option value="Yearly">Yearly</option>
           <option value="Custom">Custom Date</option>
         </select>
-        <input class="hidden" required id="startDate" type="date">
-        <input class="hidden" required id="EndSate" type="date">
+      
+        <div>
+            <form class="hidden" id="dateApply" >
+            <input  required id="startDate" type="date">
+            <input  required id="endDate" type="date">
+            <button class="rounded bg-gray-200 p-3 ml-3" type="submit">apply</button>
+        </form>
+        </div>
         <div class="font-semibold mt-2"><span>Applied filter</span>: <span class="text-2xl text-gray-600"> <%= filter ? filter : "weekly" %></span></div>
       </div>
     </div>
+    
 
     <table id="myTable" class=" w-full bg-white border border-gray-300">
         <thead>
@@ -136,18 +143,19 @@
         if(filter=="Custom"){
             // console.log(cust);
 
-            document.getElementById("date").classList.remove("hidden")
+            document.getElementById("dateApply").classList.remove("hidden")
         }else{
 
         window.location.href=`/admin/salesReport?filter=${filter}`
         }
     })
 
-    document.getElementById("date").addEventListener("change",()=>{
-        const startDate=   document.getElementById("startDate").value
-        const datendDate=   document.getElementById("endDate").value
+    document.getElementById("dateApply").addEventListener("submit",(event)=>{
+        event.preventDefault()
+        let  startDate=document.getElementById("startDate").value
+        let endDate=document.getElementById("endDate").value
         console.log(endDate);
-        window.location.href=`/admin/salesReport?date=${date}`
+        window.location.href=`/admin/salesReport?filter=date&&startDate=${startDate}&&endDate=${endDate}`
 
     })
 
