@@ -1420,7 +1420,7 @@ export const paymentVerificaton = async (req, res) => {
     const userId = userData[0]._id
     const { order_id, payment_id, signature, orderId } = req.body;
     console.log("verification");
-    const hmac = createHmac('sha256', 'Oj8C7Cc4ETqAjrLRfwlN3LUF');
+    const hmac = createHmac('sha256', 'Oj8C7Cc4ETqAjrLRfwlN3LUF');   ///chnge to env
     hmac.update(order_id + "|" + payment_id);
     const generated_signature = hmac.digest('hex');
     if (generated_signature === signature) {
