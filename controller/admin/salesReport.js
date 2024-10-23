@@ -88,11 +88,13 @@ export const downloadPdf = async (req, res) => {
     const generatePDF = (orders) => {
        return new Promise((resolve, reject) => {
           const doc = new PDFDocument();
-          const filePath = path.resolve('./sales-report.pdf');
+         //  const filePath = path.resolve('./sales-report.pdf');
  
-          const writeStream = fs.createWriteStream(filePath);
-          doc.pipe(writeStream);
- 
+         //  const writeStream = fs.createWriteStream(filePath);
+         //  doc.pipe(writeStream);
+         res.setHeader('Content-Type', 'application/pdf');
+         res.setHeader('Content-Disposition', 'attachment; filename="sales-report.pdf"');
+         doc.pipe(res); // Pipe the PDF directly to the response
           // Add content
           doc.fontSize(20).text('Sales Report', { align: 'center' });
           doc.moveDown();
@@ -109,28 +111,23 @@ export const downloadPdf = async (req, res) => {
           });
  
           doc.end();
+          resolve();
  
-          writeStream.on('finish', () => resolve(filePath)); // Wait for file writing to finish
-          writeStream.on('error', reject); // Handle errors
+         //  writeStream.on('finish', () => resolve(filePath)); // Wait for file writing to finish
+         //  writeStream.on('error', reject); // Handle errors
        });
     };
  
     try {
-      //  const orders = await orderModel.find({ 'products.paymentStatus': "paid" });
- 
-       const pdfPath = await generatePDF(orders); // Wait for PDF generation
-       res.download(pdfPath, (err) => {
-          if (err) {
-             console.error("Error during download: ", err);
-          } else {
-             console.log("File downloaded successfully.");
-          }
-       });
+       const pdfPath = await generatePDF(orders,res); // Wait for PDF generation
+       console.log("PDF sent successfully.");
     } catch (error) {
        console.error("Error generating PDF: ", error);
        res.status(500).send("Error generating PDF");
     }
  };
+
+
 
  export const downloadExcel=async(req,res)=>{
 
@@ -172,7 +169,7 @@ orders.forEach(order => {
 });
 
     const filePath = './sales-report.xlsx';
-    await workbook.xlsx.writeFile(filePath);
+   //  await workbook.xlsx.writeFile(filePath);
     return filePath; // Return the path to download later
 };
 
@@ -180,6 +177,4 @@ orders.forEach(order => {
 
 const excelPath = await generateExcel(orders);
 res.download(excelPath); // Send the file to the client
-
-
  }
