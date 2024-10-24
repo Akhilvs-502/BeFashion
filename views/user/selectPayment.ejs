@@ -118,25 +118,25 @@
                     //    console.log(input.value);
                     const orderType = input.value
                     const addressID = document.getElementById('addressID').value
-            
-                
+
+
                     axios.post('/user/orderUpdate', { orderType, addressID }).then(async response => {
 
                         console.log(response.data.user);
-                        const orderId=response.data.orderId
-                        const totalOrderPrice=response.data.totalOrderPrice
-                        const userName=response.data.user.name
-                        const userEmail=response.data.user.email
-                        const RAZORPAY_KEY_ID=response.data.RAZORPAY_KEY_ID
+                        const orderId = response.data.orderId
+                        const totalOrderPrice = response.data.totalOrderPrice
+                        const userName = response.data.user.name
+                        const userEmail = response.data.user.email
+                        const RAZORPAY_KEY_ID = response.data.RAZORPAY_KEY_ID
                         console.log(totalOrderPrice);
-                        
-                        if (response.data.orderType =="razorpay") {
+
+                        if (response.data.orderType == "razorpay") {
                             console.log("thisi is woked");
 
                             var options = {
                                 "key": RAZORPAY_KEY_ID, // Enter your Key ID generated from the Dashboard
                                 // "amount": 100000, // Amount is in paise (50000 = ₹500)   i amount set in backend
-                                "currency": "INR",
+                                // "currency": "INR",
                                 "name": response.data.currency,
                                 "description": "Test Transaction",
                                 "image": "https://example.com/your_logo",
@@ -152,16 +152,16 @@
                                     const payment_id = response.razorpay_payment_id
                                     const order_id = response.razorpay_order_id
                                     const signature = response.razorpay_signature
-                                    axios.post("/user/paymentVerificaton", { payment_id, order_id, signature,orderId }).then(response => {
-                                    
-                                        window.location.href =`/user/orderSuccess/${orderId}`
-                                    }).catch(err => { 
+                                    axios.post("/user/paymentVerificaton", { payment_id, order_id, signature, orderId }).then(response => {
+
+                                        window.location.href = `/user/orderSuccess/${orderId}`
+                                    }).catch(err => {
 
                                     })
                                 },
                                 "prefill": {
-                                    "name":userName ,
-                                    "email":userEmail,
+                                    "name": userName,
+                                    "email": userEmail,
                                     "contact": response.data.user.phone
                                 },
                                 "theme": {
@@ -171,18 +171,18 @@
                             var rzp1 = new Razorpay(options);
 
                             // document.getElementById('rzp-button').onclick = function (e) {
-                          await  rzp1.open();
-                          event.preventDefault();
+                            await rzp1.open();
+                            event.preventDefault();
                             // }
                         }
-                        if (response.data.orderType =="cod") {
-                                console.log("cod");
+                        if (response.data.orderType == "cod") {
+                            console.log("cod");
 
                             const orderId = response.data.orderId
                             window.location.href = `/user/orderSuccess/${orderId}`
                         }
 
-                        if(response.data.orderType =="wallet"){
+                        if (response.data.orderType == "wallet") {
                             const orderId = response.data.orderId
                             window.location.href = `/user/orderSuccess/${orderId}`
                         }
@@ -190,26 +190,26 @@
                     }).catch(async err => {
                         console.log(err);
                         if (err.response.data.status == "noBalance") {
-                          await  Swal.fire({
+                            await Swal.fire({
                                 icon: "error",
                                 title: "Oops...",
                                 text: "Insufficient wallet balance to complete the order!",
                             });
                         }
                         if (err.response.data.status == "codNotAllowed") {
-                          await  Swal.fire({
+                            await Swal.fire({
                                 icon: "error",
-                                title: "Oops...",
+                                title: "COD not allower for this order",
                                 text: "A minimum order of ₹1000 is required to proceed with your purchase. Thank you for understanding!",
                             });
-                        }else{
-                            await  Swal.fire({
+                        } else {
+                            await Swal.fire({
                                 icon: "error",
                                 title: "Oops...",
                                 text: "something went wrong !",
                             });
-                        }    
-                        // window.location.href="/user/showCart"
+                            window.location.href = "/user/showCart"
+                        }
                     })
                 })
             })

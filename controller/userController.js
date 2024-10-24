@@ -19,8 +19,8 @@ const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
 
 
 let razorpayInstance = new Razorpay({
-    key_id:RAZORPAY_KEY_ID, 
-    key_secret:RAZORPAY_KEY_SECRET 
+    key_id: RAZORPAY_KEY_ID,
+    key_secret: RAZORPAY_KEY_SECRET
 });
 export const home = async (req, res) => {
     try {
@@ -901,12 +901,12 @@ export const showCart = async (req, res) => {
         let totalPrice = 0
         let shippingFee = 0
         let discountPrice = 0
-        let couponDiscount=0
-        let total=0
+        let couponDiscount = 0
+        let total = 0
         if (cart) {
-            if(cart.products.length==0){
-                await cartModel.findOneAndUpdate({ userId: userData._id },{couponDiscount:0})
-                
+            if (cart.products.length == 0) {
+                await cartModel.findOneAndUpdate({ userId: userData._id }, { couponDiscount: 0 })
+
             }
             const products = cart.products.forEach(product => {
                 totalPrice += product.productId.price * product.quantity
@@ -916,26 +916,26 @@ export const showCart = async (req, res) => {
             })
             shippingFee = totalPrice < 500 ? 40 : 0
             shippingFee = totalPrice == 0 ? 0 : shippingFee
-            couponDiscount=(cart.couponDiscount).toFixed(2)
-            total=((totalPrice-discountPrice)+shippingFee).toFixed(2)
-            total=total-couponDiscount
+            couponDiscount = (cart.couponDiscount).toFixed(2)
+            total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
+            total = total - couponDiscount
             discountPrice.toFixed(2)
-            const coupon=await couponModel.find({block:false})
+            const coupon = await couponModel.find({ block: false })
             console.log(coupon);
-            
-            res.render('user/showCart', { user, cart, totalPrice,total, discountPrice, shippingFee ,couponDiscount,coupon})
+
+            res.render('user/showCart', { user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon })
         } else {
             console.log("ShowCart");
-            const coupon=await couponModel.find({block:false})
+            const coupon = await couponModel.find({ block: false })
 
-            res.render('user/showCart', { user, cart, totalPrice,total, discountPrice, shippingFee,couponDiscount,coupon })
+            res.render('user/showCart', { user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon })
 
         }
 
     }
-    catch(err) {
+    catch (err) {
         console.log(err);
-        
+
     }
 
 }
@@ -955,8 +955,8 @@ export const updateQuantity = async (req, res) => {
         let totalPrice = 0
         let shippingFee = 0
         let discountPrice = 0
-        let couponDiscount=0
-        let total=0
+        let couponDiscount = 0
+        let total = 0
         async function newCart() {
             const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: 'products.productId', model: 'product' })
             if (cart) {
@@ -968,9 +968,9 @@ export const updateQuantity = async (req, res) => {
                 })
                 shippingFee = totalPrice < 500 ? 40 : 0
                 shippingFee = totalPrice == 0 ? 0 : shippingFee
-                couponDiscount=(cart.couponDiscount).toFixed(2)
-                total=((totalPrice-discountPrice)+shippingFee).toFixed(2)
-                total=total-couponDiscount
+                couponDiscount = (cart.couponDiscount).toFixed(2)
+                total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
+                total = total - couponDiscount
                 discountPrice.toFixed(2)
 
             }
@@ -998,7 +998,7 @@ export const updateQuantity = async (req, res) => {
 
                 await newCart()
 
-                res.json({ totalPrice,total, shippingFee, discountPrice, productPrice, productDiscountPrice})
+                res.json({ totalPrice, total, shippingFee, discountPrice, productPrice, productDiscountPrice })
             }
 
 
@@ -1015,7 +1015,7 @@ export const updateQuantity = async (req, res) => {
             console.log(productPrice, productDiscountPrice);
 
             await newCart()
-            res.json({ totalPrice,total, shippingFee, discountPrice, productPrice, productDiscountPrice })
+            res.json({ totalPrice, total, shippingFee, discountPrice, productPrice, productDiscountPrice })
 
 
 
@@ -1057,8 +1057,8 @@ export const checkOutStep1 = async (req, res) => {
         let totalPrice = 0
         let shippingFee = 0
         let discountPrice = 0
-        let couponDiscount=0
-        let total=0
+        let couponDiscount = 0
+        let total = 0
 
         const products = cart.products.forEach(product => {
             totalPrice += product.productId.price * product.quantity
@@ -1068,15 +1068,15 @@ export const checkOutStep1 = async (req, res) => {
         })
         shippingFee = totalPrice < 500 ? 40 : 0
         shippingFee = totalPrice == 0 ? 0 : shippingFee
-         couponDiscount=(cart.couponDiscount).toFixed(2)
-                total=((totalPrice-discountPrice)+shippingFee).toFixed(2)
-                total=total-couponDiscount
-                discountPrice.toFixed(2)
+        couponDiscount = (cart.couponDiscount).toFixed(2)
+        total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
+        total = total - couponDiscount
+        discountPrice.toFixed(2)
         //address
         const dataBase = await usermodel.findOne({ email: user.email })
         console.log(dataBase);
 
-        res.render("user/checkOutStep1", { user, cart, total,totalPrice,couponDiscount, discountPrice, shippingFee, dataBase })
+        res.render("user/checkOutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase })
     }
     catch {
 
@@ -1115,8 +1115,8 @@ export const cartSummary = async (req, res) => {
         let totalPrice = 0
         let shippingFee = 0
         let discountPrice = 0
-        let couponDiscount=0
-        let total=0
+        let couponDiscount = 0
+        let total = 0
         const products = cart.products.forEach(product => {
             totalPrice += product.productId.price * product.quantity
         })
@@ -1125,11 +1125,11 @@ export const cartSummary = async (req, res) => {
         })
         shippingFee = totalPrice < 500 ? 40 : 0
         shippingFee = totalPrice == 0 ? 0 : shippingFee
-        couponDiscount=(cart.couponDiscount).toFixed(2)
-        total=((totalPrice-discountPrice)+shippingFee).toFixed(2)
-        total=total-couponDiscount
+        couponDiscount = (cart.couponDiscount).toFixed(2)
+        total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
+        total = total - couponDiscount
         discountPrice.toFixed(2)
-        res.render("user/orderSummary", { user,total,couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID })
+        res.render("user/orderSummary", { user, total, couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID })
     }
     catch {
 
@@ -1161,34 +1161,34 @@ export const orderUpdate = async (req, res) => {
         const cart = await cartModel.findOne({ userId: userID }).populate({ path: 'products.productId', model: productModel })
         let productArray = []
         let totalOrderPrice = 0;
-        let shippingFee=0
-        let discountedPrice=0
-        let productCoupon=(cart.couponDiscount)/((cart.products).length)
+        let shippingFee = 0
+        let discountedPrice = 0
+        let productCoupon = (cart.couponDiscount) / ((cart.products).length)
         if (cart.products) {
             cart.products.forEach(async product => {
                 totalOrderPrice += Number(((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)) * product.quantity
-               let discountedPrice=((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)
-                  
+                let discountedPrice = ((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)
+
                 const data = {
                     product: product.productId._id,
                     quantity: product.quantity,
                     price: product.productId.price,
-                    discountedPrice:discountedPrice,
+                    discountedPrice: discountedPrice,
                     paymentMode: orderType,
                     orderStatus: "processing",
                     color: product.productId.color[0],
                     size: product.size,
-                    couponAdded:productCoupon,
-                    totalPay:((discountedPrice)*( product.quantity))-productCoupon
+                    couponAdded: productCoupon,
+                    totalPay: ((discountedPrice) * (product.quantity)) - productCoupon
                 }
-      
-                
+
+
                 // console.log("stock:" + product.productId.stock);
                 const newStock = (product.productId.stock) - (product.quantity)
                 productArray.push(data)
                 await productModel.findOneAndUpdate({ _id: product.productId._id }, { $set: { stock: newStock } })
             })
-            totalOrderPrice < 500 ? shippingFee=40 :shippingFee=0
+            totalOrderPrice < 500 ? shippingFee = 40 : shippingFee = 0
             const order = new orderModel({
                 user: userID,
                 shippingAddress: {
@@ -1200,25 +1200,23 @@ export const orderUpdate = async (req, res) => {
                     city: addressDatas.city,
                 },
                 products: productArray,
-                shippingFee:shippingFee
+                shippingFee: shippingFee
             })
             const orderId = order._id
             await order.save()
 
-            totalOrderPrice+=shippingFee
+            totalOrderPrice += shippingFee
             console.log(shippingFee);
-            totalOrderPrice=totalOrderPrice.toFixed(2)
+            totalOrderPrice = totalOrderPrice.toFixed(2)
             ////Response to cod
             if (orderType == 'cod') {
-                if(totalOrderPrice>1000){
-        
+                if (totalOrderPrice > 1000) {
                     console.log(orderType);
-                    // await order.update({"products."})
                     const update = await cartModel.deleteOne({ userId: userID })  //delete user cart
-                    res.status(201).json({ orderId: orderId, message: "order created", orderType, user,totalOrderPrice })
+                    res.status(201).json({ orderId: orderId, message: "order created", orderType, user, totalOrderPrice })
                 }
-                else{
-                    res.status(409).json({status:"notProcess",message:"order amount is less than 1000"})
+                else {
+                    res.status(409).json({ status: "codNotAllowed", message: "order amount is less than 1000" })
                 }
             }
 
@@ -1230,7 +1228,7 @@ export const orderUpdate = async (req, res) => {
                 console.log(discountedPrice);
 
                 const orderOptions = {
-                    amount: ((totalOrderPrice)-(cart.couponDiscount))* 100,  // Amount is in smallest currency unit (50000 paise = ₹500)
+                    amount: ((totalOrderPrice) - (cart.couponDiscount)) * 100,  // Amount is in smallest currency unit (50000 paise = ₹500)
                     currency: "INR",
                     receipt: "order_rcptid_11",
                     payment_capture: '1' // Auto-capture the payment
@@ -1265,27 +1263,30 @@ export const orderUpdate = async (req, res) => {
                 const userId = await usermodel.findOne({ email: user.email }, { _id: 1 })
                 // const wallet = await walletModel.findOne({ userId: userId._id })
                 const wallectCheck = await walletModel.findOneAndUpdate({ userId: userId._id })
-                if(wallectCheck.balance > totalOrderPrice){
-                const wallet = await walletModel.findOneAndUpdate({ userId: userId._id },{ $inc: { balance:-(totalOrderPrice-(cart.couponDiscount))}, $push: {
-                    transactions: {
-                        wallectAmount: (totalOrderPrice-(cart.couponDiscount)),
-                        orderId: orderId,
-                        trasactionType: "debited",
-                        trasactionsDate: new Date()
-                }}},{new:true})
-            console.log(order._id);
-                
-             const updateorder=   await orderModel.findOneAndUpdate({_id:order._id},{$set:{"products.$[].paymentStatus":"paid"}},{new:true})
-             console.log(updateorder);
-             
-            
-                res.status(201).json({ orderId: orderId, message: "order created", orderType, user })
-            }
-            else{
-                await orderModel.findOneAndUpdate({_id:order._id},{$set:{"products.$[].paymentStatus":"failed"}})
+                if (wallectCheck.balance > totalOrderPrice) {
+                    const wallet = await walletModel.findOneAndUpdate({ userId: userId._id }, {
+                        $inc: { balance: -(totalOrderPrice - (cart.couponDiscount)) }, $push: {
+                            transactions: {
+                                wallectAmount: (totalOrderPrice - (cart.couponDiscount)),
+                                orderId: orderId,
+                                trasactionType: "debited",
+                                trasactionsDate: new Date()
+                            }
+                        }
+                    }, { new: true })
+                    console.log(order._id);
 
-                res.status(404).json({message:"Insufficient wallet balance to complete the order",status:"noBalance"})
-            }
+                    const updateorder = await orderModel.findOneAndUpdate({ _id: order._id }, { $set: { "products.$[].paymentStatus": "paid" } }, { new: true })
+                    console.log(updateorder);
+
+
+                    res.status(201).json({ orderId: orderId, message: "order created", orderType, user })
+                }
+                else {
+                    await orderModel.findOneAndUpdate({ _id: order._id }, { $set: { "products.$[].paymentStatus": "failed" } })
+
+                    res.status(404).json({ message: "Insufficient wallet balance to complete the order", status: "noBalance" })
+                }
             }
 
         } else {
@@ -1332,26 +1333,28 @@ export const orderSuccess = async (req, res) => {
 export const showOrders = async (req, res) => {
     try {
         // Get page and limit from query parameters, set default values if not provided
-const page = parseInt(req.query.page) || 1;  // Current page, default is 1
-const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
+        const page = parseInt(req.query.page) || 1;  // Current page, default is 1
+        const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
 
-// Calculate the number of documents to skip
-const skip = (page - 1) * limit;
-const orderData2=  await orderModel.find({})
-let totalPages=0
-orderData2.forEach(userOrders=>{           
-     totalPages+= userOrders.products.length  
-  })
-  console.log(totalPages);
-  
+        // Calculate the number of documents to skip
+        const skip = (page - 1) * limit;
+        const orderData2 = await orderModel.find({})
+        let totalPages = 0
+        orderData2.forEach(userOrders => {
+            totalPages += userOrders.products.length
+        })
+        console.log(totalPages);
+
         const user = req.userData
         const userData = await usermodel.find({ email: user.email })
         const userId = userData[0]._id
-        const orderData = await orderModel.find({ user: userId }).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel }).skip(skip).limit(limit)   
+        const orderData = await orderModel.find({ user: userId }).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel }).skip(skip).limit(limit)
         console.log(orderData[0]);
-        res.render("user/showOrders", { user, orderData ,totalPages:totalPages/limit,
+        res.render("user/showOrders", {
+            user, orderData, totalPages: totalPages / limit,
             currentPage: page,
-            limit: limit})
+            limit: limit
+        })
     } catch {
 
     }
@@ -1366,32 +1369,32 @@ export const orderCancel = async (req, res) => {
         console.log(userId);
         const { product_id } = req.body
         console.log(product_id);
-       const order= await orderModel.findOne({ user: userId, 'products._id': product_id },{'products.$':1})
-       const ship= await orderModel.findOne({ user: userId,'products._id': product_id })
-       console.log(order.products[0].paymentStatus);
-       console.log(ship.shippingFee);
-       const RefundRupee=(((order.products[0].discountedPrice)*(order.products[0].quantity))-order.products[0].couponAdded)+ship.shippingFee
-       
-       //if paid refund
-       if(order.products[0].paymentStatus=="paid"){
-        await walletModel.findOneAndUpdate({ userId: userId }, {
-            $inc: { balance: RefundRupee }, $push: {
-                transactions: {
-                    wallectAmount: RefundRupee,
-                    orderId: order._id,
-                    trasactionType: "creditd",
-                    trasactionsDate: new Date()
+        const order = await orderModel.findOne({ user: userId, 'products._id': product_id }, { 'products.$': 1 })
+        const ship = await orderModel.findOne({ user: userId, 'products._id': product_id })
+        console.log(order.products[0].paymentStatus);
+        console.log(ship.shippingFee);
+        const RefundRupee = (((order.products[0].discountedPrice) * (order.products[0].quantity)) - order.products[0].couponAdded) + ship.shippingFee
+
+        //if paid refund
+        if (order.products[0].paymentStatus == "paid") {
+            await walletModel.findOneAndUpdate({ userId: userId }, {
+                $inc: { balance: RefundRupee }, $push: {
+                    transactions: {
+                        wallectAmount: RefundRupee,
+                        orderId: order._id,
+                        trasactionType: "creditd",
+                        trasactionsDate: new Date()
+                    }
                 }
-            }
-        })
-   await orderModel.findOneAndUpdate({ 'products._id': product_id }, { 'products.$.paymentStatus': "refunded" })
-       }
+            })
+            await orderModel.findOneAndUpdate({ 'products._id': product_id }, { 'products.$.paymentStatus': "refunded" })
+        }
         const update = await orderModel.findOneAndUpdate({ user: userId, 'products._id': product_id }, { 'products.$.orderStatus': 'cancelled' })
         res.json({ message: 'updated' })
     }
-    catch(err) {
+    catch (err) {
         console.log(err);
-        
+
         res.status(409).json({ message: "err" })
     }
 
@@ -1419,51 +1422,47 @@ export const returnOrder = async (req, res) => {
 }
 
 export const paymentVerificaton = async (req, res) => {
-    try{
+    try {
 
-    const user = req.userData
-    const userData = await usermodel.find({ email: user.email })
-    const userId = userData[0]._id
-    const { order_id, payment_id, signature, orderId } = req.body;
-    console.log("verification");
-    const hmac = createHmac('sha256', 'Oj8C7Cc4ETqAjrLRfwlN3LUF');   ///chnge to env
-    hmac.update(order_id + "|" + payment_id);
-    const generated_signature = hmac.digest('hex');
-    if (generated_signature === signature) {
-        // Payment verification successful
-
-        // database to mark the order as 'Paid
-        const update = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].paymentStatus': 'paid' } }, { new: true })
-        //   console.log(update);
-
-        console.log('Payment verified successfully!');
-
-        // Send success response to frontend
-        res.json({ status: 'success', message: 'Payment verified and updated in database.', orderId });
-    } else {
-        // Payment verification failed
-        console.error('Payment verification failed.');
-        res.json({ status: 'failure', message: 'Payment verification failed.' });
+        const user = req.userData
+        const userData = await usermodel.find({ email: user.email })
+        const userId = userData[0]._id
+        const { order_id, payment_id, signature, orderId } = req.body;
+        console.log("verification");
+        const hmac = createHmac('sha256', RAZORPAY_KEY_SECRET);   ///change to env
+        hmac.update(order_id + "|" + payment_id);
+        const generated_signature = hmac.digest('hex');
+        if (generated_signature === signature) {
+            // Payment verification successful
+            // database to mark the order as 'Paid
+            const update = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].paymentStatus': 'paid' } }, { new: true })
+            console.log('Payment verified successfully!');
+            res.json({ status: 'success', message: 'Payment verified and updated in database.', orderId });
+        } else {
+            const update = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].orderStatus': 'pending' } }, { new: true })
+            // Payment verification failed
+            console.error('Payment verification failed.');
+            res.json({ status: 'failure', message: 'Payment verification failed.' });
+        }
     }
-}
-catch{
+    catch {
 
-}
+    }
 
 }
 
 
 export const wallet = async (req, res) => {
-    try{
+    try {
 
-    const user = req.userData
-    const userId = await usermodel.findOne({ email: user.email }, { _id: 1 })
-    const wallet = await walletModel.findOne({ userId: userId._id })
+        const user = req.userData
+        const userId = await usermodel.findOne({ email: user.email }, { _id: 1 })
+        const wallet = await walletModel.findOne({ userId: userId._id })
 
 
-    res.render("user/wallet", { user, wallet })
-}
-catch{
+        res.render("user/wallet", { user, wallet })
+    }
+    catch {
 
-}
+    }
 }
