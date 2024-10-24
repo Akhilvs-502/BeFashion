@@ -196,6 +196,13 @@
                                 text: "Insufficient wallet balance to complete the order!",
                             });
                         }else{
+                        if (err.response.data.status == "noBalance") {
+                          await  Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: "Insufficient wallet balance to complete the order!",
+                            });
+                        }else{
                             await  Swal.fire({
                                 icon: "error",
                                 title: "Oops...",
