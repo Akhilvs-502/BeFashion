@@ -1210,10 +1210,16 @@ export const orderUpdate = async (req, res) => {
             totalOrderPrice=totalOrderPrice.toFixed(2)
             ////Response to cod
             if (orderType == 'cod') {
-                console.log(orderType);
-                // await order.update({"products."})
-                const update = await cartModel.deleteOne({ userId: userID })  //delete user cart
-                res.status(201).json({ orderId: orderId, message: "order created", orderType, user,totalOrderPrice })
+                if(totalOrderPrice>1000){
+        
+                    console.log(orderType);
+                    // await order.update({"products."})
+                    const update = await cartModel.deleteOne({ userId: userID })  //delete user cart
+                    res.status(201).json({ orderId: orderId, message: "order created", orderType, user,totalOrderPrice })
+                }
+                else{
+                    res.status(409).json({status:"notProcess",message:"order amount is less than 1000"})
+                }
             }
 
             /////Responsee to razorpay
