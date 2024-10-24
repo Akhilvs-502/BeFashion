@@ -6,6 +6,7 @@ import { home,login,postLogin,signUp,profile,logout,postSignup,mailforotp,postMa
     showOrders,orderCancel,returnOrder,paymentVerificaton,wallet} from '../controller/userController.js'
 import * as wishlist from "../controller/user/wishlistController.js"
 import * as coupon from "../controller/user/couponController.js"
+import * as order from "../controller/user/orderController.js"
 const routes=express.Router()
 
 routes.get("/home",home)
@@ -51,6 +52,7 @@ routes.get("/showOrders",auth,showOrders)
 routes.post("/orderCancel",auth,orderCancel)
 routes.post("/return",auth,returnOrder)
 routes.post("/paymentVerificaton",auth,paymentVerificaton)
+routes.get("/downloadInvoice",auth,order.downloadInvoice)
 
 //wallect
 routes.get("/wallet",auth,wallet)
