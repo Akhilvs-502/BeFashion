@@ -88,9 +88,6 @@
 
                             </div>
                           
-                            <button id="processing-btn" value="processing"
-                                class="btn mt-2 ml-5 bg-gray-600 text-white rounded-full w-40 h-8" hidden>Move to
-                                Processing</button>
                             <button id="shipped-btn" value="shipped"
                                 class="btn mt-2 ml-5 bg-[#ec4899] text-white rounded-full w-40 h-8" hidden>Move to
                                 Shipped</button>
@@ -334,9 +331,7 @@
             //here i want redirect the product page
         }
         //for status changing
-        if (orderStatus == "pending") {
-            product.querySelector("#processing-btn").hidden = false
-        }
+
         if (orderStatus == "processing") {
             console.log("processing");
 

@@ -13,7 +13,7 @@ import usermodel from '../../models/userModel.js';
       let shippingAddress=order[0].shippingAddress
       console.log(order[0].products);
 let orderItems=[]
-      
+      const  shippingFee=order[0].shippingFee
       order[0].products.forEach(product=>{
 console.log(product.orderStatus=="delivered");
 if(product.orderStatus=="delivered"){
@@ -84,10 +84,11 @@ if(product.orderStatus=="delivered"){
     // Totals 
     const subtotal = orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0); 
     const couponDiscount = orderItems.reduce((acc, item) => acc + (item.couponDiscount), 0); 
-    const total = subtotal - couponDiscount;
+    const total = subtotal - couponDiscount+shippingFee;
     doc.text("Subtotal:Rs " + subtotal.toFixed(2), 350, startY + (orderItems.length + 1) * rowHeight);
     doc.text("Coupon Discount:Rs " + couponDiscount.toFixed(2), 350, startY + (orderItems.length + 2) * rowHeight);
-    doc.text("Total:Rs " + total.toFixed(2), 350, startY + (orderItems.length + 3) * rowHeight);
+    doc.text("Shipping charge:Rs " + shippingFee.toFixed(2), 350, startY + (orderItems.length + 3) * rowHeight);
+    doc.text("Total:Rs " + total.toFixed(2), 350, startY + (orderItems.length + 4) * rowHeight);
 
     // Footer
     doc.fontSize(8).text("Thank you for your business!", 20, startY + (orderItems.length + 5) * rowHeight);

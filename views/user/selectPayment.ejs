@@ -145,19 +145,29 @@
                                     "upi": true,
                                 },
                                 "handler": function (response) {
-                                    // Handle the payment success response
-                                    console.log(response.razorpay_payment_id);
-                                    console.log(response.razorpay_order_id);
-                                    console.log(response.razorpay_signature);
-                                    const payment_id = response.razorpay_payment_id
-                                    const order_id = response.razorpay_order_id
-                                    const signature = response.razorpay_signature
-                                    axios.post("/user/paymentVerificaton", { payment_id, order_id, signature, orderId }).then(response => {
+                                    if (response.razorpay_payment_id) {
+                                        // payment success response
+                                        console.log(response.razorpay_payment_id);
+                                        console.log(response.razorpay_order_id);
+                                        console.log(response.razorpay_signature);
+                                        const payment_id = response.razorpay_payment_id
+                                        const order_id = response.razorpay_order_id
+                                        const signature = response.razorpay_signature
+                                        axios.post("/user/paymentVerificaton", { payment_id, order_id, signature, orderId }).then(response => {
 
-                                        window.location.href = `/user/orderSuccess/${orderId}`
-                                    }).catch(err => {
+                                            window.location.href = `/user/orderSuccess/${orderId}`
+                                        }).catch(err => {
+                                            Swal.fire({
+                                                title: "Failed",
+                                                text: "Payment Failed",
+                                                icon: "info"
+                                            });
 
-                                    })
+                                        })
+                                    } else {
+                                        // failure scenario
+                                        alert("Payment failed! Please try again.");
+                                    }
                                 },
                                 "prefill": {
                                     "name": userName,
@@ -169,11 +179,20 @@
                                 }
                             };
                             var rzp1 = new Razorpay(options);
-
-                            // document.getElementById('rzp-button').onclick = function (e) {
                             await rzp1.open();
                             event.preventDefault();
-                            // }
+                            rzp1.on('payment.failed', function (response) {
+                                // console.log("Payment Failed:", response.error);
+                                // alert("Payment failed. Please try again.hh");
+                                axios.patch("/user/paymentFailed",{orderId})
+                                Swal.fire({
+                                    title: "Failed",
+                                    text: "Payment Failed",
+                                    icon: "info"
+                                });
+                            });
+
+
                         }
                         if (response.data.orderType == "cod") {
                             console.log("cod");

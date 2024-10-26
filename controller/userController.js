@@ -4,14 +4,12 @@ import dotenv from "dotenv";
 import nodemailer from 'nodemailer'
 dotenv.config()
 import bcrypt from 'bcrypt'
-
 import productModel from "../models/productSchema.js";
 import mongoose from "mongoose";
 import cartModel from "../models/cartSchema.js";
 import orderModel from "../models/orderSchema.js";
 const secretKey = process.env.SECRET_KEY
 import Razorpay from 'razorpay'
-import { createHmac } from 'crypto';  // for verifiction in razorpay 
 import walletModel from "../models/walletModel.js";
 import couponModel from "../models/couponSchema.js";
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID
@@ -1420,37 +1418,6 @@ export const returnOrder = async (req, res) => {
 
     }
 }
-
-export const paymentVerificaton = async (req, res) => {
-    try {
-
-        const user = req.userData
-        const userData = await usermodel.find({ email: user.email })
-        const userId = userData[0]._id
-        const { order_id, payment_id, signature, orderId } = req.body;
-        console.log("verification");
-        const hmac = createHmac('sha256', RAZORPAY_KEY_SECRET);   ///change to env
-        hmac.update(order_id + "|" + payment_id);
-        const generated_signature = hmac.digest('hex');
-        if (generated_signature === signature) {
-            // Payment verification successful
-            // database to mark the order as 'Paid
-            const update = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].paymentStatus': 'paid' } }, { new: true })
-            console.log('Payment verified successfully!');
-            res.json({ status: 'success', message: 'Payment verified and updated in database.', orderId });
-        } else {
-            const update = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].orderStatus': 'pending' } }, { new: true })
-            // Payment verification failed
-            console.error('Payment verification failed.');
-            res.json({ status: 'failure', message: 'Payment verification failed.' });
-        }
-    }
-    catch {
-
-    }
-
-}
-
 
 export const wallet = async (req, res) => {
     try {

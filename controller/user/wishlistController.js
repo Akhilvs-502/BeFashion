@@ -9,8 +9,6 @@ export const addToWishlist = async (req, res) => {
         const user = await usermodel.findOne({ email: userEmail })
         // console.log(user);
         const wishlist = await wishlistModel.findOne({ userId: user._id })
-        // console.log(wishlist);
-        // console.log(productID);
 
 
 

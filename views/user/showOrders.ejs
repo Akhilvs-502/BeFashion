@@ -1,426 +1,561 @@
-<style>
-    /* Custom Styles for Extra Polish */
-    .progress-bar {
-        background: linear-gradient(90deg, rgba(34,197,94,1) 0%, rgba(6,182,212,1) 100%);
-    }
-    .step-icon {
-        background: linear-gradient(145deg, rgba(34,197,94,1), rgba(6,182,212,1));
-    }
-</style>
+
 <div class=" fixed  top-0 left-0 w-full z-50">
 
-<%- include('../partials/header') %>
+    <%- include('../partials/header') %>
 </div>
 
 
 <div class="flex mt-[72px] relative">
 
-<div class="fixed ">
-  <%- include('../partials/userSlidebar') %>
-</div>
+    <div class="fixed ">
+        <%- include('../partials/userSlidebar') %>
+    </div>
 
-<div class=" w-full ml-56 ">
-    <!-- Breadcrumb
-    <div class="flex ml-10">
+    <div class=" w-full ml-56 ">
 
-        <ul class="flex items-center justify-center font-[sans-serif] space-x-4 mt-4">
-            <a href="/user/home">
-                <li class="text-gray-500 text-base cursor-pointer">
-                    Home
-                </li>
-            </a>
-            <li>
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400 w-3.5 -rotate-90" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd"
-                        d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
-                        clip-rule="evenodd" data-original="#000000"></path>
-                </svg>
-            </li>
-            <a href="/user/profile">
-                <li class="text-gray-500 text-base cursor-pointer">
-                    My account
-                </li>
-            </a>
-            <li>
-                <svg xmlns="http://www.w3.org/2000/svg" class="fill-gray-400 w-3.5 -rotate-90" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd"
-                        d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z"
-                        clip-rule="evenodd" data-original="#000000"></path>
-                </svg>
-            </li>
-            <a href="">
-                <li class="text-gray-500 text-base cursor-pointer">
-                    orders
-                </li>
-            </a>
+        <h1 class="font-bold text-2xl ml-32 mt-4">My orders</h1>
+        <%orderData.forEach((userOrders,index)=>{%>
 
+            <div id="orderHeader"
+            data-payment-status="<%= userOrders.products[0].paymentStatus %>"
+            data-payment-mode="<%= userOrders.products[0].paymentMode %>"
+            data-order-status="<%= userOrders.products[0].orderStatus %>"
+            class="w-[655px] shadow-[0_-3px_12px_-3px_rgba(6,81,237,0.3)] mx-auto ml-14 p-2 mt-12">
+                <div><span class="font-bold">Order Id:</span>
+                    <%=userOrders._id %>
+                </div>
+                <div class=" bg-white"><span class="font-bold">Order Date: </span>
+                    <%=userOrders.createdAt.toLocaleString() %>
+                </div>
+                <div class=" bg-white"><span class="font-bold">items:</span>
+                    <%=userOrders.products.length%>
+                </div>
+                <div id="payAgain" class=" mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg shadow-md">
+                    <h2 class="text-lg font-bold mb-2">Order Failed</h2>
+                    <p class="mb-4">Unfortunately, your order could not be processed. Please try again.</p>
+                    <button data-order-id="<%=userOrders._id %>" id="payAgainBtn"
+                        class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-md">
+                        Repay Order
+                    </button>
+                </div>
+            </div>
 
-        </ul>
+            <% userOrders.products.forEach(product=>{%>
 
-    </div> -->
+                <div id="products">
+                    <div class="flex  ml-14   ">
+                        <div id="eachProduct"
+                            class="w-8/12 flex  gap-4 bg-white px-4 py-6 rounded-md shadow-[0_4px_12px_-2px_rgba(6,81,237,0.3)]">
+                            <div class="flex  gap-4">
+                                <div class=" h-28 max-sm:w-24 max-sm:h-24 shrink-0">
+                                    <img src='<%=product.product.images[0]%>' class="w-full h-full object-contain" />
 
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <div>
+                                        <!-- <span>OrderID:<%=userOrders._id%> -->
+                                        </span>
+                                        <h3 class="text-base font-bold text-gray-800">
+                                            <%=product.product.productName%>
+                                        </h3>
+                                        <p class="text-sm font-semibold text-gray-500 mt-2 flex items-center gap-2">
+                                            Color:
+                                            <%=product.color%><span
+                                                    class="inline-block w-5 h-5 rounded-md bg-<%=product.product.color[0]%>-600"></span>
+                                        </p>
+                                        <div class="flex">
+                                            <div>Size:</div>
+                                            <div class="ml-1">
+                                                <%=product.size%>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                    <div class="  flex items-center gap-3">
+                                        <div>quantity:</div>
+                                        <span id="quantity" class="font-bold text-sm leading-[18px]">
+                                            <%=product.quantity%>
+                                        </span>
 
-    <h1 class="font-bold text-2xl ml-32 mt-4">My orders</h1>
-    <%orderData.forEach(userOrders=>{%>
-
-        <!-- <h1><%=userOrders._id %></h1> <br> -->
-        <h1 class="mt-3"></h1><br>
-
-
-        <% userOrders.products.forEach(product=>{%>
-
-        <div id="products">
-            <div   class="flex  ml-14 mt-2  ">
-                <div id="eachProduct"
-                    class="w-8/12 flex  gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
-                    <div class="flex  gap-4">
-                        <div class=" h-28 max-sm:w-24 max-sm:h-24 shrink-0">
-                            <img src='<%=product.product.images[0]%>' class="w-full h-full object-contain" />
-
-                        </div>
-                        <div class="flex flex-col gap-1">
-                            <div>
-                                <span>OrderID:<%=userOrders._id%>
-                                </span>
-                                <h3 class="text-base font-bold text-gray-800">
-                                    <%=product.product.productName%>
-                                </h3>
-                                <p class="text-sm font-semibold text-gray-500 mt-2 flex items-center gap-2">Color:
-                                    <%=product.color%><span
-                                            class="inline-block w-5 h-5 rounded-md bg-<%=product.product.color[0]%>-600"></span>
-                                </p>
-                                <div class="flex">
-                                    <div>Size:</div>
-                                    <div class="ml-1">
-                                        <%=product.size%>
+                                    </div>
+                                    <div class="  flex items-center gap-3">
+                                        <div>payment status:</div>
+                                        <span id="paymentStatus" class="font-bold text-sm leading-[18px]">
+                                            <%=product.paymentStatus%>
+                                        </span>
+                                    </div>
+                                    <div class="  flex items-center gap-3">
+                                        <div>payment mode:</div>
+                                        <span id="paymentMode" class="font-bold text-sm leading-[18px]">
+                                            <%=product.paymentMode%>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="  flex items-center gap-3">
-                                <div>quantity:</div>
-                                <span id="quantity" class="font-bold text-sm leading-[18px]">
-                                    <%=product.quantity%>
-                                </span>
+                            <div class="ml-auto flex flex-col">
+
+                                <div class="flex ml-5">
+                                    <div class="font-semibold"> Order :</div>
+                                    <div id="orderStatus" class="ml-1 text-green-500">
+                                        <%=product.orderStatus%>
+                                    </div>
+                                </div>
+
+
+                                <div class="flex ml-5  <%= product.returnStatus == 'pending' ? 'hidden' : '' %>">
+                                    <div class="font-semibold"> return status:</div>
+                                    <div id="returnStatus" class="ml-1 text-green-500">
+
+                                        <%=product.returnStatus%>
+                                    </div>
+                                </div>
+
+                                <div>
+
+                                    <button id="cancelOrder"
+                                        class="btn mt-2 ml-5 bg-gray-600 text-white rounded-full w-28 h-8">cancel order
+                                    </button>
+                                    <button id="retrunOrder"
+                                        class="btn mt-2 ml-5 bg-[#164e63] text-white rounded-full w-28 h-8"
+                                        hidden>return order
+                                    </button>
+
+
+                                </div>
+                                <div class="mt-auto flex p-4">
+                                    <div>Total amount </div>
+                                    <h3 id="discountPrice" class="text-base font-bold text-gray-800 ml-1 ">
+                                        ₹<%=((product.totalPay)+userOrders.shippingFee)%>
+                                    </h3>
+
+                                </div>
+                                <div id="viewDetails" class="text-blue-500 ml-5">
+                                    view details
+                                </div>
 
                             </div>
-                            <div class="  flex items-center gap-3">
-                                <div>payment status:</div>
-                                <span id="quantity" class="font-bold text-sm leading-[18px]">
-                                    <%=product.paymentStatus%>
-                                </span>
-                            </div>
-                            <div class="  flex items-center gap-3">
-                                <div>payment mode:</div>
-                                <span id="quantity" class="font-bold text-sm leading-[18px]">
-                                    <%=product.paymentMode%>
-                                </span>
-                            </div>
+                            <input hidden value="<%=product._id%>" id="product_id" type="text">
+
+
                         </div>
+
+
                     </div>
 
-                    <div class="ml-auto flex flex-col">
+                    <!-- ///////////////////////////////////////////////////////////////////////////////////// -->
+                    <div id="productModal" class="hidden absolute top-0 w-8/12 ml-4 justify-center">
 
-                        <div class="flex ml-5">
-                            <div class="font-semibold"> Order :</div>
-                            <div id="orderStatus" class="ml-1 text-green-500">
-                                <%=product.orderStatus%>
-                            </div>
+                        <!-- Breadcrumb -->
+                        <div class="bg-white p-4 shadow flex justify-between">
+                            <nav class="text-sm text-gray-500">
+                                <a href="#" class="hover:underline">Home</a> >
+                                <a href="#" class="hover:underline">My Account</a> >
+                                <a href="#" class="hover:underline">My Orders</a> >
+                                <span>Order #<%=userOrders._id%></span>
+                            </nav>
+                            <div id="closeModal" class="font-bold">Close</div>
                         </div>
-                       
 
-                            <div class="flex ml-5  <%= product.returnStatus == 'pending' ? 'hidden' : '' %>"  >
-                                <div class="font-semibold"> return status:</div>
-                                <div id="returnStatus" class="ml-1 text-green-500">
-                                
-                                    <%=product.returnStatus%>
+                        <!-- Order Details -->
+                        <div class="container mx-auto p-4">
+                            <div class="grid lg:grid-cols-2 gap-6">
+                                <!-- Delivery Address Section -->
+                                <div class="bg-white p-6 rounded-lg shadow">
+                                    <h2 class="text-xl font-semibold mb-4">Delivery Address</h2>
+                                    <p class="text-gray-700">
+                                        <span class="font-semibold">
+                                            <%=userOrders.shippingAddress.address%>
+                                        </span><br>
+                                        <%=userOrders.shippingAddress.locality%>,<br>
+                                            <%=userOrders.shippingAddress.city%>, <%=userOrders.shippingAddress.state%>,
+                                                    <%=userOrders.shippingAddress.pincode%> <br>
+                                                        <span>Phone: 9876543210</span>
+                                    </p>
+
+                                    <span>Order Id:<%=userOrders._id%>
+                                    </span>
+                                    <spand hidden id="orderId">
+                                        <%=userOrders._id%></span>
+                                </div>
+
+                                <!-- More Actions Section -->
+                                <div class="bg-white p-6 rounded-lg shadow">
+                                    <h2 class="text-xl font-semibold mb-4">More Actions</h2>
+                                    <div id="download-invoice-btn" class="<%=product.orderStatus!=='delivered' ? 'hidden': '' %> block text-blue-500 font-medium underline">
+                                        Download Invoice</div>
                                 </div>
                             </div>
-                       
-                        <div>
 
-                            <button id="cancelOrder"
-                                class="btn mt-2 ml-5 bg-gray-600 text-white rounded-full w-28 h-8">cancel order
-                            </button>
-                            <button id="retrunOrder" class="btn mt-2 ml-5 bg-[#164e63] text-white rounded-full w-28 h-8"
-                                hidden>return order
-                            </button>
+                            <!-- Order Tracking -->
+                            <div class="mt-6 bg-white  p-6 rounded-lg shadow">
+                                <h2 class="text-xl font-semibold mb-4">Order Details</h2>
+                                <div class="flex items-center space-x-4">
+                                    <img src="<%=product.product.images[0]%>" alt="Product Image"
+                                        class="w-20 h-20 object-cover">
+                                    <div>
+                                        <p class="font-medium text-gray-700">
+                                            <%=product.product.productName%>
+                                        </p>
+                                        <p class="text-sm text-gray-500">Color: <%=product.color%>, Size:
+                                                <%=product.size%>
+                                        </p>
+                                        <p class="text-sm text-gray-500">quantity: <%=product.quantity%>
+                                        </p>
+                                        <p class="text-lg font-semibold">₹
+                                            <%=((product.totalPay)+userOrders.shippingFee).toFixed(2)%> <span
+                                                    class="<%=product.couponAdded<=0 ?'hidden' :'' %>  text-sm text-green-500">₹
+                                                    <%=product.couponAdded%> coupon Applied</span></p>
+                                    </div>
+                                </div>
 
+                                <!-- Order Status -->
+                                <div class="mt-6">
+                                    <div class="flex justify-between items-center">
+                                        <div class="text-center">
+                                            <div
+                                                class="w-8 h-8 bg-green-500 text-white rounded-full mx-auto flex items-center justify-center">
+                                                ✓</div>
+                                            <p class="text-sm text-gray-500 mt-2">Order Started</p>
+
+                                        </div>
+                                        <div class="w-full h-1 bg-green-500"></div>
+                                        <div class="text-center">
+                                            <div
+                                                class="w-8 h-8    bg-<%=product.orderStatus!='processing' ? 'green':'gray'  %>-500     text-white rounded-full mx-auto flex items-center justify-center">
+                                                ✓</div>
+                                            <p class="text-sm text-gray-500 mt-2">Order Confirmed</p>
+
+                                        </div>
+                                        <div
+                                            class="w-full h-1  bg-<%=product.orderStatus='processing' ? 'green':'gray'  %>-500  ">
+                                        </div>
+                                        <div class="text-center">
+                                            <div
+                                                class="w-8 h-8  bg-<%=product.orderStatus='shipped' ? 'green':'gray'  %>-500  text-white rounded-full mx-auto flex items-center justify-center">
+                                                ✓</div>
+                                            <p class="text-sm    mt-2">Order Shipped</p>
+                                        </div>
+                                        <div
+                                            class="w-full h-1 bg-<%=product.orderStatus='processing' ? 'green':'gray'  %>-500  ">
+                                        </div>
+                                        <div class="text-center">
+                                            <div
+                                                class="w-8 h-8 bg-<%=product.orderStatus='delivered' ? 'green':'gray'  %>-500  text-white rounded-full mx-auto flex items-center justify-center">
+                                                ✓</div>
+                                            <p class="text-sm text-gray-500 mt-2">Delivered</p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Order Summary Section -->
+                            <div class="mt-6 bg-white p-6 rounded-lg shadow-md">
+                                <h2 class="text-2xl font-semibold mb-4 text-indigo-600">Order Summary</h2>
+                                <p class="text-gray-700">Subtotal: <span class="font-semibold">₹
+                                        <%=((product.discountedPrice)*(product.quantity)).toFixed(2)%></span></p>
+                                <p class="text-gray-700">Coupon Applied: <span class="text-green-600">-₹
+                                        <%=product.couponAdded%></span></p>
+                                <p class="text-gray-700">Shipping: <span class="font-semibold">₹
+                                        <%=userOrders.shippingFee%></span></p>
+                                <p class="text-lg font-semibold">Total Amount: <span class="text-gray-700">₹
+                                        <%=((product.totalPay))+(userOrders.shippingFee)%></span></p>
+                            </div>
                         </div>
-                        <div class="mt-auto flex p-4">
-                            <div>Total amount  </div>
-                             <h3 id="discountPrice" class="text-base font-bold text-gray-800 ml-1 ">
-                                    ₹<%=((product.totalPay)+userOrders.shippingFee)+(userOrders.shippingFee)%></h3>
-                         
-                        </div>
-                        <div id="viewDetails" class="text-blue-500">
-                            view details
-                        </div>
-                    
-                    </div>
-                    <input hidden value="<%=product._id%>" id="product_id" type="text">
 
-
-                </div>
-
-
-            </div>
-
-<!-- ///////////////////////////////////////////////////////////////////////////////////// -->
-<div  id="productModal" class="hidden absolute top-0 w-8/12 ml-4 justify-center">
-    
-            <!-- Breadcrumb -->
-    <div class="bg-white p-4 shadow">
-        <nav class="text-sm text-gray-500">
-            <a href="#" class="hover:underline">Home</a> >
-            <a href="#" class="hover:underline">My Account</a> >
-            <a href="#" class="hover:underline">My Orders</a> >
-            <span>Order #<%=userOrders._id%></span>
-        </nav>
-    </div>
-
-    <!-- Order Details -->
-    <div class="container mx-auto p-4">
-        <div class="grid lg:grid-cols-2 gap-6">
-            <!-- Delivery Address Section -->
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-semibold mb-4">Delivery Address</h2>
-                <p class="text-gray-700">
-                    <span class="font-semibold"><%=userOrders.shippingAddress.address%></span><br>
-                    <%=userOrders.shippingAddress.locality%>,<br>
-                    <%=userOrders.shippingAddress.city%>,   <%=userOrders.shippingAddress.state%>,  <%=userOrders.shippingAddress.pincode%> <br>
-                    <span>Phone: 9876543210</span>
-                </p>
-
-                <span >Order Id:<%=userOrders._id%>
-                </span>
-                <spand hidden id="orderId"><%=userOrders._id%></span>
-            </div>
-
-            <!-- More Actions Section -->
-            <div class="bg-white p-6 rounded-lg shadow">
-                <h2 class="text-xl font-semibold mb-4">More Actions</h2>
-                <div id="download-invoice-btn" class="block text-blue-500 font-medium underline">Download Invoice</div>
-            </div>
-        </div>
-
-        <!-- Order Tracking -->
-        <div class="mt-6 bg-white p-6 rounded-lg shadow">
-            <h2 class="text-xl font-semibold mb-4">Order Details</h2>
-            <div class="flex items-center space-x-4">
-                <img src="<%=product.product.images[0]%>" alt="Product Image" class="w-20 h-20 object-cover">
-                <div>
-                    <p class="font-medium text-gray-700"><%=product.product.productName%></p>
-                    <p class="text-sm text-gray-500">Color:  <%=product.color%>, Size:  <%=product.size%></p>
-                    <p class="text-sm text-gray-500">quantity:    <%=product.quantity%></p>
-                    <p class="text-lg font-semibold">₹<%=((product.totalPay)+userOrders.shippingFee).toFixed(2)%> <span class="<%=product.couponAdded<=0 ?'hidden' :'' %>  text-sm text-green-500">₹<%=product.couponAdded%>  coupon Applied</span></p>
-                </div>
-            </div>
-
-            <!-- Order Status -->
-            <div class="mt-6">
-                <div class="flex justify-between items-center">
-                    <div class="text-center">
-                        <div class="w-8 h-8 bg-green-500 text-white rounded-full mx-auto flex items-center justify-center">✓</div>
-                        <p class="text-sm text-gray-500 mt-2">Order Started</p>
-                 
-                    </div>
-                    <div class="w-full h-1 bg-green-500"></div>
-                    <div class="text-center">
-                        <div class="w-8 h-8    bg-<%=product.orderStatus!='processing' ? 'green':'gray'  %>-500     text-white rounded-full mx-auto flex items-center justify-center">✓</div>
-                        <p class="text-sm text-gray-500 mt-2">Order Confirmed</p>
-             
-                    </div>
-                    <div class="w-full h-1  bg-<%=product.orderStatus='processing' ? 'green':'gray'  %>-500  "></div>
-                    <div class="text-center">
-                        <div class="w-8 h-8  bg-<%=product.orderStatus='shipped' ? 'green':'gray'  %>-500  text-white rounded-full mx-auto flex items-center justify-center">✓</div>
-                        <p class="text-sm    mt-2">Order Shipped</p>
-                       </div>
-                    <div class="w-full h-1 bg-<%=product.orderStatus='processing' ? 'green':'gray'  %>-500  "></div>
-                    <div class="text-center">
-                        <div class="w-8 h-8 bg-<%=product.orderStatus='delivered' ? 'green':'gray'  %>-500  text-white rounded-full mx-auto flex items-center justify-center">✓</div>
-                        <p class="text-sm text-gray-500 mt-2">Delivered</p>
-                      
                     </div>
                 </div>
-            </div>
-        </div>
+                <!-- //////////////////////////////////// -->
 
-        <!-- Order Summary Section -->
-        <div class="mt-6 bg-white p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold mb-4 text-indigo-600">Order Summary</h2>
-            <p class="text-gray-700">Subtotal: <span class="font-semibold">₹<%=((product.discountedPrice)*(product.quantity)).toFixed(2)%></span></p>
-            <p class="text-gray-700">Discount Applied: <span class="text-green-600">-₹<%=product.couponAdded%></span></p>
-            <p class="text-gray-700">Shipping: <span class="font-semibold">₹<%=userOrders.shippingFee%></span></p>
-            <p class="text-lg font-semibold">Total Amount: <span class="text-gray-700">₹<%=((product.totalPay))+(userOrders.shippingFee)%></span></p>
-        </div>
+                <% }) %>
+
+
+                    <%})%>
     </div>
-
-     </div>
-    </div>
-<!-- //////////////////////////////////// -->
- 
-            <% }) %>
-
-
-                <%})%>
-</div></div>
-
-
-<div class="pagination flex items-center justify-center mt-12 space-x-2">
-
-
-    <% if (currentPage > 1) { %>
-      <a href="/user/showOrders?page=<%= currentPage - 1 %>&limit=<%= limit %>" 
-         class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
-          Previous
-      </a>
-  <% } %>
-
-  <!-- Loop through the total number of pages -->
-  <% for (let i = 1; i <= totalPages; i++) { %>
-      <% if (i === currentPage) { %>
-          <span class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded">
-              <%= i %>
-          </span>
-      <% } else { %>
-          <a href="/user/showOrders?page=<%= i %>&limit=<%= limit %>" 
-             class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
-              <%= i %>
-          </a>
-      <% } %>
-  <% } %>
-
-  <% if (currentPage < totalPages) { %>
-      <a href="/user/showOrders?page=<%= currentPage + 1 %>&limit=<%= limit %>" 
-         class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
-          Next
-      </a>
-  <% } %>
-
-
- 
 </div>
 
-              
-                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-                    <script>
+<div class="pagination flex items-center justify-center mt-12 space-x-2 ml-28">
 
 
-                        document.querySelectorAll("#products").forEach((product) => {
-                            product.querySelector("#cancelOrder").addEventListener("click", () => {
-                                const product_id = product.querySelector("#product_id").value
-                                console.log(product_id);
-                                Swal.fire({
-                                    title: "Are you sure?",
-                                    text: "You won't be able to revert this!",
-                                    icon: "warning",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#3085d6",
-                                    cancelButtonColor: "#d33",
-                                    confirmButtonText: "Yes, Cancel order!",
-                                    cancelButtonText: "Close"
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        Swal.fire({
-                                            title: "Cancelled",
-                                            text: "Your order has been cancelled.",
-                                            icon: "success"
-                                        });
+    <% if (currentPage> 1) { %>
+        <a href="/user/showOrders?page=<%= currentPage - 1 %>&limit=<%= limit %>"
+            class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+            Previous
+        </a>
+        <% } %>
 
-                                        axios.post('/user/orderCancel', { product_id }).then(data => {
-                                            setTimeout(() => {
-                                                window.location.reload()
-                                            }, 1000)
-                                        }).catch(data => {
+            <!-- Loop through the total number of pages -->
+            <% for (let i=1; i <=totalPages; i++) { %>
+                <% if (i===currentPage) { %>
+                    <span class="px-4 py-2 text-sm font-bold text-white bg-blue-600 rounded">
+                        <%= i %>
+                    </span>
+                    <% } else { %>
+                        <a href="/user/showOrders?page=<%= i %>&limit=<%= limit %>"
+                            class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+                            <%= i %>
+                        </a>
+                        <% } %>
+                            <% } %>
+
+                                <% if (currentPage < totalPages) { %>
+                                    <a href="/user/showOrders?page=<%= currentPage + 1 %>&limit=<%= limit %>"
+                                        class="px-4 py-2 text-sm text-gray-700 bg-gray-200 rounded hover:bg-gray-300 transition-colors">
+                                        Next
+                                    </a>
+                                    <% } %>
+
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+
+
+    document.addEventListener("DOMContentLoaded",()=>{
+        
+    document.querySelectorAll("#products").forEach((product) => {
+
+        //Button hide
+        const orderStatus = product.querySelector("#orderStatus").innerHTML.trim()
+        const returnStatus = product.querySelector("#returnStatus").innerHTML.trim()
+        const paymentStatus = product.querySelector("#paymentStatus").innerHTML.trim()
+        const paymentMode = product.querySelector("#paymentMode").innerHTML.trim()
+
+
+        product.querySelector("#cancelOrder").addEventListener("click", () => {
+            const product_id = product.querySelector("#product_id").value
+            // console.log(product_id);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Cancel order!",
+                cancelButtonText: "Close"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: "Cancelled",
+                        text: "Your order has been cancelled.",
+                        icon: "success"
+                    });
+
+                    axios.post('/user/orderCancel', { product_id }).then(data => {
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1000)
+                    }).catch(data => {
+
+                    })
+
+                }
+            });
+
+        })
+
+        product.querySelector("#retrunOrder").addEventListener("click", async () => {
+            const { value: text, isConfirmed } = await Swal.fire({
+                input: "textarea",
+                inputLabel: "Reason for returning product",
+                inputPlaceholder: "Type your message here...",
+                inputAttributes: {
+                    "aria-label": "Type your message here"
+                },
+                showCancelButton: true
+            });
+            if (isConfirmed && text) {
+                await Swal.fire("Your return request has been successfully sent.");
+                console.log(text);
+                const product_id = product.querySelector("#product_id").value
+                axios.post("/user/return", { text, product_id }).then(response => {
+                    window.location.reload()
+                }).catch(response => {
+                    console.log(response);
+
+                })
+
+            } else if (isConfirmed && !text) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'You must enter a reason for returning the product!',
+                })
+            }
+        })
+
+
+
+        console.log(returnStatus);
+
+
+        if (orderStatus === "cancelled" ||orderStatus === "pending") {
+
+            product.querySelector("#cancelOrder").hidden = true
+        }
+        if (orderStatus === "delivered") {
+            product.querySelector("#cancelOrder").hidden = true
+            product.querySelector("#retrunOrder").hidden = false
+        }
+        if (returnStatus !== "pending") {
+            product.querySelector("#retrunOrder").hidden = true
+        }
+
+
+        product.querySelector("#viewDetails").addEventListener("click", () => {
+
+            product.querySelector("#productModal").classList.remove("hidden")
+            document.querySelectorAll("#eachProduct").forEach(element => {
+                element.classList.add("hidden")
+            })
+            document.querySelectorAll("#orderHeader").forEach(element => {
+                element.classList.add("hidden")
+            })
+            document.querySelector(".pagination").classList.add("hidden")
+            
+        })
+        
+        product.querySelector("#closeModal").addEventListener("click",()=>{
+            product.querySelector("#productModal").classList.add("hidden")
+            document.querySelectorAll("#eachProduct").forEach(element => {
+                element.classList.remove("hidden")
+            })
+            document.querySelectorAll("#orderHeader").forEach(element => {
+                element.classList.remove("hidden")
+            })
+            document.querySelector(".pagination").classList.remove("hidden")
+            
+        })
+
+        //download invoice
+        product.querySelector('#download-invoice-btn').addEventListener('click', () => {
+            const orderId = product.querySelector("#orderId").innerHTML.trim()
+
+
+            axios.get(`/user/downloadInvoice?orderId=${orderId}`, { responseType: "blob" }).then(response => {
+                const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'invoice.pdf'); //download filename
+                document.body.appendChild(link);
+                link.click();
+                link.remove(); //
+            })
+        })
+
+
+    })
+
+})
+    
+
+document.querySelectorAll("#orderHeader").forEach(header => {
+    const paymentStatus = header.getAttribute("data-payment-status");
+    const paymentMode = header.getAttribute("data-payment-mode");
+    const orderStatus = header.getAttribute("data-order-status");
+    const payAgainButton = header.querySelector("#payAgain");
+
+    // Check the conditions and hide the button if they are met
+    if (paymentStatus !== "pending" || paymentMode !== "razorpay" || orderStatus == "cancelled" ) {
+        payAgainButton.classList.add("hidden");
+    }
+
+
+
+
+            header.querySelector("#payAgainBtn").addEventListener("click", (event) => {
+                const orderid = event.target.dataset.orderId
+                console.log(orderid);
+                Swal.fire({
+                    title: "Are you sure you want to proceed with the repayment?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#28a745",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, Pay now",
+                    cancelButtonText: "Close"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.patch('/user/repayment', { orderid }).then(async response => {
+                            console.log("returend");
+                            const orderId = response.data.orderId
+                        const totalOrderPrice = response.data.totalOrderPrice
+                        const userName = response.data.user.name
+                        const userEmail = response.data.user.email
+                            const RAZORPAY_KEY_ID = response.data.RAZORPAY_KEY_ID
+
+                            var options = {
+                                "key": RAZORPAY_KEY_ID, // Enter your Key ID generated from the Dashboard
+                                "name": response.data.currency,
+                                "description": "Test Transaction",
+                                "image": "https://example.com/your_logo",
+                                "order_id": response.data.razorpayOrderId,
+                                "method": {
+                                    "upi": true,
+                                },
+                                "handler": function (response) {
+                                    if (response.razorpay_payment_id) {
+                                        // payment success response
+                                        const payment_id = response.razorpay_payment_id
+                                        const order_id = response.razorpay_order_id
+                                        const signature = response.razorpay_signature
+                                        axios.post("/user/paymentVerificaton", { payment_id, order_id, signature, orderId }).then(response => {
+
+                                            window.location.href = `/user/orderSuccess/${orderId}`
+                                        }).catch(err => {
+                                            Swal.fire({
+                                                title: "Failed",
+                                                text: "Payment Failed",
+                                                icon: "info"
+                                            });
 
                                         })
-
+                                    } else {
+                                        // failure scenario
+                                        alert("Payment failed! Please try again.");
                                     }
-                                });
-
-                            })
-
-                            product.querySelector("#retrunOrder").addEventListener("click", async () => {
-                                const { value: text ,isConfirmed} = await Swal.fire({
-                                    input: "textarea",
-                                    inputLabel: "Reason for returning product",
-                                    inputPlaceholder: "Type your message here...",
-                                    inputAttributes: {
-                                        "aria-label": "Type your message here"
-                                    },
-                                    showCancelButton: true
-                                });
-                                if (isConfirmed && text) {
-                                   await Swal.fire("Your return request has been successfully sent.");
-                                    console.log(text);
-                                    const product_id = product.querySelector("#product_id").value
-                                    axios.post("/user/return",{text,product_id}).then(response=>{
-                                        window.location.reload()
-                                    }).catch(response=>{
-                                        console.log(response);
-                                        
-                                    })
-
-                                } else if (isConfirmed && !text) {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Oops...',
-                                        text: 'You must enter a reason for returning the product!',
-                                    })
+                                },
+                                "prefill": {
+                                    "name": userName,
+                                    "email": userEmail,
+                                    "contact": response.data.user.phone
+                                },
+                                "theme": {
+                                    "color": "#F37254"
                                 }
-                            })
+                            };
+                            var rzp1 = new Razorpay(options);
+                            await rzp1.open();
+                            event.preventDefault();
+                            rzp1.on('payment.failed', function (response) {
+                                axios.patch("/user/paymentFailed",{orderId})
+                                Swal.fire({
+                                    title: "Failed",
+                                    text: "Payment Failed",
+                                    icon: "info"
+                                });
+                            });
 
-                            //Button hide
-                            const orderStatus = product.querySelector("#orderStatus").innerHTML.trim()
-                            const returnStatus = product.querySelector("#returnStatus").innerHTML.trim()
-                            console.log(returnStatus);
-                            
-                            // console.log(orderStatus);
-                            if (orderStatus === "cancelled") {
-                                // console.log(orderStatus);
-                                product.querySelector("#cancelOrder").hidden = true
-                                // document.getElementById("").href="/user/product"
-                                //here i want redirect the product page
-                            }
-                            if (orderStatus === "delivered" ) {
-                                product.querySelector("#cancelOrder").hidden = true
-                                product.querySelector("#retrunOrder").hidden = false
-                            }
-                            if( returnStatus!=="pending"){
-                                product.querySelector("#retrunOrder").hidden =true
-                            }
-
-                            product.querySelector("#viewDetails").addEventListener("click",()=>{
-                                
-                               document.querySelector(".pagination").classList.add("hidden")
-                                product.querySelector("#productModal").classList.remove("hidden")
-                                document.querySelectorAll("#eachProduct").forEach(element=>{
-                                    element.classList.add("hidden")
-                                })
-                                
-                            })
-
-
-                            //download invoice
-                            product.querySelector('#download-invoice-btn').addEventListener('click', () => {
-                               const orderId= product.querySelector("#orderId").innerHTML
-                           
-                               
-                                axios.get(`/user/downloadInvoice?orderId=${orderId}`,{responseType:"blob"}).then(response => {
-                                    const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-                                    const link = document.createElement('a');
-                                    link.href = url;
-                                    link.setAttribute('download', 'invoice.pdf'); //download filename
-                                    document.body.appendChild(link);
-                                    link.click();
-                                    link.remove(); //
-                                })
-                            })
-
+                        }).catch(data => {
+console.log(data);
 
                         })
-                    </script>
+
+                    }
+                });
+
+            })
+            
+});
+
+</script>

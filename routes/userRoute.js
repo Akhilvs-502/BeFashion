@@ -3,10 +3,11 @@ import auth from '../middewares/authenticate.js'
 import { home,login,postLogin,signUp,profile,logout,postSignup,mailforotp,postMailforotp,postOtp,getotp,forgotpassword,postForgotpassword,
     resetPassword,passwordUpdate,changePassword,allProducts,productView,editProfile,patchEditProfile,showAddress,addAddress,postAddAddress,
     deleteAddress,editAddress,patchAddAddress,addToCart,showCart,updateQuantity,checkOutStep1,postCheckOutStep1,cartSummary,selectPayment,orderUpdate,orderSuccess,
-    showOrders,orderCancel,returnOrder,paymentVerificaton,wallet} from '../controller/userController.js'
+    showOrders,orderCancel,returnOrder,wallet} from '../controller/userController.js'
 import * as wishlist from "../controller/user/wishlistController.js"
 import * as coupon from "../controller/user/couponController.js"
 import * as order from "../controller/user/orderController.js"
+import * as payment from"../controller/user/paymentController.js"
 const routes=express.Router()
 
 routes.get("/home",home)
@@ -51,7 +52,6 @@ routes.get("/orderSuccess/:orderId",auth,orderSuccess)
 routes.get("/showOrders",auth,showOrders)
 routes.post("/orderCancel",auth,orderCancel)
 routes.post("/return",auth,returnOrder)
-routes.post("/paymentVerificaton",auth,paymentVerificaton)
 routes.get("/downloadInvoice",auth,order.downloadInvoice)
 
 //wallect
@@ -65,4 +65,9 @@ routes.post("/removeFromWhishlist",auth,wishlist.removeFromWishlist)
 // coupon
 routes.post("/applyCoupon",auth,coupon.applyCoupon)
 routes.post("/removeCoupon",auth,coupon.removeCoupon)
+
+//
+routes.post("/paymentVerificaton",auth,payment.paymentVerificaton)
+routes.patch("/paymentFailed",auth,payment.paymentFailed)
+routes.patch("/repayment",auth,payment.repayment)
 export default routes
