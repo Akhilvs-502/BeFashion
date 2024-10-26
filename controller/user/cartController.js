@@ -114,3 +114,108 @@ export const showCart = async (req, res) => {
     }
 
 }
+
+
+export const updateQuantity = async (req, res) => {
+    try {
+        console.log(req.body);
+
+        const jwtUser = req.userData
+        const userData = await usermodel.findOne({ email: jwtUser.email })
+        const { productId, action, value } = req.body
+
+
+        // const cart = await cartModel.findOne({ userId: userData._id }).populate('products.productId')
+        let totalPrice = 0
+        let shippingFee = 0
+        let discountPrice = 0
+        let couponDiscount = 0
+        let total = 0
+        async function newCart() {
+            const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: 'products.productId', model: 'product' })
+            if (cart) {
+                const products = cart.products.forEach(product => {
+                    totalPrice += product.productId.price * product.quantity
+                })
+                cart.products.forEach(product => {
+                    discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
+                })
+                shippingFee = totalPrice < 500 ? 40 : 0
+                shippingFee = totalPrice == 0 ? 0 : shippingFee
+                couponDiscount = (cart.couponDiscount).toFixed(2)
+                total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
+                total = total - couponDiscount
+                discountPrice.toFixed(2)
+
+            }
+
+
+        }
+
+        if (action === "quantityAdding") {
+            console.log(value);
+
+            const productDetails = await productModel.findOne({ _id: productId })
+            if (productDetails.stock <= value) {
+                console.log("err");
+                res.status(409).json({ message: "The product is currently out of stock! You can't add any more to the quantity" })
+            }
+            else {
+                const cart = await cartModel.findOneAndUpdate({
+                    userId: userData._id, 'products.productId': productId
+                }, { $inc: { 'products.$.quantity': 1 } }, { new: true })
+                const productDetails = await productModel.findOne({ _id: productId })
+                console.log(productDetails);
+                const productPrice = productDetails.price
+                const productDiscountPrice = productPrice - (productPrice * (productDetails.discount / 100))
+                console.log(productPrice, productDiscountPrice);
+
+                await newCart()
+
+                res.json({ totalPrice, total, shippingFee, discountPrice, productPrice, productDiscountPrice })
+            }
+
+
+        }
+        else if (action === "quantityDecreasing") {
+            await cartModel.findOneAndUpdate({
+                userId: userData._id, 'products.productId': productId
+            },
+                { $inc: { 'products.$.quantity': -1 } })
+            const productDetails = await productModel.findOne({ _id: productId })
+            console.log(productDetails);
+            const productPrice = productDetails.price
+            const productDiscountPrice = productPrice - (productPrice * (productDetails.discount / 100))
+            console.log(productPrice, productDiscountPrice);
+
+            await newCart()
+            res.json({ totalPrice, total, shippingFee, discountPrice, productPrice, productDiscountPrice })
+
+
+
+        }
+        else if (action === "selectSize") {
+            await cartModel.findOneAndUpdate({
+                userId: userData._id, 'products.productId': productId
+            },
+                { $set: { "products.$.size": value } })
+            res.json({
+                message: "size changed"
+            })
+        }
+        else if (action === "delete") {
+            await cartModel.findOneAndUpdate({
+                userId: userData._id
+            },
+                { $pull: { products: { productId: productId } } })
+            res.json({
+                message: "product deleted"
+            })
+        }
+    }
+
+    catch {
+        res.status(500).json({ message: "server error" })
+    }
+
+}
