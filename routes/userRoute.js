@@ -1,20 +1,21 @@
 import express, { Router } from 'express'
 import auth from '../middewares/authenticate.js'
-import { home,login,postLogin,signUp,profile,logout,postSignup,mailforotp,postMailforotp,postOtp,getotp,forgotpassword,postForgotpassword,
-    resetPassword,passwordUpdate,changePassword,allProducts,productView,editProfile,patchEditProfile,showAddress,addAddress,postAddAddress,
-    deleteAddress,editAddress,patchAddAddress,addToCart,showCart,updateQuantity,checkOutStep1,postCheckOutStep1,cartSummary,selectPayment,orderUpdate,orderSuccess,
-    showOrders,orderCancel,returnOrder,wallet} from '../controller/userController.js'
+import { home,login,postLogin,signUp,logout,postSignup,mailforotp,postMailforotp,postOtp,getotp,forgotpassword,postForgotpassword,
+    resetPassword,passwordUpdate,changePassword,allProducts,productView,wallet} from '../controller/userController.js'
 import * as wishlist from "../controller/user/wishlistController.js"
 import * as coupon from "../controller/user/couponController.js"
 import * as order from "../controller/user/orderController.js"
 import * as payment from"../controller/user/paymentController.js"
+import * as checkout from "../controller/user/checkoutController.js"
+import * as cart from "../controller/user/cartController.js"
+import * as address from "../controller/user/addressController.js"
+import * as profile from "../controller/user/profileContoller.js"
 const routes=express.Router()
 
 routes.get("/home",home)
 routes.get('/login',login)
 routes.post('/login',postLogin)
 routes.get('/signup',signUp)
-routes.get('/profile',auth,profile)
 routes.get('/logout',logout)
 routes.post('/postSignup',postSignup)
 routes.get('/mailforotp/:email',mailforotp)
@@ -26,32 +27,38 @@ routes.post('/postForgotpassword',postForgotpassword)
 routes.get('/resetPassword',resetPassword)
 routes.patch('/passwordUpdate',passwordUpdate)
 routes.get('/changePassword',changePassword)
-routes.get('/allProducts',allProducts)
 routes.get('/productView/:id',productView)
-routes.get('/editProfile',auth,editProfile)
-routes.patch('/editProfile',auth,patchEditProfile)
-routes.get('/address',auth,showAddress)
-routes.get('/addAddress',auth,addAddress)
-routes.post("/addAddress",auth,postAddAddress)
-routes.patch("/deleteAddress",auth,deleteAddress)
-routes.get('/editAddress/:addressID',auth,editAddress)
-routes.patch("/addAddress",auth,patchAddAddress)
+routes.get('/allProducts',allProducts)
+
+//PROFILE
+routes.get('/profile',auth,profile.profile)
+routes.get('/editProfile',auth,profile.editProfile)
+routes.patch('/editProfile',auth,profile.patchEditProfile)
+
+//ADDRESS
+routes.get('/address',auth,address.showAddress)
+routes.get('/addAddress',auth,address.addAddress)
+routes.post("/addAddress",auth,address.postAddAddress)
+routes.patch("/deleteAddress",auth,address.deleteAddress)
+routes.get('/editAddress/:addressID',auth,address.editAddress)
+routes.patch("/addAddress",auth,address.patchAddAddress)
 
 // CART
-routes.post("/addToCart",auth,addToCart)
-routes.get('/showCart',auth,showCart)
-routes.post('/cart/updateQuantity',auth,updateQuantity)
+routes.post("/addToCart",auth,cart.addToCart)
+routes.get('/showCart',auth,cart.showCart)
+routes.post('/cart/updateQuantity',auth,cart.updateQuantity)
 
+//CHECKOUT
+routes.get("/cart/checkOutStep1",auth,checkout.checkOutStep1)
+routes.post("/cart/checkOutStep1",auth,checkout.postCheckOutStep1)
+routes.get("/cartSummary/:addressID",auth,checkout.cartSummary)
+routes.get("/selectPayment/:addressID",auth,checkout.selectPayment)
 //ORDER
-routes.get("/cart/checkOutStep1",auth,checkOutStep1)
-routes.post("/cart/checkOutStep1",auth,postCheckOutStep1)
-routes.get("/cartSummary/:addressID",auth,cartSummary)
-routes.get("/selectPayment/:addressID",auth,selectPayment)
-routes.post("/orderUpdate",auth,orderUpdate)
-routes.get("/orderSuccess/:orderId",auth,orderSuccess)
-routes.get("/showOrders",auth,showOrders)
-routes.post("/orderCancel",auth,orderCancel)
-routes.post("/return",auth,returnOrder)
+routes.post("/orderUpdate",auth,order.orderUpdate)
+routes.get("/orderSuccess/:orderId",auth,order.orderSuccess)
+routes.get("/showOrders",auth,order.showOrders)
+routes.post("/orderCancel",auth,order.orderCancel)
+routes.post("/return",auth,order.returnOrder)
 routes.get("/downloadInvoice",auth,order.downloadInvoice)
 
 //wallect
@@ -66,7 +73,7 @@ routes.post("/removeFromWhishlist",auth,wishlist.removeFromWishlist)
 routes.post("/applyCoupon",auth,coupon.applyCoupon)
 routes.post("/removeCoupon",auth,coupon.removeCoupon)
 
-//
+//PAYMENT
 routes.post("/paymentVerificaton",auth,payment.paymentVerificaton)
 routes.patch("/paymentFailed",auth,payment.paymentFailed)
 routes.patch("/repayment",auth,payment.repayment)

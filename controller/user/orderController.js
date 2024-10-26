@@ -2,6 +2,299 @@
 import PDFDocument from 'pdfkit';
 import orderModel from '../../models/orderSchema.js';
 import usermodel from '../../models/userModel.js';
+import dotenv from "dotenv";
+dotenv.config()
+import Razorpay from 'razorpay'
+const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID
+const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
+import walletModel from "../../models/walletModel.js";
+// import couponModel from "../models/couponSchema.js";
+
+let razorpayInstance = new Razorpay({
+    key_id: RAZORPAY_KEY_ID,
+    key_secret: RAZORPAY_KEY_SECRET
+});
+
+
+export const orderUpdate = async (req, res) => {
+    try {
+        const { addressID, orderType } = req.body
+        const jwtUser = req.userData
+        const address = await usermodel.findOne({ email: jwtUser.email, 'address._id': addressID }, { 'address.$': 1 })
+        const user = await usermodel.findOne({ email: jwtUser.email })
+        const userID = address._id
+        const addressDatas = address.address[0]
+        const cart = await cartModel.findOne({ userId: userID }).populate({ path: 'products.productId', model: productModel })
+        let productArray = []
+        let totalOrderPrice = 0;
+        let shippingFee = 0
+        let discountedPrice = 0
+        let productCoupon = (cart.couponDiscount) / ((cart.products).length)
+        if (cart.products) {
+            cart.products.forEach(async product => {
+                totalOrderPrice += Number(((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)) * product.quantity
+                let discountedPrice = ((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)
+
+                const data = {
+                    product: product.productId._id,
+                    quantity: product.quantity,
+                    price: product.productId.price,
+                    discountedPrice: discountedPrice,
+                    paymentMode: orderType,
+                    orderStatus: "processing",
+                    color: product.productId.color[0],
+                    size: product.size,
+                    couponAdded: productCoupon,
+                    totalPay: ((discountedPrice) * (product.quantity)) - productCoupon
+                }
+
+
+                // console.log("stock:" + product.productId.stock);
+                const newStock = (product.productId.stock) - (product.quantity)
+                productArray.push(data)
+                await productModel.findOneAndUpdate({ _id: product.productId._id }, { $set: { stock: newStock } })
+            })
+            totalOrderPrice < 500 ? shippingFee = 40 : shippingFee = 0
+            const order = new orderModel({
+                user: userID,
+                shippingAddress: {
+                    address: addressDatas.name,
+                    phone: addressDatas.phone,
+                    pincode: addressDatas.pincode,
+                    state: addressDatas.state,
+                    locality: addressDatas.locality,
+                    city: addressDatas.city,
+                },
+                products: productArray,
+                shippingFee: shippingFee
+            })
+            const orderId = order._id
+            await order.save()
+
+            totalOrderPrice += shippingFee
+            console.log(shippingFee);
+            totalOrderPrice = totalOrderPrice.toFixed(2)
+            ////Response to cod
+            if (orderType == 'cod') {
+                if (totalOrderPrice > 1000) {
+                    console.log(orderType);
+                    const update = await cartModel.deleteOne({ userId: userID })  //delete user cart
+                    res.status(201).json({ orderId: orderId, message: "order created", orderType, user, totalOrderPrice })
+                }
+                else {
+                    res.status(409).json({ status: "codNotAllowed", message: "order amount is less than 1000" })
+                }
+            }
+
+            /////Responsee to razorpay
+            else if (orderType == 'razorpay') {
+                console.log("json send to the axos");
+
+                console.log(totalOrderPrice);
+                console.log(discountedPrice);
+
+                const orderOptions = {
+                    amount: ((totalOrderPrice) - (cart.couponDiscount)) * 100,  // Amount is in smallest currency unit (50000 paise = ₹500)
+                    currency: "INR",
+                    receipt: "order_rcptid_11",
+                    payment_capture: '1' // Auto-capture the payment
+                };
+                razorpayInstance.orders.create(orderOptions, async (err, order) => {
+                    console.log("creating instance");
+
+                    if (err) {
+                        console.error("Error in creating order:", err);
+                        res.status(500).send('Something went wrong');
+                    } else {
+                        console.log(order);
+                        const update = await cartModel.deleteOne({ userId: userID })   //delete user cart
+
+                        res.json({
+                            razorpayOrderId: order.id,  // Send order.id to frontend
+                            amount: order.amount,  // Send amount to frontend
+                            currency: order.currency, // Send currency
+                            orderType: orderType,
+                            orderId: orderId,
+                            totalOrderPrice,
+                            user,
+                            RAZORPAY_KEY_ID
+                        });
+                    }
+                });
+            }
+            //wallet
+            else if (orderType == 'wallet') {
+                console.log(orderType);
+                const update = await cartModel.deleteOne({ userId: userID })   //delete user cart
+                const userId = await usermodel.findOne({ email: user.email }, { _id: 1 })
+                // const wallet = await walletModel.findOne({ userId: userId._id })
+                const wallectCheck = await walletModel.findOneAndUpdate({ userId: userId._id })
+                if (wallectCheck.balance > totalOrderPrice) {
+                    const wallet = await walletModel.findOneAndUpdate({ userId: userId._id }, {
+                        $inc: { balance: -(totalOrderPrice - (cart.couponDiscount)) }, $push: {
+                            transactions: {
+                                wallectAmount: (totalOrderPrice - (cart.couponDiscount)),
+                                orderId: orderId,
+                                trasactionType: "debited",
+                                trasactionsDate: new Date()
+                            }
+                        }
+                    }, { new: true })
+                    console.log(order._id);
+
+                    const updateorder = await orderModel.findOneAndUpdate({ _id: order._id }, { $set: { "products.$[].paymentStatus": "paid" } }, { new: true })
+                    console.log(updateorder);
+
+
+                    res.status(201).json({ orderId: orderId, message: "order created", orderType, user })
+                }
+                else {
+                    await orderModel.findOneAndUpdate({ _id: order._id }, { $set: { "products.$[].paymentStatus": "failed" } })
+
+                    res.status(404).json({ message: "Insufficient wallet balance to complete the order", status: "noBalance" })
+                }
+            }
+
+        } else {
+            res.status(404).json({ message: "there is no product in the cart" })
+        }
+    }
+    catch (err) {
+        console.log(err);
+        res.status(404).json({ message: "there is no product in the cart" })
+
+    }
+
+
+
+
+    // const order=await orderModel.findByIdAndUpdate({_id:addressID},{})
+    // // console.log(order);
+    // const userID=order.user
+    // // const products=cart.products
+    // const cart=await cartModel.findOne({userId:userID}).populate({path:'products.productId',model:productModel})
+    // // console.log(cart);
+
+}
+
+
+
+
+export const orderSuccess = async (req, res) => {
+    try {
+        const orderId = req.params.orderId
+        const user = req.userData
+        const orderDetails = await orderModel.find({ _id: orderId })
+        const products = orderDetails[0].products
+
+        const order = orderDetails[0]
+        console.log(order);
+
+        res.render("user/orderSuccess", { user, orderId, products, order })
+    }
+    catch {
+
+    }
+
+}
+
+
+
+
+export const showOrders = async (req, res) => {
+    try {
+        // Get page and limit from query parameters, set default values if not provided
+        const page = parseInt(req.query.page) || 1;  // Current page, default is 1
+        const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
+
+        // Calculate the number of documents to skip
+        const skip = (page - 1) * limit;
+        const orderData2 = await orderModel.find({})
+        let totalPages = 0
+        orderData2.forEach(userOrders => {
+            totalPages += userOrders.products.length
+        })
+        console.log(totalPages);
+
+        const user = req.userData
+        const userData = await usermodel.find({ email: user.email })
+        const userId = userData[0]._id
+        const orderData = await orderModel.find({ user: userId }).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel }).skip(skip).limit(limit)
+        console.log(orderData[0]);
+        res.render("user/showOrders", {
+            user, orderData, totalPages: totalPages / limit,
+            currentPage: page,
+            limit: limit
+        })
+    } catch {
+
+    }
+}
+
+
+export const orderCancel = async (req, res) => {
+    try {
+        const user = req.userData
+        const userData = await usermodel.find({ email: user.email })
+        const userId = userData[0]._id
+        console.log(userId);
+        const { product_id } = req.body
+        console.log(product_id);
+        const order = await orderModel.findOne({ user: userId, 'products._id': product_id }, { 'products.$': 1 })
+        const ship = await orderModel.findOne({ user: userId, 'products._id': product_id })
+        console.log(order.products[0].paymentStatus);
+        console.log(ship.shippingFee);
+        const RefundRupee = (((order.products[0].discountedPrice) * (order.products[0].quantity)) - order.products[0].couponAdded) + ship.shippingFee
+
+        //if paid refund
+        if (order.products[0].paymentStatus == "paid") {
+            await walletModel.findOneAndUpdate({ userId: userId }, {
+                $inc: { balance: RefundRupee }, $push: {
+                    transactions: {
+                        wallectAmount: RefundRupee,
+                        orderId: order._id,
+                        trasactionType: "creditd",
+                        trasactionsDate: new Date()
+                    }
+                }
+            })
+            await orderModel.findOneAndUpdate({ 'products._id': product_id }, { 'products.$.paymentStatus': "refunded" })
+        }
+        const update = await orderModel.findOneAndUpdate({ user: userId, 'products._id': product_id }, { 'products.$.orderStatus': 'cancelled' })
+        res.json({ message: 'updated' })
+    }
+    catch (err) {
+        console.log(err);
+
+        res.status(409).json({ message: "err" })
+    }
+
+
+}
+
+
+
+
+
+export const returnOrder = async (req, res) => {
+    try {
+        console.log("return");
+
+        const user = req.userData
+        const userData = await usermodel.find({ email: user.email })
+        const userId = userData[0]._id
+
+        const { text, product_id } = req.body
+        const update = await orderModel.findOneAndUpdate({ user: userId, 'products._id': product_id }, { 'products.$.returnStatus': 'requested', 'products.$.returnReason': text }, { new: true })
+        console.log(update);
+        res.json({ message: "order retured" })
+
+    }
+    catch {
+        console.log("catch");
+
+    }
+}
 
 
     export const downloadInvoice=async(req,res)=>{

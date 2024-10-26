@@ -1,0 +1,116 @@
+import cartModel from "../../models/cartSchema.js"
+import usermodel from "../../models/userModel.js"
+
+
+
+export const addToCart = async (req, res) => {
+    try {
+
+        const jwtUser = req.userData
+        const userData = await usermodel.findOne({ email: jwtUser.email })
+        const { productId, selectSize } = req.body
+        console.log(selectSize);
+        //    console.log(userData);
+        const userCart = await cartModel.findOne({ userId: userData._id })
+        //if user cart is not there creating
+
+        if (!userCart) {
+            console.log("thre is no user cart");
+
+            const model = new cartModel({
+                userId: userData._id,
+                products: [{ productId, quantity: 1, size: selectSize }]
+            })
+            await model.save()
+            return res.status(201).json({ message: "new cart created" })
+        }
+        // else {
+        //     await cartModel.findOneAndUpdate({
+        //         userId: userData._id,
+        //         'products.productId': productId
+        //     },
+        //         { $inc:{'products.$.quantity':1}
+        //     })
+
+        // }
+
+        else {
+            console.log("user cart is exit");
+            console.log(userData._id);
+
+            const model = await cartModel.findOne({ userId: userData._id })
+            const productIndex = model.products.findIndex(item => item.productId == productId)
+            console.log(productIndex);
+
+            if (productIndex == -1) {
+                console.log("product creating");
+                const product = await cartModel.findOneAndUpdate({ userId: userData._id },
+                    {
+                        $addToSet: {
+                            products: {
+                                productId, quantity: 1, size: selectSize
+                            }
+                        }
+                    }, { new: true }
+                )
+                return res.status(201).json({ message: "new product added to the cart" })
+            } else {
+                return res.status(409).json({ message: "already added" })
+            }
+        }
+    }
+
+    catch {
+        return res.status(409).json({ message: "Something went wrong please try again " })
+    }
+}
+
+
+export const showCart = async (req, res) => {
+    try {
+
+        const user = req.userData
+        const userData = await usermodel.findOne({ email: user.email })
+        // const cart = await cartModel.findOne({ userId: userData._id }).populate('products.productId')
+        const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: 'products.productId', model: 'product' })
+        let totalPrice = 0
+        let shippingFee = 0
+        let discountPrice = 0
+        let couponDiscount = 0
+        let total = 0
+        if (cart) {
+            if (cart.products.length == 0) {
+                await cartModel.findOneAndUpdate({ userId: userData._id }, { couponDiscount: 0 })
+
+            }
+            const products = cart.products.forEach(product => {
+                totalPrice += product.productId.price * product.quantity
+            })
+            cart.products.forEach(product => {
+                discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
+            })
+            shippingFee = totalPrice < 500 ? 40 : 0
+            shippingFee = totalPrice == 0 ? 0 : shippingFee
+            couponDiscount = (cart.couponDiscount).toFixed(2)
+            total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
+            total = total - couponDiscount
+            discountPrice.toFixed(2)
+            const coupon = await couponModel.find({ block: false })
+            console.log(coupon);
+
+            res.render('user/showCart', { user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon })
+        } else {
+            console.log("ShowCart");
+            const coupon = await couponModel.find({ block: false })
+
+            res.render('user/showCart', { user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon })
+
+        }
+
+    }
+    catch (err) {
+        console.log(err);
+
+    }
+
+}
