@@ -8,6 +8,7 @@ import Razorpay from 'razorpay'
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
 import walletModel from "../../models/walletModel.js";
+import productModel from '../../models/productSchema.js';
 // import couponModel from "../models/couponSchema.js";
 
 let razorpayInstance = new Razorpay({
@@ -203,6 +204,7 @@ export const orderSuccess = async (req, res) => {
 
 export const showOrders = async (req, res) => {
     try {
+    
         // Get page and limit from query parameters, set default values if not provided
         const page = parseInt(req.query.page) || 1;  // Current page, default is 1
         const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
@@ -226,8 +228,9 @@ export const showOrders = async (req, res) => {
             currentPage: page,
             limit: limit
         })
-    } catch {
-
+    } catch(err) {
+        console.log(err);
+        
     }
 }
 
