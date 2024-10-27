@@ -1,48 +1,71 @@
 <%- include('../partials/adminHeader.ejs') %>
 
 
-<div class=" font-[sans-serif]">
+  <div class=" font-[sans-serif]">
     <div class="min-h-screen flex fle-col  justify-around py-6 px-12  ">
       <div class=" flex  items-center justify-center w-full">
-      
 
-        <div class="max-w-md   w-full"  >
-          <form method="post" action="/admin/login">
-          <h3 class="text-gray-800 text-3xl font-extrabold mb-8">
-            Admin Login
-          </h3>
 
-          <div class="space-y-4">
-            <div>
-              <input name="email" id="email" type="email" autocomplete="email" required class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent" placeholder="Email address" />
-              <small id="emailError" class="text-red-500"></small>
-            </div>
-            <div>
-                <input name="password" id="password" type="password" autocomplete="current-password" required class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent" placeholder="Password" />
-                <small id="passwordError" class="text-red-500"></small>
-                
-            </div>
-            <div class="flex flex-wrap items-center justify-between gap-4">
-              <div class="flex items-center">
-                <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
-                <label for="remember-me" class="ml-3 block text-sm text-gray-800">
-                  Remember me
-                </label>
+        <div class="max-w-md   w-full">
+          <form>
+            <h3 class="text-gray-800 text-3xl font-extrabold mb-8">
+              Admin Login
+            </h3>
+
+            <div class="space-y-4">
+              <div>
+                <input name="email" id="email" type="email" autocomplete="email" required
+                  class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent"
+                  placeholder="Email address" />
+                <small id="emailError" class="text-red-500"></small>
               </div>
-             
+              <div>
+                <input name="password" id="password" type="password" autocomplete="current-password" required
+                  class="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent"
+                  placeholder="Password" />
+                <small id="passwordError" class="text-red-500"></small>
+
+              </div>
+              <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center">
+                  <input id="rememberMe" name="rememberMe" value="false" type="checkbox"
+                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                  <label for="remember-me" class="ml-3 block text-sm text-gray-800">
+                    Remember me
+                  </label>
+                </div>
+
+              </div>
             </div>
-          </div>
 
-          <div class="!mt-8">
-            <button type="button submit"  class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-poppy-red hover:bg-poppy-red focus:outline-none">
-              Log in
-            </button>
-        
-          </div>
-        </form>
+            <div class="!mt-8">
+              <button id="submit"
+                class="w-full shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-poppy-red hover:bg-poppy-red focus:outline-none">
+                Log in
+              </button>
 
-         
+            </div>
+          </form>
+
+
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+
+    document.getElementById("submit").addEventListener("click", (event) => {
+      event.preventDefault()
+      const email = document.getElementById("email").value
+      const password = document.getElementById("password").value
+      const rememberMe = document.getElementById("rememberMe").value
+      axios.post("/admin/login",{email,password,rememberMe}).then(response=>{
+        console.log(response);
+        window.location.href="/admin/home"
+      }).catch(err=>{
+        document.getElementById("passwordError").innerHTML="enter valid email and password"
+      })
+
+    })
+  </script>

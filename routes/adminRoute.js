@@ -1,46 +1,47 @@
 import express from 'express'
-import {login,postLogin,home,blockUser,productList,addProduct,category,addCategory,postAddCategory,blockCategory,editCategory,postEditCategory,postUploadImage,postAddproduct,blockProduct,editProduct,postEditProduct,searchProduct,orderList,adminOrderUpdate,refund} from '../controller/adminController.js'
+import {login,postLogin,home,blockUser,logout,productList,addProduct,category,addCategory,postAddCategory,blockCategory,editCategory,postEditCategory,postUploadImage,postAddproduct,blockProduct,editProduct,postEditProduct,searchProduct,orderList,adminOrderUpdate,refund} from '../controller/adminController.js'
 const routes=express.Router()
 import { storage } from '../config/gridFs.js';
 import multer from 'multer';
-import { orderUpdate } from '../controller/userController.js';
 const upload = multer({ storage });
+import adminAuth from '../middewares/adminAuthenticate.js';
 import * as coupon from "../controller/admin/coupon.js"
 import * as offer from "../controller/admin/offeresController.js"
 import * as sales from "../controller/admin/salesReport.js"
 routes.get('/login',login)
 routes.post('/login',postLogin)
-routes.get('/home',home)
-routes.patch('/blockUser',blockUser)
-routes.get('/productList',productList)
-routes.get('/addProduct',addProduct)
-routes.post('/addProduct',postAddproduct)
-routes.get('/category',category)
-routes.get('/addCategory',addCategory)
-routes.post('/addCategory',postAddCategory)
-routes.patch('/blockCategory',blockCategory)
-routes.get('/editCategory/:category',editCategory)
-routes.post('/editCategory',postEditCategory)
-routes.post('/uploadImage',upload.single('croppedImage'),postUploadImage)
-routes.patch('/blockProduct',blockProduct)
-routes.get('/editProduct/:productID',editProduct)
-routes.post('/postEditProduct',postEditProduct)
-routes.post('/searchProduct',searchProduct)
-routes.get("/orderList",orderList)
-routes.post("/orderUpdate",adminOrderUpdate)
-routes.post("/refund",refund)
+routes.get('/home',adminAuth,home)
+routes.get('/logout',logout)
+routes.patch('/blockUser',adminAuth,blockUser)
+routes.get('/productList',adminAuth,productList)
+routes.get('/addProduct',adminAuth,addProduct)
+routes.post('/addProduct',adminAuth,postAddproduct)
+routes.get('/category',adminAuth,category)
+routes.get('/addCategory',adminAuth,addCategory)
+routes.post('/addCategory',adminAuth,postAddCategory)
+routes.patch('/blockCategory',adminAuth,blockCategory)
+routes.get('/editCategory/:category',adminAuth,editCategory)
+routes.post('/editCategory',adminAuth,postEditCategory)
+routes.post('/uploadImage',adminAuth,upload.single('croppedImage'),postUploadImage)
+routes.patch('/blockProduct',adminAuth,blockProduct)
+routes.get('/editProduct/:productID',adminAuth,editProduct)
+routes.post('/postEditProduct',adminAuth,postEditProduct)
+routes.post('/searchProduct',adminAuth,searchProduct)
+routes.get("/orderList",adminAuth,orderList)
+routes.post("/orderUpdate",adminAuth,adminOrderUpdate)
+routes.post("/refund",adminAuth,refund)
 
-routes.get("/showCoupon",coupon.showCoupon)
-routes.post("/addCoupon",coupon.addCoupon)
-routes.patch("/changeCouponSts",coupon.changeCouponSts)
-routes.patch("/deleteCoupn",coupon.deleteCoupn)
+routes.get("/showCoupon",adminAuth,coupon.showCoupon)
+routes.post("/addCoupon",adminAuth,coupon.addCoupon)
+routes.patch("/changeCouponSts",addProduct,coupon.changeCouponSts)
+routes.patch("/deleteCoupn",adminAuth,coupon.deleteCoupn)
 
 //offer
-routes.get("/offers",offer.showOffers)
-routes.post("/addProductOffer",offer.addProductOffer)
-routes.post("/addCategoryOffer",offer.addCategoryOffer)
+routes.get("/offers",adminAuth,offer.showOffers)
+routes.post("/addProductOffer",adminAuth,offer.addProductOffer)
+routes.post("/addCategoryOffer",adminAuth,offer.addCategoryOffer)
 
-routes.get("/salesReport",sales.salesReport)
-routes.get("/downloadPdf",sales.downloadPdf)
-routes.get("/downloadExcel",sales.downloadExcel)
+routes.get("/salesReport",adminAuth,sales.salesReport)
+routes.get("/downloadPdf",adminAuth,sales.downloadPdf)
+routes.get("/downloadExcel",adminAuth,sales.downloadExcel)
 export default routes

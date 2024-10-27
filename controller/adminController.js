@@ -7,22 +7,79 @@ import path from 'path';
 import routes from "../routes/userRoute.js";
 import orderModel from "../models/orderSchema.js";
 import walletModel from "../models/walletModel.js";
+import jwt from 'jsonwebtoken'
+
+const secretKey = process.env.SECRET_KEY
+
 export const login = (req, res) => {
-    res.render('admin/login')
+    try{
+        const token=req.cookies.adminToken
+      if(!token){
+   res.render('admin/login')       
+   }else{
+       jwt.verify(token,secretKey,async(err,data)=>{
+   
+           if(err){
+           res.render('admin/login')
+           }
+           else{
+            const users = await usermodel.find()
+            res.render('admin/home', { users })
+           }
+       })
+   }
+   }
+   catch{
+       
+   }
 
 }
 
 export const postLogin = async (req, res) => {
-    const { email, password } = req.body
+    const { email, password ,rememberMe} = req.body
+    console.log(req.body);
+    
+    const expiresIn = rememberMe ? '7d' : '1h'
+   const expireCookie= rememberMe ? 7 * 24 * 60 * 60 : 1 * 60 * 60;
+
     const data = await adminmodel.findOne({ email: email, password: password })
     console.log(data);
-    res.redirect('/admin/home')
+    
+    console.log(data);
+    if(data){
+        const token = jwt.sign({ email: data.email, name: data.name }, secretKey, { expiresIn })
+         
+        res.cookie('adminToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',  // Only set cookie over HTTPS in production
+            maxAge:expireCookie,
+            sameSite: 'Strict'
+        })
+        res.json({
+            message: 'Login Successful',
+            token: token
+        })
+        // res.redirect('/admin/home')
+    }else{
+        res.status(409).json({
+            message: 'login Failed',
+        })
+    }
 
 }
 
+
+export const logout=(req,res)=>{
+    res.clearCookie('adminToken');
+    res.redirect('/admin/login')
+
+}
+
+
 export const home = async (req, res) => {
     const users = await usermodel.find()
-    console.log(users);
+    // console.log(users);
+
 
     res.render('admin/home', { users })
 }
