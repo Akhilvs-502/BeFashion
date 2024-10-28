@@ -40,7 +40,8 @@ export const postLogin = async (req, res) => {
     console.log(req.body);
     
     const expiresIn = rememberMe ? '7d' : '1d'
-   const expireCookie= rememberMe ? 7 * 24 * 60 * 60 : 24 * 60 * 60;
+   const expireCookie= rememberMe ? 7 * 24 * 60 * 60 :1* 24 * 60 * 60;
+console.log(expireCookie);
 
     const data = await adminmodel.findOne({ email: email, password: password })
     console.log(data);

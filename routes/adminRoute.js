@@ -8,6 +8,7 @@ import adminAuth from '../middewares/adminAuthenticate.js';
 import * as coupon from "../controller/admin/coupon.js"
 import * as offer from "../controller/admin/offeresController.js"
 import * as sales from "../controller/admin/salesReport.js"
+import * as dashboard from "../controller/admin/dashboard.js"
 routes.get('/login',login)
 routes.post('/login',postLogin)
 routes.get('/home',adminAuth,home)
@@ -44,4 +45,7 @@ routes.post("/addCategoryOffer",adminAuth,offer.addCategoryOffer)
 routes.get("/salesReport",adminAuth,sales.salesReport)
 routes.get("/downloadPdf",adminAuth,sales.downloadPdf)
 routes.get("/downloadExcel",adminAuth,sales.downloadExcel)
+
+routes.get("/ViewDashboard",adminAuth,dashboard.ViewDashboard)
+routes.post("/getChartData",adminAuth,dashboard.getChartData)
 export default routes

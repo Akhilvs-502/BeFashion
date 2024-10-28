@@ -2,30 +2,21 @@
 <link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet">
 
 
-<%- include('../partials/adminHeader.ejs') %>
+<div class=" fixed  top-0 left-0 w-full z-50">
+  <%- include('../partials/adminHeader.ejs') %>
+</div>
 
 
+<div class="flex mt-10 ">
+  <div class="fixed">
+      <%- include('../partials/adminSlideBar.ejs') %>
+  </div>
 
+  <div class="w-full mt-16 ">
+      <h1 class="font-bold text-2xl ml-64 mt-4">Customer List</h1>
+        <!-- <p class="font-extrabold ml-1 mt-12"></p> -->
 
-
-  <section class="flex">
-
-
-    <%- include('../partials/adminSlideBar.ejs') %>
-
-
-
-
-      <div class="w-full">
-        <!-- <div class="bg-white flex px-1 py-1 rounded-full border border-blue-500 overflow-hidden max-w-md  font-[sans-serif]">
-    <input type='email' placeholder='Search Something...' class="w-full outline-none bg-white pl-4 text-sm" />
-    <button type='button'
-      class="bg-blue-600 hover:bg-blue-700 transition-all text-white text-sm rounded-full px-5 py-2.5">Search</button>
-  </div> -->
-
-        <p class="font-extrabold ml-1 mt-12">Customer List</p>
-
-        <div class="font-sans  right-0">
+        <div class="ml-72 font-sans w-[960px] ">
           <table id="myTable" class="w-full bg-white">
             <thead class="bg-gray-100 whitespace-nowrap">
               <tr>
@@ -100,9 +91,10 @@
           </table>
         </div>
       </div>
+</div>
 
 
-  </section>
+      
 
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -112,8 +104,12 @@
   <script>
 
     document.querySelectorAll('#toggleBtn').forEach(btn => {
+
+      
       const email = btn.getAttribute('data-email')
       btn.addEventListener('change', () => {
+    
+        
         Swal.fire({
           title: "Are you sure?",
           icon: "warning",

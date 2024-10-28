@@ -9,7 +9,7 @@ const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
 import walletModel from "../../models/walletModel.js";
 import productModel from '../../models/productSchema.js';
-// import couponModel from "../models/couponSchema.js";
+import cartModel from '../../models/cartSchema.js';
 
 let razorpayInstance = new Razorpay({
     key_id: RAZORPAY_KEY_ID,

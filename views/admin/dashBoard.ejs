@@ -1,0 +1,239 @@
+<div class=" fixed  top-0 left-0 w-full z-50">
+  <%- include('../partials/adminHeader.ejs') %>
+</div>
+
+
+<div class="flex mt-10">
+  <div class="fixed">
+    <%- include('../partials/adminSlideBar.ejs') %>
+  </div>
+
+  <div class="w-full mt-16 ml-14 px-4">
+    <h1 class="font-bold text-2xl text-gray-800  ml-60 mt-4">Dashboard</h1>
+    <div class=" flex justify-center">
+      
+      <div class="">
+      <button class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">
+        Total Daily Profit 
+        <div><%=dailyProfit%></div>
+      </button>
+      <button class="bg-green-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700 transition duration-300">
+        Total Sales
+        <div><%=totalSales%></div>
+    </button>
+
+    <button class="bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-yellow-700 transition duration-300">
+        Total Orders
+        <div><%=orderCount%></div>
+    </button>
+
+    <button class="bg-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-purple-700 transition duration-300">
+        Total Customers
+        <div><%=usersCount%></div>
+    </button>
+    </div>
+
+    </div>
+    <div class="flex justify-end mt-2 space-x-4">
+      <!-- Total Sales Section -->
+      <div class="bg-white shadow-lg w-7/12 p-6 rounded-lg border border-gray-200">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold text-gray-700">Total Sales</h2>
+          <select id="filterSelect"
+            class="bg-gray-700 text-white p-2 rounded hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500">
+            <option value="day">Day</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
+        <canvas id="salesChart"></canvas>
+        <div class="mt-4">
+          <!-- <p class="text-sm text-gray-500">Total Revenue: <span class="font-bold text-gray-800">$10,500</span></p>
+          <p class="text-sm text-gray-500">Total Orders: <span class="font-bold text-gray-800">150</span></p> -->
+        </div>
+      </div>
+
+      <!-- Category Performance Section -->
+      <div class="bg-white shadow-lg w-3/12 p-6 rounded-lg border border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-700 mb-4">Category Performance</h2>
+        <canvas id="categoryChart"></canvas>
+        <div class="mt-4">
+          <p class="text-sm text-gray-500">Top Category: <span  id="topCategory" class="font-bold text-gray-800"></span></p>
+          <p class="text-sm text-gray-500">Sales: <span id="topCategoryValue" class="font-bold text-gray-800"></span></p>
+        </div>
+      </div>
+    </div>
+
+
+  
+    
+        <div class=" ml-48 max-w-4xl w-full mx-auto bg-white shadow-md rounded-lg p-8">
+            <h2 class="text-2xl font-semibold text-gray-800">Top Selling Products of The Year</h2>
+            <p class="text-gray-600 mt-1">Following products are the top 10 sold in this Year.</p>
+    
+            <div class="overflow-x-auto mt-4">
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="text-gray-600 text-left text-sm border-b">
+                            <th class="py-3 px-4 font-medium">Product Name</th>
+                            <th class="py-3 px-4 font-medium">Category</th>
+                            <th class="py-3 px-4 font-medium">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-body" class="text-gray-700 text-sm">
+                       
+                      
+                    </tbody>
+                </table>
+            </div>
+    
+            <!-- <a href="#" class="text-blue-500 font-medium hover:underline mt-6 inline-block">See More Products</a> -->
+        </div>
+    
+    
+
+  </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+
+  // Wait for the DOM to load before running the script
+  document.addEventListener("DOMContentLoaded", function () {
+    // Line Chart for Total Sales
+    chartDataUpdate("day")
+
+
+    // Line Chart for Total and Discounted Sales
+    const salesChartCtx = document.getElementById("salesChart").getContext("2d");
+    let salesChart = new Chart(salesChartCtx, {
+      type: "line",
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: "Total Sales",
+            data: [],
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 2,
+            pointBackgroundColor: "rgba(255, 255, 255, 1)",
+            pointBorderColor: "rgba(75, 192, 192, 1)"
+          },
+          {
+            label: "Total Profit",
+            data: [],
+            backgroundColor: "rgba(192, 75, 75, 0.2)",
+            borderColor: "rgba(192, 75, 75, 1)",
+            borderWidth: 2,
+            pointBackgroundColor: "rgba(255, 255, 255, 1)",
+            pointBorderColor: "rgba(192, 75, 75, 1)"
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: true }
+        },
+        scales: {
+          x: { beginAtZero: true },
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    ///
+    // Doughnut Chart for Category Performance
+    const categoryChartCtx = document.getElementById("categoryChart").getContext("2d");
+    let categoryChart = new Chart(categoryChartCtx, {
+      type: "doughnut",
+      data: {
+        labels: [],
+        datasets: [{
+          data: [],
+          backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
+          hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "right" },
+        }
+      }
+    });
+
+
+
+
+
+    // Update chart data based on selected filter
+    const filterSelect = document.getElementById("filterSelect");
+    filterSelect.addEventListener("change", function (e) {
+      const filter = e.target.value;
+    const productsBody = document.getElementById('products-body');
+  productsBody.innerHTML = ""
+      chartDataUpdate(filter)
+
+
+    });
+
+
+    function chartDataUpdate(filter) {
+      axios.post("/admin/getChartData", { filter }).then(responsive => {
+        let newData = responsive.data.newData
+        console.log(newData);
+
+        let topProducts=newData.topProducts
+        let topCategories=newData.topCategories      
+        salesChart.data.labels = newData.label;
+        salesChart.data.datasets[0].data = newData.data;
+        salesChart.data.datasets[1].data = newData.profit;
+        categoryChart.data.datasets[0].data = newData.category
+        categoryChart.data.labels = newData.categoryLabel
+
+        let categoryData=newData.categoryData
+        let topCategory = null;
+        let topSales = -Infinity;
+
+        for (let category in categoryData) {
+          if (categoryData[category] > topSales) {
+            topSales = categoryData[category];
+            topCategory = category;
+          }
+        }
+         topSales=topSales.toFixed(2)
+        
+
+salesChart.update();
+categoryChart.update()
+
+
+///
+const productsBody = document.getElementById('products-body');
+topProducts
+topProducts.forEach(product=>{
+  const row =document.createElement('tr')
+  row.className='border-b hover:bg-gray-50'
+  row.innerHTML = `
+                        <td class="py-3 px-4">${product[1].name}</td>
+                        <td class="py-3 px-4">${product[1].category}</td>
+                        <td class="py-3 px-4">₹${product[1].totalSales.toFixed(2)}</td>
+                     `;
+                    productsBody.appendChild(row);
+})
+
+  document.getElementById("topCategory").textContent=topCategory
+  document.getElementById("topCategoryValue").textContent=topSales
+     
+})
+
+    }
+
+
+  });
+
+</script>
