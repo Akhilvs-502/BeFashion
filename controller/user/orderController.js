@@ -77,7 +77,7 @@ export const orderUpdate = async (req, res) => {
             totalOrderPrice = totalOrderPrice.toFixed(2)
             ////Response to cod
             if (orderType == 'cod') {
-                if (totalOrderPrice > 1000) {
+                if (totalOrderPrice < 1000) {
                     console.log(orderType);
                     const update = await cartModel.deleteOne({ userId: userID })  //delete user cart
                     res.status(201).json({ orderId: orderId, message: "order created", orderType, user, totalOrderPrice })

@@ -13,6 +13,7 @@ const auth=(req,res,next)=>{
     //  console.log(token);
      
    if(!token){
+    console.log("no token");
 res.redirect('/user/login')       
 }else{
     jwt.verify(token,secretKey,async(err,data)=>{

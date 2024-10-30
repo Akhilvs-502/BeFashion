@@ -9,6 +9,7 @@ import cartModel from "../models/cartSchema.js";
 const secretKey = process.env.SECRET_KEY
 import walletModel from "../models/walletModel.js";
 import couponModel from "../models/couponSchema.js";
+import wishlistModel from "../models/whishlistModel.js";
 
 
 
@@ -27,21 +28,26 @@ export const home = async (req, res) => {
                 }
                 else {
                     const user = await usermodel.findOne({ email: data.email })
+                    const wishlist= await wishlistModel.find({userId:user._id})
+                    let wishlistProduct=wishlist[0].products
+                    console.log(wishlist[0].products);
                     if (user.blocked) {
                         res.clearCookie('token');
                         req.session.destroy()
                         res.render('user/blockedUser')
                     } else {
 
-                        res.render('user/home', { products, user: user })
+                        res.render('user/home', { products, user: user,wishlistProduct })
                     }
                 }
             })
         } else {
-            res.render('user/home', { products, user: false })
+            let wishlistProduct=[]
+            res.render('user/home', { products, user: false ,wishlistProduct})
         }
     }
-    catch {
+    catch (err){
+console.log(err);
 
     }
 }
@@ -455,15 +461,6 @@ export const allProducts = async (req, res) => {
 
         // Calculate the number of documents to skip
         const skip = (page - 1) * limit;
-
-
-
-
-        // const products = await productModel.find().skip(skip).limit(limit)
-
-
-
-
         console.log(req.query)
         let products
         let filters = []
@@ -537,7 +534,7 @@ export const allProducts = async (req, res) => {
 
         // Fetch the total number of products for calculating the total pages
         const totalProducts = await productModel.find(query).countDocuments();
-
+      
 
 
 
@@ -555,12 +552,16 @@ export const allProducts = async (req, res) => {
                     res.render('user/allProducts', {
                         products, totalPages: Math.ceil(totalProducts / limit),
                         currentPage: page,
-                        limit: limit, user: false, filters
+                        limit: limit, user: false, filters,wishlistProduct
                     })
                 }
                 else {
 
                     const user = await usermodel.findOne({ email: data.email })
+                    const wishlist= await wishlistModel.find({userId:user._id})
+                    let wishlistProduct=wishlist[0].products
+                    console.log(wishlist[0].products);
+        
                     if (user.blocked) {
                         res.clearCookie('token');
                         req.session.destroy()
@@ -570,20 +571,23 @@ export const allProducts = async (req, res) => {
 
                             products, totalPages: Math.ceil(totalProducts / limit),
                             currentPage: page,
-                            limit: limit, user: user, filters
+                            limit: limit, user: user, filters,wishlistProduct
                         })
                     }
                 }
             })
         } else {
+        
+            let wishlistProduct=[]
             res.render('user/allProducts', {
                 products, totalPages: Math.ceil(totalProducts / limit),
                 currentPage: page,
-                limit: limit, user: false, filters
+                limit: limit, user: false, filters,wishlistProduct
             })
         }
     }
-    catch {
+    catch(err) {
+console.log(err);
 
     }
 

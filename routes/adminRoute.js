@@ -34,7 +34,7 @@ routes.post("/refund",adminAuth,refund)
 
 routes.get("/showCoupon",adminAuth,coupon.showCoupon)
 routes.post("/addCoupon",adminAuth,coupon.addCoupon)
-routes.patch("/changeCouponSts",addProduct,coupon.changeCouponSts)
+routes.patch("/changeCouponSts",adminAuth,coupon.changeCouponSts)
 routes.patch("/deleteCoupn",adminAuth,coupon.deleteCoupn)
 
 //offer

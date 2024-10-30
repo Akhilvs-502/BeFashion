@@ -4,6 +4,8 @@ import wishlistModel from "../../models/whishlistModel.js";
 
 export const addToWishlist = async (req, res) => {
     try {
+      
+        
         const userEmail = req.userData.email
         const { productID } = req.body
         const user = await usermodel.findOne({ email: userEmail })
@@ -16,10 +18,10 @@ export const addToWishlist = async (req, res) => {
          const product=await wishlistModel.findOne({userId:user._id,'products.productId':productID},{'products.$':1})
          console.log(product);
          if(product){
-            res.status(409).json({message:"already added "})
+           return res.status(409).json({message:"already added "})
         }else{
              await wishlistModel.findOneAndUpdate({userId:user._id},{ $push:{products:{ productId: productID  }  }}) }
-             res.json({message:"product added to wishlist"})
+          return   res.json({message:"product added to wishlist"})
          
         } else {
             const create = new wishlistModel({
@@ -29,7 +31,7 @@ export const addToWishlist = async (req, res) => {
 
             create.save()
         }
-        res.json({message:"product added to wishlist"})
+        return  res.json({message:"product added to wishlist"})
     }
     catch (err) {
         console.log(err);

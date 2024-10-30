@@ -19,7 +19,7 @@ export const showCoupon=async(req,res)=>{
 
  export const addCoupon=async(req,res)=>{
     try{
-        const {couponCode,couponType,discountValue,minimumAmount,startDate,endDate}=req.body
+        const {couponCode,couponType,discountValue,minimumAmount,startDate,endDate,usageCount}=req.body
         console.log(req.body);
   const alredyCoupoon=await   couponModel.findOne({couponCode})
         console.log(alredyCoupoon);
@@ -29,7 +29,7 @@ export const showCoupon=async(req,res)=>{
             ,couponType,
             discountValue:Number(discountValue)
             ,minimumAmount:Number(minimumAmount)
-            ,startDate,endDate
+            ,startDate,endDate,usageCount
         })
         coupon.save()
 
@@ -48,14 +48,16 @@ export const showCoupon=async(req,res)=>{
 
  export const changeCouponSts=async(req,res)=>{
     try{
+        console.log("coupon woking");
     const {couponId}=req.body
+
     const coupon= await couponModel.findOne({_id:couponId})
     if(coupon.block){
         await couponModel.findOneAndUpdate({_id:couponId},{block:false})
     }else{
         await couponModel.findOneAndUpdate({_id:couponId},{block:true})
     }
-    console.log(coupon);
+    
     res.json({messagae:"coupon Status changed"})
 }
 
@@ -72,7 +74,6 @@ export const showCoupon=async(req,res)=>{
     const coupon= await couponModel.findOneAndDelete({_id:couponId})
     res.json({messagae:"coupon deleted"})
 }
-
     catch(err){
         console.log(err);
         

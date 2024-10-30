@@ -42,9 +42,9 @@
                             <td class="py-2 px-4">
                                 <%=transation.trasactionsDate.toLocaleString()%>
                             </td>
-                            <td class="py-2 px-4 text-green-500">
+                            <td class="py-2 px-4 text-<%=transation.trasactionType=='debited' ? 'red' :'green' %>-500">
                                 <%=transation.trasactionType%>
-                            </td>
+                            </td> 
                             <td class="py-2 px-4">
                                 <%=transation.orderId%>
                             </td>

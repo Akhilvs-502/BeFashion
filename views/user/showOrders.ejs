@@ -126,7 +126,7 @@
                                 <div class="mt-auto flex p-4">
                                     <div>Total amount </div>
                                     <h3 id="discountPrice" class="text-base font-bold text-gray-800 ml-1 ">
-                                        ₹<%=((product.totalPay)+userOrders.shippingFee)%>
+                                        ₹<%=((product.totalPay)+userOrders.shippingFee).toFixed(2)%>
                                     </h3>
 
                                 </div>
@@ -210,7 +210,7 @@
                                 </div>
 
                                 <!-- Order Status -->
-                                <div class="mt-6">
+                                <!-- <div class="mt-6">
                                     <div class="flex justify-between items-center">
                                         <div class="text-center">
                                             <div
@@ -247,7 +247,7 @@
 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
 
                             <!-- Order Summary Section -->
@@ -276,7 +276,7 @@
 </div>
 
 
-<div class="pagination flex items-center justify-center mt-12 space-x-2 ml-28">
+<div class="pagination  flex items-center justify-center mt-12 space-x-2 ml-28">
 
 
     <% if (currentPage> 1) { %>

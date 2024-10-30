@@ -26,7 +26,7 @@ if(coupon){
             cart.products.forEach(product => {
                 discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
             })
-            
+         
         }
 
 
@@ -44,6 +44,9 @@ if(coupon){
         if(totalPrice >=coupon.minimumAmount){
             console.log("minium");
             const cartUpdate=await cartModel.findOneAndUpdate({userId:user._id},{couponDiscount})
+        //    const coupn=await couponModel.findOneAndUpdate({couponCode:couponCode},{$inc:{usageCount:1}},{new:true})
+        //    console.log(coupn);
+           
             res.json({message:"coupon applyed"})
         }
         else{

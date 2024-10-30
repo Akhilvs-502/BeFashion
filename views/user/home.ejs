@@ -129,13 +129,21 @@
                 </h4>
                 <!-- <a href="/user/addToWishlist" > -->
                 <div id="Wishlist"
-                  class="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16px" class="fill-gray-800 inline-block"
-                    viewBox="0 0 64 64">
-                    <path
-                      d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                      data-original="#000000"></path>
-                  </svg>
+                  class="bg-gray-100 p-1 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
+
+                  
+                  <% if (wishlistProduct.some(item=> item.productId.equals(product._id))) { %>
+
+                    <svg width="300px"   height="500px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                      <path fill="#FF0000" d="M480.25 156.355c0 161.24-224.25 324.43-224.25 324.43S31.75 317.595 31.75 156.355c0-91.41 70.63-125.13 107.77-125.13 77.65 0 116.48 65.72 116.48 65.72s38.83-65.73 116.48-65.73c37.14.01 107.77 33.72 107.77 125.14z" />
+                    </svg>
+                    
+                      <% } else { %>
+                      
+                        <svg width="300px" height="500px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path fill="#E0E0E0" 
+                          d="M480.25 156.355c0 161.24-224.25 324.43-224.25 324.43S31.75 317.595 31.75 156.355c0-91.41 70.63-125.13 107.77-125.13 77.65 0 116.48 65.72 116.48 65.72s38.83-65.73 116.48-65.73c37.14.01 107.77 33.72 107.77 125.14z"/></svg>
+
+                          <% } %>
 
                   <div id="productID" class="hidden"><%=product._id %></div>
                 </div>
@@ -177,7 +185,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
           document.querySelectorAll("#product").forEach(results=>results.addEventListener("click",()=>{
-     const productID= results.querySelector("#productID").innerHTML
+     const productID= results.querySelector("#productID").innerHTML.trim()
       window.location.href=`/user/productView/${productID}`
       console.log("outer");
       console.log(productID);
@@ -188,9 +196,12 @@
     document.querySelectorAll("#Wishlist").forEach(results=>results.addEventListener("click",function(event){
       event.stopPropagation();
     
-      const productID= results.querySelector("#productID").innerHTML
+      const productID= results.querySelector("#productID").innerHTML.trim()
 
       axios.post("/user/addToWhishlist",{productID}).then(response=>{
+
+        event.target.setAttribute("fill","#FF0000")   
+
         const Toast = Swal.mixin({
         toast: true,
         position: "top-end",

@@ -1,6 +1,8 @@
 import cartModel from "../../models/cartSchema.js"
 import usermodel from "../../models/userModel.js"
 import couponModel from "../../models/couponSchema.js"
+import productModel from "../../models/productSchema.js"
+
 
 
 
@@ -215,7 +217,9 @@ export const updateQuantity = async (req, res) => {
         }
     }
 
-    catch {
+    catch(err) {
+        console.log(err);
+        
         res.status(500).json({ message: "server error" })
     }
 
