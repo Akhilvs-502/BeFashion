@@ -2004,6 +2004,10 @@ video {
   line-height: 1rem;
 }
 
+.text-\[9px\] {
+  font-size: 9px;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -2765,12 +2769,6 @@ video {
   border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 
-@media not all and (min-width: 1280px) {
-  .max-xl\:hidden {
-    display: none;
-  }
-}
-
 @media not all and (min-width: 1024px) {
   .max-lg\:fixed {
     position: fixed;
@@ -2876,6 +2874,10 @@ video {
 }
 
 @media not all and (min-width: 768px) {
+  .max-md\:order-1 {
+    order: 1;
+  }
+
   .max-md\:max-w-xl {
     max-width: 36rem;
   }
@@ -2998,6 +3000,47 @@ video {
     font-size: 1.5rem;
     line-height: 2rem;
   }
+
+  .sm\:text-\[3px\] {
+    font-size: 3px;
+  }
+
+  .sm\:text-\[4px\] {
+    font-size: 4px;
+  }
+
+  .sm\:text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .sm\:text-\[5px\] {
+    font-size: 5px;
+  }
+
+  .sm\:text-\[9px\] {
+    font-size: 9px;
+  }
+
+  .sm\:text-\[px\] {
+    color: px;
+  }
+
+  .sm\:text-\[\] {
+    color: ;
+  }
+
+  .sm\:text-\[1\] {
+    color: 1;
+  }
+
+  .sm\:text-\[5\] {
+    color: 5;
+  }
+
+  .sm\:text-\[5p\] {
+    color: 5p;
+  }
 }
 
 @media (min-width: 768px) {
@@ -3056,6 +3099,52 @@ video {
     font-size: 1.5rem;
     line-height: 2rem;
   }
+
+  .md\:text-\[19px\] {
+    font-size: 19px;
+  }
+
+  .md\:text-\[1px\] {
+    font-size: 1px;
+  }
+
+  .md\:text-\[15px\] {
+    font-size: 15px;
+  }
+
+  .md\:text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .md\:text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .md\:text-\[\] {
+    color: ;
+  }
+
+  .md\:text-\[2\] {
+    color: 2;
+  }
+
+  .md\:text-\[1\] {
+    color: 1;
+  }
+
+  .md\:text-\[19\] {
+    color: 19;
+  }
+
+  .md\:text-\[19p\] {
+    color: 19p;
+  }
+
+  .md\:text-\[19pz\] {
+    color: 19pz;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -3090,6 +3179,18 @@ video {
 
   .lg\:h-60 {
     height: 15rem;
+  }
+
+  .lg\:w-full {
+    width: 100%;
+  }
+
+  .lg\:w-1 {
+    width: 0.25rem;
+  }
+
+  .lg\:w-1\/12 {
+    width: 8.333333%;
   }
 
   .lg\:max-w-5xl {
