@@ -31,7 +31,7 @@ export const ViewDashboard = async (req, res) => {
   
 
 
-  res.render("admin/dashboard",{totalSales,dailyProfit,orderCount,usersCount})
+  res.render("admin/dashBoard",{totalSales,dailyProfit,orderCount,usersCount})
 }
 
 
