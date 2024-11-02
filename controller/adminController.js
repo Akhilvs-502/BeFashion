@@ -298,7 +298,8 @@ export const postUploadImage = async (req, res) => {
 
 export const postAddproduct = async (req, res) => {
     try {
-
+        console.log("psot add product");
+        
         const { productName, price, description, quantity, discount, stock, color, size, category, images } = req.body
         console.log(images + "images");
         console.log("postADDproduct");
@@ -317,7 +318,8 @@ export const postAddproduct = async (req, res) => {
         await product.save()
         res.json({ message: "product added" })
         console.log(productName);
-    } catch {
+    } catch(err) {
+console.log("err on adding product-postProduct",err);
 
     }
 
