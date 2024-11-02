@@ -28,9 +28,16 @@ export const home = async (req, res) => {
                 }
                 else {
                     const user = await usermodel.findOne({ email: data.email })
+                    console.log(user);
+                    
                     const wishlist= await wishlistModel.find({userId:user._id})
-                    let wishlistProduct=wishlist[0].products
-                    console.log(wishlist[0].products);
+                    console.log(wishlist);
+                    
+                    if(wishlist.length>1){
+                    var wishlistProduct=wishlist[0].products }
+                    else{
+                        wishlistProduct=[]
+                    }
                     if (user.blocked) {
                         res.clearCookie('token');
                         req.session.destroy()
@@ -65,6 +72,8 @@ export const login = (req, res) => {
                 }
                 else {
                     const user = await usermodel.findOne({ email: data.email })
+                    console.log(user);
+                    
                     if (user.blocked) {
                         res.clearCookie('token');
                         req.session.destroy()
@@ -455,6 +464,12 @@ export const passwordUpdate = async (req, res) => {
 
 export const allProducts = async (req, res) => {
     try {
+
+        let ans=await productModel.find({})
+        console.log(ans);
+        let userd=await usermodel.find({})
+        console.log(userd);
+        
         // Get page and limit from query parameters, set default values if not provided
         const page = parseInt(req.query.page) || 1;  // Current page, default is 1
         const limit = parseInt(req.query.limit) || 15; // Number of items per page, default is 10
@@ -559,8 +574,12 @@ export const allProducts = async (req, res) => {
 
                     const user = await usermodel.findOne({ email: data.email })
                     const wishlist= await wishlistModel.find({userId:user._id})
-                    let wishlistProduct=wishlist[0].products
-                    console.log(wishlist[0].products);
+                    if(wishlist.length>1){
+                        var wishlistProduct=wishlist[0].products }
+                        else{
+                            wishlistProduct=[]
+                        }
+                 
         
                     if (user.blocked) {
                         res.clearCookie('token');
@@ -687,6 +706,14 @@ export const wallet = async (req, res) => {
         const user = req.userData
         const userId = await usermodel.findOne({ email: user.email }, { _id: 1 })
         const wallet = await walletModel.findOne({ userId: userId._id })
+        if(!wallet){
+             let  walletSave= new  walletModel({
+                    userId:userId._id
+                })
+               await walletSave.save()
+       return res.render("user/wallet", { user, wallet:walletSave })
+
+        }
 
 
         res.render("user/wallet", { user, wallet })

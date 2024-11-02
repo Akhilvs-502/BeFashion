@@ -11,9 +11,9 @@
 
   <div id="default-carousel" class="relative w-full " data-carousel="slide">
     <!-- Carousel wrapper -->
-    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+    <div class="relative h-32 lg:78 overflow-hidden rounded-lg md:h-96">
          <!-- Item 1 -->
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+        <div class="hidden  duration-700 ease-in-out" data-carousel-item>
             <img src="/images/bannercart.gif" class="absolute  w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 2 -->
@@ -50,7 +50,7 @@
             <span class="sr-only">Previous</span>
         </span>
     </button>
-    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none               " data-carousel-next>
         <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
             <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
@@ -61,39 +61,60 @@
 </div>
 
 
+<section class="flex flex-col md:flex-row md:space-x-0">
+  <!-- Left Column: Women's Fashion (Main Image) -->
+  <div class="relative w-full md:w-1/2 h-full ">
+    <img src="/images/category-1.jpg" alt="Women's Fashion" class="w-full h-full object-cover ">
+    <h2 class="absolute top-4 left-4 text-2xl font-bold text-white">
+      Women’s Fashion
+    </h2>
+    <p class="absolute bottom-16 left-4 text-sm text-white">
+      Shop our range of stylish dresses and quality cosmetics for women. Find looks that are both trendy and timeless, perfect for any occasion.
+    </p>
+    <a href="#" class="absolute bottom-4 left-4 text-sm font-bold text-blue-400">Shop Now</a>
+  </div>
 
-
-<section class="flex ">
-  <div  class="flex-initial" >
+  <!-- Right Column: Grid for Other Categories -->
+  <div class="grid grid-cols-2  w-full md:w-1/2">
+    <!-- Men's Fashion -->
     <div class="relative">
-      <img  src="/images/category-1.jpg" alt="">
-      <h2 class=" absolute top-11 left-1 py-4 text-2xl font-bold ">Women’s fashion</h2>
-      <h2 class="absolute top-12 left-1 py-12">"Shop our range of stylish dresses and quality <br>
-        cosmetics for women. Find looks <br>
-        that are both trendy and <br>
-        timeless, perfect for any occasion."</h2>
-      </div>
+      <img src="/images/category-2.jpg" alt="Men's Fashion" class="w-full h-full object-cover ">
+      <h2 class="absolute top-4 left-4 text-xl font-bold text-white">
+        Men's Fashion
+      </h2>
+      <a href="#" class="absolute bottom-4 left-4 text-sm font-bold text-blue-400">Shop Now</a>
     </div>
-    <a href="" class="absolute pt-56 pl-2 ">ShopNow</a>
-  <div class="flex ">
-    
-    <div class="flex-initial ">
-      <h2 class=" pt-10 pl-2 absolute font-bold ">Men's fashion <br> <a class="text-blue-400 font-light" href="">ShopNow</a></h2>
-      <img  src="/images/category-2.jpg"   alt="">
-    
-      <h2 class=" pt-10 pl-2 absolute font-bold ">Kid's <br> <a class="text-blue-400 font-light" href="">ShopNow</a></h2>
-      <img src="/images/category-3.jpg" alt="">
+
+    <!-- Kids' Fashion -->
+    <div class="relative">
+      <img src="/images/category-3.jpg" alt="Kids' Fashion" class="w-full h-full object-cover ">
+      <h2 class="absolute top-4 left-4 text-xl font-bold text-white">
+        Kids' Fashion
+      </h2>
+      <a href="#" class="absolute bottom-4 left-4 text-sm font-bold text-blue-400">Shop Now</a>
     </div>
-    <div class="flex-initial">
-      <h2 class=" pt-10 pl-2 absolute font-bold ">Cosmetics <br> <a class="text-blue-400 font-light" href="">ShopNow</a></h2>
 
-      <img src="/images/category-4.jpg" alt="">
-      <h2 class=" pt-10 pl-2 absolute font-bold ">Accessories <br> <a class="text-blue-400 font-light" href="">ShopNow</a></h2>
+    <!-- Cosmetics -->
+    <div class="relative">
+      <img src="/images/category-4.jpg" alt="Cosmetics" class="w-full h-full object-cover ">
+      <h2 class="absolute top-4 left-4 text-xl font-bold text-white">
+        Cosmetics
+      </h2>
+      <a href="#" class="absolute bottom-4 left-4 text-sm font-bold text-blue-400">Shop Now</a>
+    </div>
 
-      <img src="/images/category-5 (1).jpg"  alt="">
+    <!-- Accessories -->
+    <div class="relative">
+      <img src="/images/category-5 (1).jpg" alt="Accessories" class="w-full h-full object-cover ">
+      <h2 class="absolute top-4 left-4 text-xl font-bold text-white">
+        Accessories
+      </h2>
+      <a href="#" class="absolute bottom-4 left-4 text-sm font-bold text-blue-400">Shop Now</a>
     </div>
   </div>
 </section>
+
+
 
 
 
@@ -165,18 +186,6 @@
 
 
 
-  <div class=" bg-[#2e0249] py-16 px-6 font-[sans-serif]">
-    <div class="max-w-5xl mx-auto text-center">
-      <h2 class="text-4xl font-bold mb-6 text-white">Subscribe to Our Newsletter</h2>
-      <p class="text-base text-gray-300">Stay updated with the latest news, trends, and special offers. Don't miss out on our exciting updates.</p>
-      <div class="mt-12 flex items-center overflow-hidden bg-gray-50 rounded-md max-w-xl mx-auto">
-        <input type="email" placeholder="Enter your email" class="w-full bg-transparent py-3.5 px-4 text-gray-800 text-base focus:outline-none" />
-        <button class="bg-[#a91079] hover:bg-[#a91079e2] text-white text-base tracking-wide py-3.5 px-6 hover:shadow-md hover:transition-transform transition-transform hover:scale-105 focus:outline-none">
-          Subscribe
-        </button>
-      </div>
-    </div>
-  </div>
 </section>
 
 <%- include('../partials/footer') %>
