@@ -39,6 +39,9 @@ app.get("/",(req,res)=>{
 })
 app.use('/user',userRoute)
 app.use('/admin',adminRouter)
+app.get("*",(req,res)=>{
+    res.render("user/404")
+})
 
 
 

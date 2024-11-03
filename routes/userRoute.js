@@ -12,6 +12,7 @@ import * as address from "../controller/user/addressController.js"
 import * as profile from "../controller/user/profileContoller.js"
 const routes=express.Router()
 
+
 routes.get("/home",home)
 routes.get('/login',login)
 routes.post('/login',postLogin)
