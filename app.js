@@ -3,7 +3,7 @@ import path, { join } from 'path'
 import { fileURLToPath } from 'url';
 import expressEjsLayouts from "express-ejs-layouts";
 const __filename = fileURLToPath(import.meta.url);
-const __dirname =path.dirname(__filename);          //if  dont want __dirname remove after the project
+const __dirname =path.dirname(__filename);          
 import userRoute from './routes/userRoute.js'
 import adminRouter from './routes/adminRoute.js'
 import mongoose from "mongoose";
@@ -34,17 +34,13 @@ app.use(session({
     cookie:{  secure: process.env.NODE_ENV === 'production', }
   }));
 
-
+app.get("/",(req,res)=>{
+    res.redirect("/user/home")
+})
 app.use('/user',userRoute)
 app.use('/admin',adminRouter)
 
-// app.get("/user",(req,res)=>{
-//     res.render('user/home',)
-// })
 
-// app.get("/login",(req,res)=>{
-//     res.render('user/login')
-// })
 
  const MONGOURL=process.env.MONGO_URL;
  const PORT=process.env.PORT
