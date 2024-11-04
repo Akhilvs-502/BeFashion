@@ -30,7 +30,7 @@ export const checkOutStep1 = async (req, res) => {
         const dataBase = await usermodel.findOne({ email: user.email })
         console.log(dataBase);
 
-        res.render("user/checkOutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase })
+        res.render("user/checkoutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase })
     }
     catch {
 

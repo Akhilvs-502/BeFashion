@@ -11,26 +11,26 @@
 
   <div id="default-carousel" class="relative w-full " data-carousel="slide">
     <!-- Carousel wrapper -->
-    <div class="relative h-32 lg:78 overflow-hidden rounded-lg md:h-96">
+    <div class="relative h-36 lg:78 overflow-hidden rounded-lg md:h-96">
          <!-- Item 1 -->
         <div class="hidden  duration-700 ease-in-out" data-carousel-item>
-            <img src="/images/bannercart.gif" class="absolute  w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="/images/bannercart.gif" class="absolute  w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 2 -->
         <div class="hidden duration-100000 ease-in-out" data-carousel-item>
-            <img src="/images/bannercart.gif" class="absolute  w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="/images/bannercart.gif" class="absolute  w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 3 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="/images/bannercart.gif" class="absolute  w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="/images/bannercart.gif" class="absolute  w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 4 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="/images/2-1._CB565867124_.jpg" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="/images/bannercart.gif" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 5 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="/images/bannercart.gif" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="/images/bannercart.gif" class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
     </div>
     <!-- Slider indicators -->
@@ -114,75 +114,80 @@
   </div>
 </section>
 
-
-
-
-
-
-
-
 <section>
   <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
 
-    <h2 class="text-2xl font-extrabold text-gray-800 mb-12">All products</h2>
+    <h2 class="text-lg  lg:text-2xl font-extrabold text-gray-800 mb-12">All products</h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <% products.forEach(product=>{%>
         <!-- <a href="/user/productView/<%=product._id %>"> -->
-          <div id="product"
-            class="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
-            <div class="w-full aspect-w-4 aspect-h-3 lg:h-60">
-              <img src="<%=product.images[0] %>" alt="Product 1" class="h-full w-full object-cover object-top" />
-            </div>
+        <div id="product"
+          class="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
+          <div class="w-full aspect-w-4 aspect-h-3 lg:h-60">
+            <img src="<%=product.images[0] %>" alt="Product 1" class="h-full w-full object-cover object-top" />
+          </div>
 
-            <div class="p-4">
-              <h3 class="text-lg font-bold text-gray-800">
-                <%=product.productName %>
-              </h3>
-              <p>
-                <%=product.description %>
-              </p>
-              <div class="mt-4 flex items-center flex-wrap gap-2">
-                <h4 class="text-lg font-bold text-gray-800">₹<%=product.price %>
-                </h4>
-                <h4 class="text-lg font-light line-through text-red-500">
-                  <%=product.discount %>%
-                </h4>
-                <!-- <a href="/user/addToWishlist" > -->
+          <div class="p-4">
+            <h3 class="text-sm lg:text-lg font-bold text-gray-800">
+              <%=product.productName %>
+            </h3>
+            <p class="text-sm lg:text-lg">
+              <%=product.description %>
+            </p>
+            <div class="mt-4 flex items-center flex-wrap gap-2">
+              <h4 class="text-lg font-bold text-gray-800">₹<%=product.price %>
+              </h4>
+              <h4 class="text-lg font-light line-through text-red-500">
+                <%=product.discount %>%
+              </h4>
+              <!-- <a href="/user/addToWishlist" > -->
+              <!-- <div class="float-right"> -->
                 <div id="Wishlist"
-                  class="bg-gray-100 p-1 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
+                  class="bg-gray-100 p-1 w-10 h-10 flex items-center   rounded-full cursor-pointer">
 
-                  
-                  <% if (wishlistProduct.some(item=> item.productId.equals(product._id))) { %>
+          
 
-                    <svg width="300px"   height="500px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                      <path fill="#FF0000" d="M480.25 156.355c0 161.24-224.25 324.43-224.25 324.43S31.75 317.595 31.75 156.355c0-91.41 70.63-125.13 107.77-125.13 77.65 0 116.48 65.72 116.48 65.72s38.83-65.73 116.48-65.73c37.14.01 107.77 33.72 107.77 125.14z" />
-                    </svg>
-                    
-                      <% } else { %>
+                      <% if (wishlistProduct.some(item=> item.productId.equals(product._id))) { %>
+
+                        <svg  width="300px"   height="500px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                          <path fill="#FF0000" d="M480.25 156.355c0 161.24-224.25 324.43-224.25 324.43S31.75 317.595 31.75 156.355c0-91.41 70.63-125.13 107.77-125.13 77.65 0 116.48 65.72 116.48 65.72s38.83-65.73 116.48-65.73c37.14.01 107.77 33.72 107.77 125.14z" />
+                        </svg>
+                        
+                          <% } else { %>
+                          
+                            <svg width="300px" height="500px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path fill="#E0E0E0" 
+                              d="M480.25 156.355c0 161.24-224.25 324.43-224.25 324.43S31.75 317.595 31.75 156.355c0-91.41 70.63-125.13 107.77-125.13 77.65 0 116.48 65.72 116.48 65.72s38.83-65.73 116.48-65.73c37.14.01 107.77 33.72 107.77 125.14z"/></svg>
+
+                              <% } %>
+
                       
-                        <svg width="300px" height="500px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path fill="#E0E0E0" 
-                          d="M480.25 156.355c0 161.24-224.25 324.43-224.25 324.43S31.75 317.595 31.75 156.355c0-91.41 70.63-125.13 107.77-125.13 77.65 0 116.48 65.72 116.48 65.72s38.83-65.73 116.48-65.73c37.14.01 107.77 33.72 107.77 125.14z"/></svg>
+                        <div id="productID" class="hidden">
+                          <%=product._id %>
+                        </div>
+                    </div>
+                  <!-- </div> -->
+                    <!-- </a> -->
 
-                          <% } %>
-
-                  <div id="productID" class="hidden"><%=product._id %></div>
                 </div>
-              <!-- </a> -->
-
-              </div>
             </div>
           </div>
-        <!-- </a> -->
-        <%}) %>
+          <!-- </a> -->
+          <%}) %>
 
 
 
 
+        </div>
     </div>
-  </div>
 
 </section>
+
+
+
+
+
+
 
 
 

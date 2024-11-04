@@ -211,16 +211,17 @@ export const showOrders = async (req, res) => {
 
         // Calculate the number of documents to skip
         const skip = (page - 1) * limit;
-        const orderData2 = await orderModel.find({})
+        const user = req.userData
+        const userData = await usermodel.find({ email: user.email })
+        const userId = userData[0]._id
+        const orderData2 = await orderModel.find({user: userId})
         let totalPages = 0
         orderData2.forEach(userOrders => {
             totalPages += userOrders.products.length
         })
         console.log(totalPages);
 
-        const user = req.userData
-        const userData = await usermodel.find({ email: user.email })
-        const userId = userData[0]._id
+     
         const orderData = await orderModel.find({ user: userId }).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel }).skip(skip).limit(limit)
         console.log(orderData[0]);
         res.render("user/showOrders", {

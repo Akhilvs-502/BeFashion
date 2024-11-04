@@ -22,20 +22,16 @@ passport.deserializeUser((id, done) => {
 });
 
 
-
-// passport.deserializeUser((id, done) => {
-//     usermodel.findById(id, (err, user) => {
-//         done(err, user);
-//     });
-// });
-
 // Google OAuth Strategy
 const clientId = process.env.Client_ID
 const clientSecret = process.env.Client_Secret
+const Gcallback=process.env.Google_callback
+console.log(Gcallback);
+
 passport.use(new GoogleStrategy({
     clientID: clientId,  // Your Google Client ID
     clientSecret: clientSecret,  // Your Google Client Secret
-    callbackURL: 'http://localhost:8000/auth/google/callback'  // Callback URL
+    callbackURL: Gcallback ,  // Callback URL
 },
     (accessToken, refreshToken, profile, done) => {
         usermodel.findOne({ $or: [{ googleId: profile.id }, { email: profile.emails[0].value }] }).then(user => {
@@ -55,13 +51,7 @@ passport.use(new GoogleStrategy({
             return user
         }).then(user => {
 
-
-
-
             done(null, user)
-
-
-
 
         }).catch(err => done(err))
     }

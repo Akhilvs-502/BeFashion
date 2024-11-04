@@ -7,7 +7,7 @@
 
 
   <!-- Breadcrumb -->
-  <div class="flex ml-14">
+  <div class="flex ml-2">
 
     <ul class="flex items-center justify-center font-[sans-serif] space-x-4 mt-4">
       <a href="/user/home">
@@ -42,7 +42,7 @@
   <div class="flex ">
 
     <!-- Filters -->
-    <div class="w-52 mt-12 ml-2">
+    <div class="w-52 mt-12 ml-2 hidden sm:hidden md:block lg:block">
       <div class=" flex justify-between">
         <h1 class="font-bold text-2xl">Filters</h1>
         <% if(filters.length>0){%> <a href="/user/allProducts">
@@ -78,15 +78,7 @@
           </option>
         </select>
       </div>
-      <!-- <div class="mt-4">
-        <h1 class="font-bold">Popularity</h1>
-        <select class=" w-full p-2 border rounded-md  focus:ring-2 ">
-          <option class="  " value="">select</option>
-
-          <option class="  " value="high-low">High-Low</option>
-          <option class="  " value="low-high">Low-High</option>
-        </select>
-      </div> -->
+      
       <div class="mt-4">
         <h1 class="font-bold">Product Name</h1>
         <select id="sortProduct" class=" w-full p-2 border rounded-md  focus:ring-2 ">
@@ -95,13 +87,7 @@
           <option class="  " value="zZ-aA" <% if(filters.includes("zZ-aA")){%> selected <% }%>>zZ-aA</option>
         </select>
       </div>
-      <!-- <div>
-        <h1 class="font-bold mt-6 ">Customer Rating</h1>
-        <input class="mt-4" type="checkbox">
-        <label for="">4★ & above</label> <br>
-        <input class="mt-4" type="checkbox">
-        <label for="">3★ & above</label><br>
-      </div> -->
+      
       <div id="lastFilter">
         <h1>_____________________________</h1>
         <input class="mt-4" value="newArrivals" type="checkbox" <% if(filters.includes("newArrivals")){%> checked<% }%>
@@ -118,9 +104,9 @@
       <section>
         <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
 
-          <h2 class="text-2xl font-extrabold text-gray-800 mb-12">All products</h2>
+          <h2 class="text-lg  lg:text-2xl font-extrabold text-gray-800 mb-12">All products</h2>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <% products.forEach(product=>{%>
               <!-- <a href="/user/productView/<%=product._id %>"> -->
               <div id="product"
@@ -130,10 +116,10 @@
                 </div>
 
                 <div class="p-4">
-                  <h3 class="text-lg font-bold text-gray-800">
+                  <h3 class="text-sm lg:text-lg font-bold text-gray-800">
                     <%=product.productName %>
                   </h3>
-                  <p>
+                  <p class="text-sm lg:text-lg">
                     <%=product.description %>
                   </p>
                   <div class="mt-4 flex items-center flex-wrap gap-2">
@@ -143,9 +129,9 @@
                       <%=product.discount %>%
                     </h4>
                     <!-- <a href="/user/addToWishlist" > -->
-                      
+                    <!-- <div class="float-right"> -->
                       <div id="Wishlist"
-                        class="bg-gray-100 p-1 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
+                        class="bg-gray-100 p-1 w-10 h-10 flex items-center   rounded-full cursor-pointer">
 
                 
 
@@ -167,6 +153,7 @@
                                 <%=product._id %>
                               </div>
                           </div>
+                        <!-- </div> -->
                           <!-- </a> -->
 
                       </div>
@@ -246,14 +233,7 @@
       window.location.href = `/user/allProducts?men=${men}&&women=${women}&&kids=${kids}&&price=${price}&&sort=${sort}&&stock=${stock}&&newArrivals=${newArrivals}`
 
 
-      // if (event.target.type === 'checkbox' && event.target.checked) {
-      //     console.log(event.target.value);
-      //     const men = event.target.value == 'men' ? true : false
-      //     const women = event.target.value == 'women' ? true : false
-      //     const kids = event.target.value == 'kids' ? true : false
-      //     // window.location.href=`/user/allProducts?men=${men}&&women=${women}&&kids=${kids}`
-
-      //   }
+    
 
     })
 
