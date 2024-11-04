@@ -1044,6 +1044,10 @@ video {
   height: 100vh;
 }
 
+.h-32 {
+  height: 8rem;
+}
+
 .min-h-\[70px\] {
   min-height: 70px;
 }
