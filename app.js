@@ -61,7 +61,7 @@ app.get("*",(req,res)=>{
 
 
 
-mongoose.connect(MONGOURL).then(()=>{                 /// change this to config file
+mongoose.connect(MONGOURL).then(()=>{                 
     console.log("datebase Conneted successfully");
     app.listen(PORT,(err,data)=>{
         console.log("server running");

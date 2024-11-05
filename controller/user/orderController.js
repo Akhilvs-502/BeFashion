@@ -94,7 +94,6 @@ export const orderUpdate = async (req, res) => {
                 shippingFee: shippingFee
             })
             const orderId = order._id
-            await order.save()
 
             totalOrderPrice += shippingFee
             console.log(shippingFee);
@@ -102,6 +101,7 @@ export const orderUpdate = async (req, res) => {
             ////Response to cod
             if (orderType == 'cod') {
                 if (totalOrderPrice < 1000) {
+                 await order.save()
                     console.log(orderType);
                     const update = await cartModel.deleteOne({ userId: userID })  //delete user cart
                     res.status(201).json({ orderId: orderId, message: "order created", orderType, user, totalOrderPrice })
@@ -124,20 +124,21 @@ export const orderUpdate = async (req, res) => {
                     receipt: "order_rcptid_11",
                     payment_capture: '1' // Auto-capture the payment
                 };
-                razorpayInstance.orders.create(orderOptions, async (err, order) => {
+                razorpayInstance.orders.create(orderOptions, async (err, razorpayOrder) => {
                     console.log("creating instance");
 
                     if (err) {
                         console.error("Error in creating order:", err);
                         res.status(500).send('Something went wrong');
                     } else {
+                         await order.save()
                         console.log(order);
                         const update = await cartModel.deleteOne({ userId: userID })   //delete user cart
 
                         res.json({
-                            razorpayOrderId: order.id,  // Send order.id to frontend
-                            amount: order.amount,  // Send amount to frontend
-                            currency: order.currency, // Send currency
+                            razorpayOrderId: razorpayOrder.id,  // Send order.id to frontend
+                            amount: razorpayOrder.amount,  // Send amount to frontend
+                            currency: razorpayOrder.currency, // Send currency
                             orderType: orderType,
                             orderId: orderId,
                             totalOrderPrice,
@@ -150,11 +151,12 @@ export const orderUpdate = async (req, res) => {
             //wallet
             else if (orderType == 'wallet') {
                 console.log(orderType);
-                const update = await cartModel.deleteOne({ userId: userID })   //delete user cart
                 const userId = await usermodel.findOne({ email: user.email }, { _id: 1 })
                 // const wallet = await walletModel.findOne({ userId: userId._id })
                 const wallectCheck = await walletModel.findOneAndUpdate({ userId: userId._id })
                 if (wallectCheck.balance > totalOrderPrice) {
+                    const update = await cartModel.deleteOne({ userId: userID })   //delete user cart
+
                     const wallet = await walletModel.findOneAndUpdate({ userId: userId._id }, {
                         $inc: { balance: -(totalOrderPrice - (cart.couponDiscount)) }, $push: {
                             transactions: {
@@ -166,16 +168,13 @@ export const orderUpdate = async (req, res) => {
                         }
                     }, { new: true })
                     console.log(order._id);
-
+                    await order.save()
                     const updateorder = await orderModel.findOneAndUpdate({ _id: order._id }, { $set: { "products.$[].paymentStatus": "paid" } }, { new: true })
                     console.log(updateorder);
-
-
                     res.status(201).json({ orderId: orderId, message: "order created", orderType, user })
                 }
                 else {
-                    await orderModel.findOneAndUpdate({ _id: order._id }, { $set: { "products.$[].paymentStatus": "failed" } })
-
+                    // await orderModel.findOneAndUpdate({ _id: order._id }, { $set: { "products.$[].paymentStatus": "failed" } })
                     res.status(404).json({ message: "Insufficient wallet balance to complete the order", status: "noBalance" })
                 }
             }

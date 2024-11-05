@@ -593,7 +593,7 @@ export const allProducts = async (req, res) => {
                     const user = await usermodel.findOne({ email: data.email })
                     const wishlist= await wishlistModel.find({userId:user._id})
                     var wishlistProduct
-                    if(wishlist.length>1){
+                if(wishlist.length>1){
                         wishlistProduct=wishlist[0].products.length>1 ? wishlist[0].products : []
                      }
                         else{

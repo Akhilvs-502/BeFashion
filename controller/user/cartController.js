@@ -2,6 +2,7 @@ import cartModel from "../../models/cartSchema.js"
 import usermodel from "../../models/userModel.js"
 import couponModel from "../../models/couponSchema.js"
 import productModel from "../../models/productSchema.js"
+import e from "express"
 
 
 
@@ -157,9 +158,12 @@ export const updateQuantity = async (req, res) => {
 
         if (action === "quantityAdding") {
             console.log(value);
-
             const productDetails = await productModel.findOne({ _id: productId })
-            if (productDetails.stock <= value) {
+            if(Number(value+1)>=5){
+            return  res.status(409).json({ message: "Only 5 quantites allowed to buy" })
+
+            }
+         else if (productDetails.stock <= value) {
                 console.log("err");
                 res.status(409).json({ message: "The product is currently out of stock! You can't add any more to the quantity" })
             }
@@ -168,10 +172,8 @@ export const updateQuantity = async (req, res) => {
                     userId: userData._id, 'products.productId': productId
                 }, { $inc: { 'products.$.quantity': 1 } }, { new: true })
                 const productDetails = await productModel.findOne({ _id: productId })
-                console.log(productDetails);
                 const productPrice = productDetails.price
                 const productDiscountPrice = productPrice - (productPrice * (productDetails.discount / 100))
-                console.log(productPrice, productDiscountPrice);
 
                 await newCart()
 
