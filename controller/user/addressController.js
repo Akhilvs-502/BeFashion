@@ -19,8 +19,9 @@ export const addAddress = async (req, res) => {
 
         res.render('user/addAddress', { user, dataBase })
     }
-    catch {
-
+    catch(err) {
+            console.log(err);
+            
     }
 }
 
