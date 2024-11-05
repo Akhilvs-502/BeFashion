@@ -154,10 +154,15 @@
             valid = false
             console.log("Errr");
         }
+        if ((couponType)=="percentage" && Number(discountValue) > 50) {
+            document.getElementById("discountErr").innerHTML = "*please enter valid discount( upto 50% is allowed)"
+            valid = false
+            console.log("Errr");
+        }
         if (valid) {
             axios.post("/admin/addCoupon",
                 { couponCode, couponType, discountValue, minimumAmount, startDate, endDate,usageCount }).then(response => {
-                    // document.getElementById("addCoupon").classList.add("hidden")
+                    document.getElementById("addCoupon").classList.add("hidden")
                     window.location.reload()
                 }).catch(err => {
                     document.getElementById("couponErr").innerHTML="* Coupon already exists!"

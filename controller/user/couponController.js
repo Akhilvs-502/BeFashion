@@ -30,20 +30,25 @@ if(coupon){
         }
 
 
-        console.log(totalPrice,discountPrice);
-        console.log(coupon.discountValue);
-        console.log(coupon.couponType);
-        console.log(coupon.minimumAmount);
+        // console.log(totalPrice,discountPrice);
+        // console.log(coupon.discountValue);
+        // console.log(coupon.couponType);
+        // console.log(coupon.minimumAmount);
         let couponDiscount=0
         if(coupon.couponType=="percentage"){
             couponDiscount=(discountPrice*(coupon.discountValue/100)).toFixed(2)
         }else{
             couponDiscount=coupon.discountValue
         }
-        console.log("couponDiscount",couponDiscount);
+  let    couponStatus=await  couponModel.findOne({couponCode,'usedBy.userId':user._id},{usedBy:{$elemMatch:{userId:user._id}}})
+        if(couponStatus.usedBy[0].usedCount >=coupon.usageCount){
+            console.log(couponStatus.usedBy[0].usedCount);
+         return   res.status(409).json({message:"Coupon usage limit exceeded. This coupon is no longer available for use",status:"limitExceeded"})
+    }
+
         if(totalPrice >=coupon.minimumAmount){
-            console.log("minium");
-            const cartUpdate=await cartModel.findOneAndUpdate({userId:user._id},{couponDiscount})
+    
+            const cartUpdate=await cartModel.findOneAndUpdate({userId:user._id},{couponDiscount,couponCode})
         //    const coupn=await couponModel.findOneAndUpdate({couponCode:couponCode},{$inc:{usageCount:1}},{new:true})
         //    console.log(coupn);
            
@@ -74,7 +79,7 @@ export const removeCoupon=async(req,res)=>{
 try{
     const userEmail=req.userData.email
     const user=await usermodel.findOne({email:userEmail})
-    const cartUpdate=await cartModel.findOneAndUpdate({userId:user._id},{couponDiscount:0})
+    const cartUpdate=await cartModel.findOneAndUpdate({userId:user._id},{couponDiscount:0,couponCode:""})
     res.json({message:"coupon removed"})
 
 
@@ -85,6 +90,3 @@ try{
 }
 
 
-export const showCoupon=(req,res)=>{
-    
-}

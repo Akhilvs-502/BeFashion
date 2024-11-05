@@ -10,6 +10,7 @@ const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
 import walletModel from "../../models/walletModel.js";
 import productModel from '../../models/productSchema.js';
 import cartModel from '../../models/cartSchema.js';
+import couponModel from '../../models/couponSchema.js';
 
 let razorpayInstance = new Razorpay({
     key_id: RAZORPAY_KEY_ID,
@@ -54,6 +55,29 @@ export const orderUpdate = async (req, res) => {
                 const newStock = (product.productId.stock) - (product.quantity)
                 productArray.push(data)
                 await productModel.findOneAndUpdate({ _id: product.productId._id }, { $set: { stock: newStock } })
+                //updating the coupon
+                console.log(userID);
+
+                const couponStatus=await couponModel.findOne({couponCode: cart.couponCode,'usedBy.userId': userID})
+                let couponUpdate
+                if(!couponStatus){
+                    console.log("user first time apply coupon");
+             couponUpdate = await couponModel.findOneAndUpdate(
+                    { couponCode: cart.couponCode},
+                    {$push:{usedBy:{userId: userID,usedCount: 1} }},
+                    { new: true }
+                )
+            }else{
+                console.log(couponStatus);
+                couponUpdate=   await couponModel.findOneAndUpdate({couponCode:cart.couponCode,'usedBy.userId':userID},{$inc:{'usedBy.$.usedCount':1}})
+            }
+            console.log(couponUpdate);
+                
+                
+
+                // const isUser = await couponModel.findOneAndUpdate({ couponCode: cart.couponCode, 'usedBy.userId': userID }, );
+                // console.log(couponUpdate);
+
             })
             totalOrderPrice < 500 ? shippingFee = 40 : shippingFee = 0
             const order = new orderModel({
@@ -204,7 +228,7 @@ export const orderSuccess = async (req, res) => {
 
 export const showOrders = async (req, res) => {
     try {
-    
+
         // Get page and limit from query parameters, set default values if not provided
         const page = parseInt(req.query.page) || 1;  // Current page, default is 1
         const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
@@ -214,14 +238,14 @@ export const showOrders = async (req, res) => {
         const user = req.userData
         const userData = await usermodel.find({ email: user.email })
         const userId = userData[0]._id
-        const orderData2 = await orderModel.find({user: userId})
+        const orderData2 = await orderModel.find({ user: userId })
         let totalPages = 0
         orderData2.forEach(userOrders => {
             totalPages += userOrders.products.length
         })
         console.log(totalPages);
 
-     
+
         const orderData = await orderModel.find({ user: userId }).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel }).skip(skip).limit(limit)
         console.log(orderData[0]);
         res.render("user/showOrders", {
@@ -229,9 +253,9 @@ export const showOrders = async (req, res) => {
             currentPage: page,
             limit: limit
         })
-    } catch(err) {
+    } catch (err) {
         console.log(err);
-        
+
     }
 }
 
@@ -301,30 +325,31 @@ export const returnOrder = async (req, res) => {
 }
 
 
-    export const downloadInvoice=async(req,res)=>{
-       const {orderId} =req.query
-      const order=await orderModel.find({_id:orderId}).populate("products.product")
-      let user=order[0].user
-      user=await usermodel.find({_id:user})
-      let userName=user[0].name     
-      let shippingAddress=order[0].shippingAddress
-      console.log(order[0].products);
-let orderItems=[]
-      const  shippingFee=order[0].shippingFee
-      order[0].products.forEach(product=>{
-console.log(product.orderStatus=="delivered");
-if(product.orderStatus=="delivered"){
+export const downloadInvoice = async (req, res) => {
+    const { orderId } = req.query
+    const order = await orderModel.find({ _id: orderId }).populate("products.product")
+    let user = order[0].user
+    user = await usermodel.find({ _id: user })
+    let userName = user[0].name
+    let shippingAddress = order[0].shippingAddress
+    console.log(order[0].products);
+    let orderItems = []
+    const shippingFee = order[0].shippingFee
+    order[0].products.forEach(product => {
+        console.log(product.orderStatus == "delivered");
+        if (product.orderStatus == "delivered") {
 
-    orderItems.push({name:product.product.productName,description:(product.product.description).substring(0,15),price:product.discountedPrice,couponDiscount:product.couponAdded, quantity:product.quantity})
-}})
+            orderItems.push({ name: product.product.productName, description: (product.product.description).substring(0, 15), price: product.discountedPrice, couponDiscount: product.couponAdded, quantity: product.quantity })
+        }
+    })
 
 
 
-      
-// let orderItems = [
-//         { name: "Product 1", description: "Description of Product 1", price: 10, quantity: 2 },
-//         { name: "Product 2", description: "Description of Product 2", price: 20, quantity: 1 },
-//     ];
+
+    // let orderItems = [
+    //         { name: "Product 1", description: "Description of Product 1", price: 10, quantity: 2 },
+    //         { name: "Product 2", description: "Description of Product 2", price: 20, quantity: 1 },
+    //     ];
     const doc = new PDFDocument();
 
     // Set the response headers to trigger a download
@@ -340,20 +365,20 @@ if(product.orderStatus=="delivered"){
     doc.text("Bangalore, KARNATAKA, 560002", 20, 65);
     doc.text("Phone: (123) 456-7890", 20, 80);
     doc.text("Email: info@beFashion.com", 20, 95);
-    
+
     doc.fontSize(14).text("Invoice", 360, 20);  // Moved slightly to the left
     doc.text(`Invoice Date: ${new Date().toLocaleDateString()}`, 360, 40);
     doc.text(`Invoice #: 001`, 360, 60);
 
     // Customer Information
     doc.fontSize(12).text("Bill To:", 20, 120);
-    doc.fontSize(10).text( `Customer Name:${userName}`, 20, 140);
+    doc.fontSize(10).text(`Customer Name:${userName}`, 20, 140);
     doc.text(`Shipping Address: ${shippingAddress.address},${shippingAddress.city},${shippingAddress.locality},${shippingAddress.state},${shippingAddress.pincode}`, 20, 155);
 
     // Table Header 
     const startY = 200;
     const rowHeight = 25;
-    
+
     doc.fontSize(12)
         .text("Item", 20, startY)
         .text("Description", 180, startY)
@@ -379,9 +404,9 @@ if(product.orderStatus=="delivered"){
     });
 
     // Totals 
-    const subtotal = orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0); 
-    const couponDiscount = orderItems.reduce((acc, item) => acc + (item.couponDiscount), 0); 
-    const total = subtotal - couponDiscount+shippingFee;
+    const subtotal = orderItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const couponDiscount = orderItems.reduce((acc, item) => acc + (item.couponDiscount), 0);
+    const total = subtotal - couponDiscount + shippingFee;
     doc.text("Subtotal:Rs " + subtotal.toFixed(2), 350, startY + (orderItems.length + 1) * rowHeight);
     doc.text("Coupon Discount:Rs " + couponDiscount.toFixed(2), 350, startY + (orderItems.length + 2) * rowHeight);
     doc.text("Shipping charge:Rs " + shippingFee.toFixed(2), 350, startY + (orderItems.length + 3) * rowHeight);

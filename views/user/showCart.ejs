@@ -70,13 +70,13 @@
 
                                     <div class="ml-auto flex flex-col">
                                         <div class="flex items-start gap-4 justify-end">
-                                            <svg id="" xmlns="http://www.w3.org/2000/svg"
+                                            <!-- <svg id="" xmlns="http://www.w3.org/2000/svg"
                                                 class="w-4 cursor-pointer fill-gray-400 inline-block"
                                                 viewBox="0 0 64 64">
                                                 <path
                                                     d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
                                                     data-original="#000000"></path>
-                                            </svg>
+                                            </svg> -->
 
                                             <svg id="delete" xmlns="http://www.w3.org/2000/svg"
                                                 class="w-4 cursor-pointer fill-gray-400 inline-block"
@@ -136,12 +136,6 @@
                                 class="bg-white rounded-md px-4 py-6 h-max shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
                                 <ul class="text-gray-800 space-y-4">
                                     <li>
-                                        <!-- <div class="flex">
-                                            <input
-                                                class="w-25   h-9 rounded-full px-3  uppercase  border-2 border-green-600  border-dashed "
-                                                type="text" name="" id="">
-                                            <button class="font-light text-xs">Apply Coupon</button>
-                                        </div> -->
                                         <div class="flex">
                                             <input
                                                 class="w-25 h-9 rounded-full px-3 uppercase border-2 border-green-600 border-dashed"
@@ -401,7 +395,6 @@
                             icon: "error",
                             title: "Oops...",
                             text: response.response.data.message,
-                            // footer: '<a href="#">Why do I have this issue?</a>'
                         });
                     })
                 }
@@ -462,7 +455,7 @@
                         toast: true,
                         position: "top-end",
                         showConfirmButton: false,
-                        timer: 1000,
+                        timer: 4000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
                             toast.onmouseenter = Swal.stopTimer;
@@ -488,11 +481,14 @@
             if(err.response.data.status=="expireCoupn"){
                 title="The code you entered is expired"
             }
+            if(err.response.data.status=="limitExceeded"){
+                title=err.response.data.message
+            }
             const Toast = Swal.mixin({
                         toast: true,
                         position: "top-end",
                         showConfirmButton: false,
-                        timer: 1000,
+                        timer: 4000,
                         timerProgressBar: true,
                         didOpen: (toast) => {
                             toast.onmouseenter = Swal.stopTimer;

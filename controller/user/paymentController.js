@@ -65,6 +65,7 @@ export const paymentFailed = async (req, res) => {
 
         console.log(orderId);
     } catch (err) {
+        res.render("user/500")
 
     }
 }
