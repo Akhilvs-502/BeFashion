@@ -2,9 +2,6 @@ import adminmodel from "../models/adminModel.js";
 import usermodel from "../models/userModel.js";
 import categoryModel from "../models/categorySchema.js";
 import productModel from "../models/productSchema.js";
-import multer from 'multer';
-import path from 'path';
-import routes from "../routes/userRoute.js";
 import orderModel from "../models/orderSchema.js";
 import walletModel from "../models/walletModel.js";
 import jwt from 'jsonwebtoken'
@@ -160,7 +157,6 @@ export const category = async (req, res) => {
         // Fetch the paginated categories
         const categories = await categoryModel.find().skip(skip).limit(limit)
 
-        // console.log(categories);
 
         // Send the paginated data with total categories and current page info
         res.render('admin/category', {
@@ -258,19 +254,6 @@ export const postEditCategory = async (req, res) => {
 
 
 
-// const storage = multer.diskStorage({
-//     destination: './uploads/', // You can change this to store in a cloud service
-//     filename: function (req, file, cb) {
-//         cb(null, Date.now() + path.extname(file.originalname)); // Rename the file
-//     }
-// });
-// // Initialize upload
-// const upload = multer({
-//     storage: storage,
-//     limits: { fileSize: 1000000 }, // 1MB size limit (adjust as necessary)
-// }).single('croppedImage'); // Field name in FormData
-
-
 
 export const postUploadImage = async (req, res) => {
     try {
@@ -279,10 +262,7 @@ export const postUploadImage = async (req, res) => {
         console.log(req.body.productId); // Check the productId being passed
         console.log(imageUrl);
 
-        // // You can save this URL to the database (in a product, for example)
-        // const product = await productModel.findById(req.body.productId);  // Find the product you're updating
-        // product.images.push(imageUrl);  // Push the new image URL to the images array
-        // await product.save();
+        // /ait product.save();
         console.log("imaged saved in monogo");
 
 
@@ -355,13 +335,8 @@ export const editProduct = async (req, res) => {
     // console.log(productID);
     const products = await productModel.find({ _id: productID })
     const product = products[0]
-    // console.log(product);
-
 
     const categories = await categoryModel.find({ block: false })
-    // console.log(categories);
-
-
     res.render('admin/editProduct', { categories, product })
 
 }
@@ -487,13 +462,8 @@ try{
     const user = await orderModel.findOne({ 'products._id': product_id })
     // console.log(user.user);
     const userId = user.user
-    // console.log(update);
 
-    // console.log(update.products[0].discountedPrice);
     const RefundRupee = update.products[0].discountedPrice
-    // const paymentStatus=update.products[0].paymentStatus
-    // const paymentMode=update.products[0].paymentMode
-    // console.log(paymentMode,paymentStatus);
 
     const wallet = await walletModel.findOne({ userId: userId })
     if (wallet) {
@@ -530,8 +500,6 @@ try{
         res.json({ message })
     }
 
-    // console.log(new Date().toLocaleString());
-    // console.log(Date.now());
 
 }catch(err){
     console.log(err);

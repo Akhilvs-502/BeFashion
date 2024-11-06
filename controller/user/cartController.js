@@ -14,9 +14,7 @@ export const addToCart = async (req, res) => {
         const userData = await usermodel.findOne({ email: jwtUser.email })
         const { productId, selectSize } = req.body
         console.log(selectSize);
-        //    console.log(userData);
         const userCart = await cartModel.findOne({ userId: userData._id })
-        //if user cart is not there creating
 
         if (!userCart) {
             console.log("thre is no user cart");
@@ -28,15 +26,7 @@ export const addToCart = async (req, res) => {
             await model.save()
             return res.status(201).json({ message: "new cart created" })
         }
-        // else {
-        //     await cartModel.findOneAndUpdate({
-        //         userId: userData._id,
-        //         'products.productId': productId
-        //     },
-        //         { $inc:{'products.$.quantity':1}
-        //     })
-
-        // }
+  
 
         else {
             console.log("user cart is exit");
@@ -75,7 +65,6 @@ export const showCart = async (req, res) => {
 
         const user = req.userData
         const userData = await usermodel.findOne({ email: user.email })
-        // const cart = await cartModel.findOne({ userId: userData._id }).populate('products.productId')
         const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: 'products.productId', model: 'product' })
         let totalPrice = 0
         let shippingFee = 0
@@ -129,7 +118,6 @@ export const updateQuantity = async (req, res) => {
         const { productId, action, value } = req.body
 
 
-        // const cart = await cartModel.findOne({ userId: userData._id }).populate('products.productId')
         let totalPrice = 0
         let shippingFee = 0
         let discountPrice = 0

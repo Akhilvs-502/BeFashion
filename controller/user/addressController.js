@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import usermodel from "../../models/userModel.js";
-usermodel
 
 export const showAddress = async (req, res) => {
     const user = req.userData

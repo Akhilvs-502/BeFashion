@@ -5,7 +5,6 @@ import couponModel from "../../models/couponSchema.js"
 export const showCoupon=async(req,res)=>{
     try{
         const coupons=await couponModel.find({})
-        // console.log(coupons);
         
         res.render("admin/coupon",{coupons})
     }

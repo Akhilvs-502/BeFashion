@@ -6,7 +6,6 @@ export const checkOutStep1 = async (req, res) => {
 
         const user = req.userData
         const userData = await usermodel.findOne({ email: user.email })
-        // const cart = await cartModel.findOne({ userId: userData._id }).populate('products.productId')
         const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: 'products.productId', model: 'product' })
         let totalPrice = 0
         let shippingFee = 0
@@ -94,7 +93,8 @@ export const cartSummary = async (req, res) => {
         discountPrice.toFixed(2)
         res.render("user/orderSummary", { user, total, couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID })
     }
-    catch {
+    catch(err) {
+        res.render("user/500")
 
     }
 

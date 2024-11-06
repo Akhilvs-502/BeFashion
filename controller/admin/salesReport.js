@@ -1,5 +1,4 @@
 import orderModel from "../../models/orderSchema.js"
-// import { generatePDF } from "./pdfGenerator.js";
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
@@ -55,7 +54,6 @@ let filter=req.query.filter ? req.query.filter: ""
       console.log(orders);
       
    }
-//  console.log(orders);
 let totalRevenue=0
 let overallDiscounted=0
 let salesCount=0
@@ -84,14 +82,12 @@ console.log(err);
 
 export const downloadPdf = async (req, res) => {
     console.log("downloadPdf ");
+ console.log(orders);
  
     const generatePDF = (orders) => {
        return new Promise((resolve, reject) => {
           const doc = new PDFDocument();
-         //  const filePath = path.resolve('./sales-report.pdf');
  
-         //  const writeStream = fs.createWriteStream(filePath);
-         //  doc.pipe(writeStream);
          res.setHeader('Content-Type', 'application/pdf');
          res.setHeader('Content-Disposition', 'attachment; filename="sales-report.pdf"');
          doc.pipe(res); // Pipe the PDF directly to the response
@@ -104,6 +100,8 @@ export const downloadPdf = async (req, res) => {
           doc.moveDown();
  
           orders.forEach(order => {
+            console.log(order);
+            
              const orderData = `${order.user} | ${order.products[0]._id} | ${order.products[0].quantity} | ${(order.products[0].price-order.products[0].discountedPrice).toFixed(2)} | ${order.products[0].couponAdded.toFixed(2)} | ${order.products[0].totalPay} | ${order.products[0].orderStatus} || ${order.products[0].paymentStatus} | ${order.createdAt.toLocaleDateString()}`;
              doc.text(orderData);
             doc.moveDown();
@@ -113,8 +111,6 @@ export const downloadPdf = async (req, res) => {
           doc.end();
           resolve();
  
-         //  writeStream.on('finish', () => resolve(filePath)); // Wait for file writing to finish
-         //  writeStream.on('error', reject); // Handle errors
        });
     };
  
@@ -169,11 +165,10 @@ orders.forEach(order => {
 });
 
     const filePath = './sales-report.xlsx';
-   //  await workbook.xlsx.writeFile(filePath);
+    await workbook.xlsx.writeFile(filePath);
     return filePath; // Return the path to download later
 };
 
-// const orders = await orderModel.find({ 'products.paymentStatus': "paid" });
 
 const excelPath = await generateExcel(orders);
 res.download(excelPath); // Send the file to the client

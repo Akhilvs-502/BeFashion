@@ -75,8 +75,7 @@ export const orderUpdate = async (req, res) => {
                 
                 
 
-                // const isUser = await couponModel.findOneAndUpdate({ couponCode: cart.couponCode, 'usedBy.userId': userID }, );
-                // console.log(couponUpdate);
+           
 
             })
             totalOrderPrice < 500 ? shippingFee = 40 : shippingFee = 0
@@ -190,14 +189,6 @@ export const orderUpdate = async (req, res) => {
     }
 
 
-
-
-    // const order=await orderModel.findByIdAndUpdate({_id:addressID},{})
-    // // console.log(order);
-    // const userID=order.user
-    // // const products=cart.products
-    // const cart=await cartModel.findOne({userId:userID}).populate({path:'products.productId',model:productModel})
-    // // console.log(cart);
 
 }
 
@@ -345,10 +336,7 @@ export const downloadInvoice = async (req, res) => {
 
 
 
-    // let orderItems = [
-    //         { name: "Product 1", description: "Description of Product 1", price: 10, quantity: 2 },
-    //         { name: "Product 2", description: "Description of Product 2", price: 20, quantity: 1 },
-    //     ];
+
     const doc = new PDFDocument();
 
     // Set the response headers to trigger a download
@@ -384,12 +372,6 @@ export const downloadInvoice = async (req, res) => {
         .text("Unit Cost", 350, startY)
         .text("Quantity", 420, startY)
         .text("Line Total", 480, startY);
-
-    // // Sample Order Details
-    // orderItems = [
-    //     { name: "Product 1", description: "Description of Product 1", price: 10, quantity: 2 },
-    //     { name: "Product 2", description: "Description of Product 2", price: 20, quantity: 1 },
-    // ];
 
     // Add order items to the PDF 
 

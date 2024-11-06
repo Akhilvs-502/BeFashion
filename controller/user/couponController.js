@@ -29,11 +29,6 @@ if(coupon){
          
         }
 
-
-        // console.log(totalPrice,discountPrice);
-        // console.log(coupon.discountValue);
-        // console.log(coupon.couponType);
-        // console.log(coupon.minimumAmount);
         let couponDiscount=0
         if(coupon.couponType=="percentage"){
             couponDiscount=(discountPrice*(coupon.discountValue/100)).toFixed(2)
@@ -41,16 +36,17 @@ if(coupon){
             couponDiscount=coupon.discountValue
         }
   let    couponStatus=await  couponModel.findOne({couponCode,'usedBy.userId':user._id},{usedBy:{$elemMatch:{userId:user._id}}})
+  if(couponStatus){
         if(couponStatus.usedBy[0].usedCount >=coupon.usageCount){
             console.log(couponStatus.usedBy[0].usedCount);
          return   res.status(409).json({message:"Coupon usage limit exceeded. This coupon is no longer available for use",status:"limitExceeded"})
     }
+}
 
         if(totalPrice >=coupon.minimumAmount){
     
             const cartUpdate=await cartModel.findOneAndUpdate({userId:user._id},{couponDiscount,couponCode})
-        //    const coupn=await couponModel.findOneAndUpdate({couponCode:couponCode},{$inc:{usageCount:1}},{new:true})
-        //    console.log(coupn);
+    
            
             res.json({message:"coupon applyed"})
         }

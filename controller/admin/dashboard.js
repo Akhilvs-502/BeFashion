@@ -97,7 +97,6 @@ export const getChartData = async (req, res) => {
   let data = Object.values(salesData)
   let categoryLabel = Object.keys(categoryData)
   let category = Object.values(categoryData)
-  //  console.log(category);
 
   //  Step to get the top categories
   const topCategories = Object.entries(categoryData)
@@ -110,16 +109,9 @@ export const getChartData = async (req, res) => {
     .slice(0, 10);  // Get top 10 products
 
 
-  //  console.log(salesData);
   let profit = data.map(num => num * (20 / 100))
-  //  console.log(productData);
 
   let newData = { label, data, profit, categoryLabel, category, categoryData, topCategories, topProducts }
 
-
-
-
   res.json({ newData, message: "chart value fectched" })
-
-
 }

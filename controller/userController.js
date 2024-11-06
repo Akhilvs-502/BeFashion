@@ -8,7 +8,6 @@ import productModel from "../models/productSchema.js";
 import cartModel from "../models/cartSchema.js";
 const secretKey = process.env.SECRET_KEY
 import walletModel from "../models/walletModel.js";
-import couponModel from "../models/couponSchema.js";
 import wishlistModel from "../models/whishlistModel.js";
 
 
