@@ -28,7 +28,7 @@
 
 
   <!-- Breadcrumb -->
-  <div class="flex ml-14">
+  <div class="flex ml-1">
 
     <ul class="flex items-center justify-center font-[sans-serif] space-x-4 mt-4">
       <a href="/user/home">
@@ -133,9 +133,9 @@
                   <span class="text-sm text-green-500 ml-1.5">inclusive of all taxes</span>
 
                   <!-- Sizes -->
-                  <div class="mt-3">
-                    <h3 class="text-xl font-bold text-gray-800">Sizes</h3>
-                    <div class="flex flex-wrap gap-4 mt-2">
+                  <div class="mt-3 flex ">
+                    <h3 class="text-base font-medium text-gray-800 mt-2">Sizes</h3>
+                    <div class="flex flex-wrap gap-4 ml-3">
                       <% product.size.forEach((size, index)=> { %>
                         <label class="cursor-pointer">
                           <input type="radio" name="selectedSize" value="<%= size %>" class="hidden peer select"
@@ -150,11 +150,34 @@
                     </div>
 
                   </div>
-                  <div class="mt-3 ">
-                    <p class="font-light">Available colors</p>
-                    <!-- //changing the color with respect to the color in fields -->
+                  <div class="mt-2 flex ">
+                    <p class="text-base font-medium text-gray-800 mt-4"> colors</p>
                     <button  type="button"
-                      class="w-10 mt-2 h-10 bg-<%=product.color%>-500 border-2 hover:border-blue-600 font-light text-sm rounded-full flex items-center justify-center shrink-0"><%=product.color%></button>
+                      class="w-10 mt-2 ml-2  h-10 bg-<%=product.color%>-500 border-2 hover:border-blue-600 font-light text-sm rounded-full flex items-center justify-center shrink-0"><%=product.color%></button>
+                  </div>
+                  <div class="mt-3 ">
+                    <p class="text-base font-medium text-gray-800">Available offers</p>
+                        <p class="text-green-500 mt-1">  <%= offer.length===0 ? "No offer available right now" :"" %></p>
+                    <% offer.forEach((item)=>{%> 
+                      <div class="flex">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 70" width="25" height="25">
+                          <!-- Green price tag shape -->
+                          <polygon points="10,5 40,5 45,10 45,60 10,60 5,55 5,15" fill="#28a745"/>
+                          <!-- Hole for the price tag string -->
+                          <circle cx="25" cy="10" r="3" fill="white"/>
+                          <!-- Text inside the price tag -->
+                          <text x="25" y="40" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle" alignment-baseline="middle">
+                            offer
+                          </text>
+                        </svg>
+                        <p class="text-green-500 mt-1 ml-2 text-sm">  <%=item.title%> (<%=item.discountValue%>  <%=item.offerType=="price" ? "rs" :"%"%>)</p>
+                       </div>
+                      
+                      <%})%>
+           
+                  
+                    
+                    
                   </div>
 
               
@@ -340,7 +363,7 @@
 
 
 
-
+<!-- 
   <section>
     <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
       <h2 class="text-2xl font-extrabold text-gray-800 mb-12">Similar products</h2>
@@ -393,7 +416,76 @@
       </div>
     </div>
 
+  </section> -->
+  <section>
+    <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
+  
+      <h2 class="text-lg  lg:text-2xl font-extrabold text-gray-800 mb-12">All products</h2>
+  
+      <div class="grid grid-cols-2  sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% products.forEach(product=>{%>
+          <!-- <a href="/user/productView/<%=product._id %>"> -->
+          <div id="product"
+            class="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
+            <div class="w-full aspect-w-4 aspect-h-3 lg:h-60">
+              <img src="<%=product.images[0] %>" alt="Product 1" class="h-full w-full object-cover object-top" />
+            </div>
+  
+            <div class="p-4">
+              <h3 class="text-sm lg:text-lg font-bold text-gray-800">
+                <%=product.productName %>
+              </h3>
+              <p class="text-sm lg:text-lg">
+                <%=product.description %>
+              </p>
+              <div class="mt-4 flex items-center flex-wrap gap-2">
+                <h4 class="text-lg font-bold text-gray-800">₹<%=product.price %>
+                </h4>
+                <h4 class="text-lg font-light line-through text-red-500">
+                  <%=product.discount %>%
+                </h4>
+                <!-- <a href="/user/addToWishlist" > -->
+                <!-- <div class="float-right"> -->
+                  <div id="Wishlist"
+                    class="bg-gray-100 p-1 w-10 h-10 flex items-center   rounded-full cursor-pointer">
+
+                        <% if (wishlistProduct.some(item=> item.productId.equals(product._id))) { %>
+
+                          <svg  width="300px"   height="500px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#FF0000" d="M480.25 156.355c0 161.24-224.25 324.43-224.25 324.43S31.75 317.595 31.75 156.355c0-91.41 70.63-125.13 107.77-125.13 77.65 0 116.48 65.72 116.48 65.72s38.83-65.73 116.48-65.73c37.14.01 107.77 33.72 107.77 125.14z" />
+                          </svg>
+                          
+                            <% } else { %>
+                            
+                              <svg width="300px" height="500px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path fill="#E0E0E0" 
+                                d="M480.25 156.355c0 161.24-224.25 324.43-224.25 324.43S31.75 317.595 31.75 156.355c0-91.41 70.63-125.13 107.77-125.13 77.65 0 116.48 65.72 116.48 65.72s38.83-65.73 116.48-65.73c37.14.01 107.77 33.72 107.77 125.14z"/></svg>
+  
+                                <% } %>
+  
+                                <div id="productID" class="hidden">
+                                  <%=product._id %>
+                                </div>
+                         
+                      </div>
+                    <!-- </div> -->
+                      <!-- </a> -->
+  
+                  </div>
+              </div>
+            </div>
+            <!-- </a> -->
+            <%}) %>
+  
+            <div>
+              <input type="text" value="<%=product._id %>" id="productId" hidden>
+            </div>
+  
+  
+          </div>
+      </div>
+  
   </section>
+
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -409,7 +501,7 @@
 
     // Add click event to each thumbnail to change the main image
     thumbnails.forEach((thumbnail) => {
-      thumbnail.addEventListener("click", () => {
+      thumbnail.addEventListener("click", () => { 
         mainImage.src = thumbnail.src;
         const result = document.getElementById('myresult');
         result.style.backgroundImage = thumbnail.src; // Update zoom result
@@ -440,6 +532,8 @@
     document.getElementById("addToCart").addEventListener("click", () => {
       document.getElementById("selectErr").textContent = ""
       const productId = document.getElementById("productId").value
+      console.log(productId);
+      
       if (selectSize) {
         console.log(selectSize);
         
@@ -528,4 +622,65 @@
       return { x: x, y: y };
     }
   }
+
+//for wishilst
+
+document.querySelectorAll("#product").forEach(results=>results.addEventListener("click",()=>{
+const productID= results.querySelector("#productID").innerHTML.trim()
+window.location.href=`/user/productView/${productID}`
+console.log("outer");
+console.log(productID);
+}))
+document.querySelectorAll("#Wishlist").forEach(results=>results.addEventListener("click",function(event){
+  event.stopPropagation();
+      const productID= results.querySelector("#productID").innerHTML.trim()
+
+      axios.post("/user/addToWhishlist",{productID}).then(response=>{
+
+        event.target.setAttribute("fill","#FF0000")   
+
+        const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "success",
+        title: "product added to wishlist"
+      });
+
+    })
+    .catch(err => { 
+
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.onmouseenter = Swal.stopTimer;
+          toast.onmouseleave = Swal.resumeTimer;
+        }
+      });
+      Toast.fire({
+        icon: "info",
+        title: "already added wishlist"
+      });
+
+    })
+  }))
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
 </script>

@@ -9,6 +9,7 @@ import cartModel from "../models/cartSchema.js";
 const secretKey = process.env.SECRET_KEY
 import walletModel from "../models/walletModel.js";
 import wishlistModel from "../models/whishlistModel.js";
+import offerModel from "../models/offerSchema.js";
 
 
 
@@ -22,7 +23,8 @@ export const home = async (req, res) => {
         if (token) {
             jwt.verify(token, secretKey, async (err, data) => {
                 if (err) {
-                    res.render('user/home', { products, user: false })
+                    let wishlistProduct=[]
+                    res.render('user/home', { products, user: false ,wishlistProduct})
                 }
                 else {
                     const user = await usermodel.findOne({ email: data.email })
@@ -32,10 +34,11 @@ export const home = async (req, res) => {
                     var wishlistProduct
                     console.log(wishlist,"wishlist");
                     
-                    if(wishlist.length>1){
-                        wishlistProduct=wishlist[0].products.length>1 ? wishlist[0].products : []
-                     }
-                        else{
+                    if(wishlist.length>=1){
+                        
+                        wishlistProduct=wishlist[0].products.length>=1 ? wishlist[0].products : []
+                    }
+                    else{
                             wishlistProduct=[]
                         }
                     if (user.blocked) {
@@ -43,6 +46,9 @@ export const home = async (req, res) => {
                         req.session.destroy()
                         res.render('user/blockedUser')
                     } else {
+                        console.log("include wishlist");
+                        console.log(wishlistProduct);
+                        
                         res.render('user/home', { products, user: user,wishlistProduct })
                     }
                 }
@@ -579,8 +585,8 @@ export const allProducts = async (req, res) => {
         if (token) {
             jwt.verify(token, secretKey, async (err, data) => {
                 if (err) {
-                    console.log(er);
-                    
+                  
+                     wishlistProduct=[]  //solve this err
                     res.render('user/allProducts', {
                         products, totalPages: Math.ceil(totalProducts / limit),
                         currentPage: page,
@@ -592,8 +598,8 @@ export const allProducts = async (req, res) => {
                     const user = await usermodel.findOne({ email: data.email })
                     const wishlist= await wishlistModel.find({userId:user._id})
                     var wishlistProduct
-                if(wishlist.length>1){
-                        wishlistProduct=wishlist[0].products.length>1 ? wishlist[0].products : []
+                if(wishlist.length>=1){
+                        wishlistProduct=wishlist[0].products.length>=1 ? wishlist[0].products : []
                      }
                         else{
                             wishlistProduct=[]
@@ -619,6 +625,8 @@ export const allProducts = async (req, res) => {
             })
         } else {
         let wishlistProduct=[]
+        console.log("noproduct");
+        
             res.render('user/allProducts', {
                 products, totalPages: Math.ceil(totalProducts / limit),
                 currentPage: page,
@@ -650,32 +658,46 @@ export const productView = async (req, res) => {
         ///JWT token checking
         const token = req.cookies.token
         const secretKey = process.env.SECRET_KEY
-
+        const offer=await offerModel.find({'offer.offerGive':id})
+        console.log(offer);
+        
         if (token) {
             jwt.verify(token, secretKey, async (err, data) => {
+                wishlistProduct=[]
                 if (err) {
-                    res.render('user/productView', { product, products, user: false })
+                    res.render('user/productView', { product, products, user: false,offer , wishlistProduct})
                 }
                 else {
                     const user = await usermodel.findOne({ email: data.email })
+                    const wishlist= await wishlistModel.find({userId:user._id})
+                    var wishlistProduct
+                if(wishlist.length>=1){
+                    console.log("pro");
+                        wishlistProduct=wishlist[0].products.length>=1 ? wishlist[0].products : []
+                     }
+                        else{
+                            
+                            wishlistProduct=[]
+                        }
+                    
                     if (user.blocked) {
                         res.clearCookie('token');
                         req.session.destroy()
                         res.render('user/blockedUser')
                     } else {
 
-                        console.log(data);
+                        console.log(wishlistProduct);
                         const userData = await usermodel.findOne({ email: data.email })
                         const userCart = await cartModel.findOne({ userId: userData._id, 'products.productId': id })
-                        console.log(userCart);
+        
 
-                        res.render('user/productView', { product, products, user: data })
+                        res.render('user/productView', { product, products, user: data,offer ,wishlistProduct})
                     }
                 }
 
             })
         } else {
-            res.render('user/productView', { product, products, user: false })
+            res.render('user/productView', { product, products, user: false,offer})
         }
     }
     catch {

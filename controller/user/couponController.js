@@ -8,7 +8,6 @@ export const applyCoupon=async(req,res)=>{
 try{
 let {couponCode}=req.body
 couponCode=couponCode.toUpperCase()
-console.log(couponCode);
 const userEmail=req.userData.email
 const user=await usermodel.findOne({email:userEmail})
 
@@ -28,10 +27,10 @@ if(coupon){
             })
          
         }
-
+        let overalTotal=totalPrice-discountPrice
         let couponDiscount=0
         if(coupon.couponType=="percentage"){
-            couponDiscount=(discountPrice*(coupon.discountValue/100)).toFixed(2)
+            couponDiscount=(overalTotal*(coupon.discountValue/100)).toFixed(2)
         }else{
             couponDiscount=coupon.discountValue
         }

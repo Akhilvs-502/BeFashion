@@ -22,6 +22,7 @@ export const ViewDashboard = async (req, res) => {
     totalSales += orderTotal
     orderCount++
   })
+console.log(totalSales);
 
   let dailyProfit=totalSales*(20/100)
     dailyProfit=dailyProfit.toFixed(2)

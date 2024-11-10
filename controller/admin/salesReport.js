@@ -66,10 +66,14 @@ totalRevenue+=product.totalPay
 overallDiscounted+=product.discountedPrice
 salesCount++
         });
-        
     })
     totalRevenue=totalRevenue.toFixed(2)
+    console.log(overallDiscounted);
+    
     overallDiscounted=(totalRevenue-overallDiscounted).toFixed(2)
+    console.log(overallDiscounted);
+    console.log(totalRevenue);
+    
     
     res.render("admin/salesReport",{orders,totalRevenue,overallDiscounted,salesCount,filter})
 }catch(err){    
@@ -164,12 +168,21 @@ orders.forEach(order => {
     
 });
 
-    const filePath = './sales-report.xlsx';
-    await workbook.xlsx.writeFile(filePath);
-    return filePath; // Return the path to download later
+     // Write the Excel file to a buffer
+     const buffer = await workbook.xlsx.writeBuffer();
+     return buffer;
 };
 
 
-const excelPath = await generateExcel(orders);
-res.download(excelPath); // Send the file to the client
+try {
+    const excelBuffer = await generateExcel(orders);
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', 'attachment; filename="sales-report.xlsx"');
+    res.send(excelBuffer);
+} catch (error) {
+    console.error("Error generating Excel file:", error);
+    res.status(500).send("Could not generate Excel file.");
+}
+
+
  }

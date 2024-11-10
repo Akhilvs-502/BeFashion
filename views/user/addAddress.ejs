@@ -111,7 +111,8 @@
 
                 const apiURL = `https://api.postalpincode.in/pincode/${pincode}`;
                 axios.get(apiURL).then(response => {
-
+                    console.log(response.data);
+                    
 
                     if (response.data[0].Status === 'Success') {
                         const postOffice = response.data[0].PostOffice[0]

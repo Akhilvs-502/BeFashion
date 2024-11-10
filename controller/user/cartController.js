@@ -13,6 +13,8 @@ export const addToCart = async (req, res) => {
         const jwtUser = req.userData
         const userData = await usermodel.findOne({ email: jwtUser.email })
         const { productId, selectSize } = req.body
+        console.log(productId);
+        
         console.log(selectSize);
         const userCart = await cartModel.findOne({ userId: userData._id })
 
@@ -24,6 +26,8 @@ export const addToCart = async (req, res) => {
                 products: [{ productId, quantity: 1, size: selectSize }]
             })
             await model.save()
+            console.log("Cart created");
+            
             return res.status(201).json({ message: "new cart created" })
         }
   
@@ -54,7 +58,9 @@ export const addToCart = async (req, res) => {
         }
     }
 
-    catch {
+    catch(err) {
+        console.log(err);
+        
         return res.status(409).json({ message: "Something went wrong please try again " })
     }
 }
@@ -62,7 +68,7 @@ export const addToCart = async (req, res) => {
 
 export const showCart = async (req, res) => {
     try {
-
+        
         const user = req.userData
         const userData = await usermodel.findOne({ email: user.email })
         const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: 'products.productId', model: 'product' })
@@ -72,6 +78,7 @@ export const showCart = async (req, res) => {
         let couponDiscount = 0
         let total = 0
         if (cart) {
+            console.log("cart ");
             if (cart.products.length == 0) {
                 await cartModel.findOneAndUpdate({ userId: userData._id }, { couponDiscount: 0 })
 

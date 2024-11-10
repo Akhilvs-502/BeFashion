@@ -19,7 +19,6 @@ export const showCoupon=async(req,res)=>{
  export const addCoupon=async(req,res)=>{
     try{
         const {couponCode,couponType,discountValue,minimumAmount,startDate,endDate,usageCount}=req.body
-        console.log(req.body);
   const alredyCoupoon=await   couponModel.findOne({couponCode})
         console.log(alredyCoupoon);
         if(!alredyCoupoon){       
@@ -30,7 +29,7 @@ export const showCoupon=async(req,res)=>{
             ,minimumAmount:Number(minimumAmount)
             ,startDate,endDate,usageCount
         })
-        coupon.save()
+      await  coupon.save()
 
         console.log("Wr");
         res.json({messagae:"coupon added"})

@@ -34,12 +34,13 @@
                                                     <% product.productId.size.forEach(value=>{%>
 
                                                         <option value="<%=value%>" <%=product.size===value ? 'selected'
-                                                            :" " %> ><%= value %></option>
+                                                       :" " %> ><%= value %></option>
                                     <%}) %>
                                 </select>
                                
                             </div>
                         </div>
+                        <div>sdf</div>
 
                         <div class=" mt-auto flex items-center gap-3">
                                                             <button id="quantityDecreasing" type="button"
@@ -67,7 +68,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="ml-auto flex flex-col">
                                         <div class="flex items-start gap-4 justify-end">
                                             <!-- <svg id="" xmlns="http://www.w3.org/2000/svg"
@@ -109,6 +110,9 @@
                                             <%}%>
                                                 <div hidden id="stock">
                                                     <%=product.productId.stock%>
+                                                </div>
+                                                <div class="flex items-center text-green-500 ">
+                                                    offer 40% applyed 
                                                 </div>
                                     </div>
                                     <input hidden value="<%=product.productId._id%>" id="product_id" type="text">

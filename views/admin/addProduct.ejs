@@ -258,7 +258,8 @@ const sizesContainer = document.getElementById('sizes-container');
       });
   }
 
-  cropButton.addEventListener('click', function() {
+  cropButton.addEventListener('click', function(event) {
+    event.preventDefault()
       const croppedCanvas = cropper.getCroppedCanvas();
 
       // Convert the cropped canvas to a Blob
@@ -417,6 +418,10 @@ const sizesContainer = document.getElementById('sizes-container');
     if(!category){
       errshow.innerHTML = "Select any category";
         return false; // Validation failed
+    }
+    if(new Set(sizes).size!=sizes.length){
+      errshow.innerHTML="Remove same size"
+      return false
     }
 
     // Clear error messages and return success if all checks pass

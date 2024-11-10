@@ -30,6 +30,10 @@ const orderSchema=new mongoose.Schema({
                 type:Number,
                 default:0
             },
+            offerAdded:{
+                type:Number,
+                default:0
+            },
             totalPay:{
                 type:Number,
                 required:true

@@ -23,6 +23,10 @@ const cartSchema=new mongoose.Schema({
         type:Number,
         default:0
     },
+    offerAdded:{
+        type:Number,
+        default:0
+    },
     couponCode:{
         type:String
     },
