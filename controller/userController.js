@@ -662,17 +662,17 @@ export const productView = async (req, res) => {
         
         const offer=await offerModel.find({'offerFor.offerGive':id})
         console.log(offer);
+        var wishlistProduct=[]
         
         if (token) {
             jwt.verify(token, secretKey, async (err, data) => {
-                wishlistProduct=[]
                 if (err) {
                     res.render('user/productView', { product, products, user: false,offer , wishlistProduct})
                 }
                 else {
                     const user = await usermodel.findOne({ email: data.email })
                     const wishlist= await wishlistModel.find({userId:user._id})
-                    var wishlistProduct
+    
                 if(wishlist.length>=1){
                     console.log("pro");
                         wishlistProduct=wishlist[0].products.length>=1 ? wishlist[0].products : []
@@ -703,7 +703,9 @@ export const productView = async (req, res) => {
             res.render('user/productView', { product, products, user: false,offer,wishlistProduct})
         }
     }
-    catch {
+    catch(err) {
+        console.log(e);
+        
         res.render("user/500")
 
     }
