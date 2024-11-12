@@ -11,6 +11,7 @@ import walletModel from "../../models/walletModel.js";
 import productModel from '../../models/productSchema.js';
 import cartModel from '../../models/cartSchema.js';
 import couponModel from '../../models/couponSchema.js';
+import offerModel from '../../models/offerSchema.js';
 
 let razorpayInstance = new Razorpay({
     key_id: RAZORPAY_KEY_ID,
@@ -32,10 +33,12 @@ export const orderUpdate = async (req, res) => {
         let shippingFee = 0
         let discountedPrice = 0
         let productCoupon = (cart.couponDiscount) / ((cart.products).length)
+        let productIds=[]
         if (cart.products) {
             cart.products.forEach(async product => {
                 totalOrderPrice += Number(((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)) * product.quantity
                 let discountedPrice = ((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)
+                productIds.push(product.productId._id)
 
                 const data = {
                     product: product.productId._id,
@@ -97,6 +100,28 @@ export const orderUpdate = async (req, res) => {
             totalOrderPrice += shippingFee
             console.log(shippingFee);
             totalOrderPrice = totalOrderPrice.toFixed(2)
+      ////OFFER
+      let offerDiscount=0
+      for(const productId of productIds){
+         const offerData= await offerModel.find({'offerFor.offerGive':productId})
+        if(offerData.length>0){
+        for(const offer of offerData){
+               if( offer.offerType=="price"){
+                offerDiscount+=offer.discountValue
+               }
+               else{
+    let productPrice  =await productModel.find({_id:productId})
+    let discountPrice =(productPrice[0].price) * ((productPrice[0].discount) / 100)
+        discountPrice=productPrice[0].price-discountPrice
+        offerDiscount+=discountPrice*((offer.discountValue)/100)
+    }
+}
+}
+}
+
+totalOrderPrice=totalOrderPrice-offerDiscount
+
+            
             ////Response to cod
             if (orderType == 'cod') {
                 if (totalOrderPrice < 1000) {

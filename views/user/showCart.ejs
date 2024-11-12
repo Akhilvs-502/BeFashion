@@ -111,9 +111,7 @@
                                                 <div hidden id="stock">
                                                     <%=product.productId.stock%>
                                                 </div>
-                                                <div class="flex items-center text-green-500 ">
-                                                    offer 40% applyed 
-                                                </div>
+                                            
                                     </div>
                                     <input hidden value="<%=product.productId._id%>" id="product_id" type="text">
                                 </div>
@@ -174,6 +172,11 @@
                                             class="ml-auto  text-green-500">-₹<%=(couponDiscount)%></span>
                                             <span id="removeCoupon" class="right-0 bg-red-500 text-white rounded-full px-2 <%= couponDiscount <= 0 ? 'hidden' :' ' %>  ">remove Coupon</span>
                                     </li>
+                                    <li class="flex flex-wrap gap-4 text-sm">offer discount<span id="discountOnMrp"
+                                            class="ml-auto  text-green-500">-₹<%=(offerDiscount)%></span>
+                                            <span id="removeCoupon" class="right-0 bg-red-500 text-white rounded-full px-2 <%= couponDiscount <= 0 ? 'hidden' :' ' %>  ">remove Coupon</span>
+                                    </li>
+
                                     <li  class="flex flex-wrap gap-4 text-sm">Shipping Fee <span
                                          id="shippingFee"   class="ml-auto font-bold">₹
                                             <%=shippingFee%>
@@ -282,7 +285,7 @@
                             });
                             Toast.fire({
                                 icon: "info",
-                                title: "Only 5 quantites allowed to buy"
+                                title: "Only 4 quantites allowed to buy"
                             });
 
                         } else {

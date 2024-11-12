@@ -1,3 +1,5 @@
+<link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet">
 <div class=" fixed  top-0 left-0 w-full z-50">
     <%- include('../partials/adminHeader.ejs') %>
 </div>
@@ -22,65 +24,58 @@
                     onclick="switchTab('category')">
                     Category Offer
                 </button>
-                <!-- <button id="referralTab" class="bg-purple-500 hover:bg-purple-700 text-white py-2 px-4 rounded" onclick="switchTab('referral')">
-                Referral Offer
-            </button> -->
+               
             </div>
 
             <!-- Product Offer Form -->
             <div id="productForm" class="offer-form hidden  ">
+                <h2 class="text-base font-bold mb-4">Add Product Offer</h2>
+
                 <!-- <div class="flex justify-center " id="addCoupon"> -->
                 <form id="couponForm" class="my-5 p-5 bg-white shadow-md rounded  ">
-                <div class="flex justify-between">
-                    <h2 class="text-2xl font-medium text-cyan-500">Add Offer</h2> <button id="closeBtn"
-                        class="bg-red-500 rounded-lg w-12 text-white font-light">Close</button>
-                </div>
-                <div class="flex flex-col space-y-4">
-                    <label for="couponCode" class="font-semibold">Offer title</label>
-                    <input type="text" id="offerTitle" placeholder="Enter offer title" class="border p-2 rounded "
-                        required>
-                    <span id="couponErr" class="text-red-400"></span>
-                    <label for="product" class="font-semibold ">Product:</label>
-                    <select id="product" required name="productId"
-                        class="block appearance-none w-ful border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option disabled selected value="">select product</option>
-                        <% products.forEach(product=>{%>
-                            <option id="productId" value="<%=product._id%>">
-                                <%=product.productName%>
-                            </option>
-                            <%})%>
+                    <div class="flex justify-between">
+                        <h2 class="text-2xl font-medium text-cyan-500">Add Offer</h2> <button id="closeBtn" onclick="document.getElementById('productForm').classList.add('hidden')"
+                            class="bg-red-500 rounded-lg w-12 text-white font-light">Close</button>
+                    </div>
+                    <div class="flex flex-col space-y-4">
+                        <label for="couponCode" class="font-semibold">Offer title</label>
+                        <input type="text" id="offerTitle" placeholder="Enter offer title" class="border p-2 rounded "
+                            required>
+                        <span id="couponErr" class="text-red-400"></span>
+                        <label for="product" class="font-semibold ">Product:</label>
+                        <select id="product" required name="productId"
+                            class="block appearance-none w-ful border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option disabled selected value="">select product</option>
+                            <% products.forEach(product=>{%>
+                                <option id="productId" value="<%=product._id%>">
+                                    <%=product.productName%>
+                                </option>
+                                <%})%>
 
-                    </select>
-                    <label for="offerType" class="font-semibold">offer Type</label>
-                    <select id="offerType" class="border p-2 rounded" required>
-                        <option value="" disabled selected>Select offer Type</option>
-                        <option value="percentage">Percentage</option>
-                        <option value="price">Price</option>
-                    </select>
+                        </select>
+                        <label for="offerType" class="font-semibold">offer Type</label>
+                        <select id="offerType" class="border p-2 rounded" required>
+                            <option value="" disabled selected>Select offer Type</option>
+                            <option value="percentage">Percentage</option>
+                            <option value="price">Price</option>
+                        </select>
 
-                    <label for="discountValue" class="font-semibold">Discount Value</label>
-                    <input type="number" id="discountValue" placeholder="Enter Discount Value"
-                        class="border p-2 rounded" required>
-                    <span id="discountErr" class="text-red-400"></span>
-                    <label for="minimumAmount" class="font-semibold">Minimum Amount</label>
-                    <input type="number" id="minimumAmount" placeholder="Enter Minimum Amount"
-                        class="border p-2 rounded" required>
-                    <span id="minimumErr" class="text-red-400"></span>
-                    <label for="usageCount" class="font-semibold">Usage Count</label>
-                    <input type="number" id="usageCount" placeholder="Usage Count" class="border p-2 rounded" min="1"
-                        max="10" required>
-                    <span id="minimumErr" class="text-red-400"></span>
+                        <label for="discountValue" class="font-semibold">Discount Value</label>
+                        <input type="number" id="discountValue" placeholder="Enter Discount Value"
+                            class="border p-2 rounded" required>
+                        <span id="discountErr" class="text-red-400"></span>
+                        
 
-                    <label for="startDate" class="font-semibold">Start Date</label>
-                    <input type="date" id="startDate" class="border p-2 rounded" required>
+                        <label for="startDate" class="font-semibold">Start Date</label>
+                        <input type="date" id="startDate" class="border p-2 rounded" required>
 
-                    <label for="endDate" class="font-semibold">End Date</label>
-                    <input type="date" id="endDate" class="border p-2 rounded" required>
+                        <label for="endDate" class="font-semibold">End Date</label>
+                        <input type="date" id="endDate" class="border p-2 rounded" required>
 
-                    <button id="addProductOffer" type="submit"
-                        class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Add
-                        Offer</button>
-                </div>
+                        <button id="addProductOffer" type="submit"
+                            class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Add
+                            Offer</button>
+                    </div>
                 </form>
                 <!-- </div> -->
 
@@ -89,14 +84,21 @@
 
             <!-- Category Offer Form -->
             <div id="categoryForm" class="offer-form hidden ">
-                <h2 class="text-2xl font-bold mb-4">Add Category Offer</h2>
-                <form id="addCategoryOffer">
-                    <!-- Category Selection -->
-                    <div class="mb-4">
-                        <label for="category" class="block text-gray-700 text-sm font-bold mb-2">Category:</label>
-                        <select id="category" required name="categoryId"
-                            class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white">
-                            <option disabled selected value="">select category</option>
+                <h2 class="text-base font-bold mb-4">Add Category Offer</h2>
+                <form id="couponForm" class="my-5 p-5 bg-white shadow-md rounded  ">
+                    <div class="flex justify-between">
+                        <h2 class="text-2xl font-medium text-cyan-500">Add Offer</h2> <button id="closeBtn"onclick="document.getElementById('productForm').classList.add('hidden')"
+                            class="bg-red-500 rounded-lg w-12 text-white font-light">Close</button>
+                    </div>
+                    <div class="flex flex-col space-y-4">
+                        <label for="categoryOfferTitle" class="font-semibold">Offer title</label>
+                        <input type="text" id="categoryOfferTitle" placeholder="Enter offer title"
+                            class="border p-2 rounded " required>
+                        <span id="couponErr" class="text-red-400"></span>
+                        <label for="product" class="font-semibold ">Product:</label>
+                        <select id="category" required name="categoryproductId"
+                            class="block appearance-none w-ful border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option disabled selected value="">select Select</option>
                             <% categories.forEach(category=>{%>
                                 <option value="<%=category.categoryName%>">
                                     <%=category.categoryName%>
@@ -104,100 +106,136 @@
                                 <%})%>
 
                         </select>
-                    </div>
+                        <label for="categoryofferType" class="font-semibold">offer Type</label>
+                        <select id="categoryofferType" class="border p-2 rounded" required>
+                            <option value="" disabled selected>Select offer Type</option>
+                            <option value="percentage">Percentage</option>
+                            <option value="price">Price</option>
+                        </select>
 
-                    <!-- Discount -->
-                    <div class="mb-4">
-                        <label for="discount" class="block text-gray-700 text-sm font-bold mb-2">Discount
-                            Percentage:</label>
-                        <input type="number" min="1" max="100" id="categoryDiscount" name="discount"
-                            class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white"
-                            required>
-                    </div>
+                        <label for="discountValue" class="font-semibold">Discount Value</label>
+                        <input type="number" id="categorydiscountValue" placeholder="Enter Discount Value"
+                            class="border p-2 rounded" required>
+                        <span id="discountErr" class="text-red-400"></span>
+                        <label for="startDateCAT" class="font-semibold">Start Date</label>
+                        <input type="date" id="startDateCAT" class="border p-2 rounded" required>
 
-                    <!-- Date Range
-                <div class="mb-4 flex justify-between space-x-4">
-                    <div class="w-1/2">
-                        <label for="startDate" class="block text-gray-700 text-sm font-bold mb-2">Start Date:</label>
-                        <input type="date" id="startDate" name="startDate" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
-                    </div>
-                    <div class="w-1/2">
-                        <label for="endDate" class="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
-                        <input type="date" id="endDate" name="endDate" class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white" required>
-                    </div>
-                </div> -->
+                        <label for="endDateCAT" class="font-semibold">End Date</label>
+                        <input type="date" id="endDateCAT" class="border p-2 rounded" required>
 
-                    <button type="submit"
-                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                        Add Category Offer
-                    </button>
+                        <button id="addProductOffer" type="submit"
+                            class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Add
+                            Offer</button>
+                    </div>
                 </form>
             </div>
+ <!-- offerTable -->
+            <table id="myTable" class="min-w-full bg-white border border-gray-200">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border px-4 py-2">Offer Title</th>
+                        <th class="border px-4 py-2">Offer Type</th>
+                        <th class="border px-4 py-2">Discount Value</th>
+                        <!-- <th class="border px-4 py-2">Start Date</th>
+                        <th class="border px-4 py-2">End Date</th> -->
+                        <th class="border px-4 py-2">Offer For</th>
+                        <th class="border px-4 py-2">Edit</th>
+                        <th class="border px-4 py-2">Delete</th>
+                        <th hidden></th>
+                    </tr>
+                </thead>
+                <tbody id="couponList">
+                    <% offers.forEach(offer=>{%>
+                        <tr id="offer">
+                            <td id="offerTitle" class="border px-4 py-2">
+                                <%=offer.title %>
+                            </td>
+                            <td id="offerType" class="border px-4 py-2">
+                                <%=offer.offerType %>
+                            </td>
+                            <td id="discount" class="border px-4 py-2">
+                                <%=offer.discountValue %>
+                            </td>
+                            <!-- <td class="border px-4 py-2">
+                                <%=offer.startDate.toLocaleString() %>
+                            </td>
+                            <td class="border px-4 py-2">
+                                <%=offer.endDate.toLocaleString() %>
+                            </td> -->
+                            <td id="offerFor"><%=offer.offerTarget %>- <%=offer.targetName %> </td>
+                            <td hidden id="offerId"><%=offer._id %></td>
+                            <td id="EditOffer" class="border px-4 py-2">
+                                <button id="editOffer" class="bg-red-500 text-white p-1 rounded hover:bg-red-700">Edit</button>
+                            </td>
+                            <td id="deleteOffer" class="border px-4 py-2">
+                                <button class="bg-red-500 text-white p-1 rounded hover:bg-red-700">Delete</button>
+                            </td>
+                        
+                        </tr>
+                        <%})%>
+    
+    
+                </tbody>
+            </table>
 
-            <!-- Referral Offer Form -->
-            <div id="referralForm" class="offer-form hidden ">
-                <h2 class="text-2xl font-bold mb-4">Add Referral Offer</h2>
-                <form>
-                    <!-- Referral Code -->
-                    <div class="mb-4">
-                        <label for="referralCode" class="block text-gray-700 text-sm font-bold mb-2">Referral
-                            Code:</label>
-                        <input type="text" id="referralCode" name="referralCode"
-                            class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white"
-                            required>
-                    </div>
+            <!-- Edit Offer Modal -->
+<div id="editModal" class="fixed z-10 inset-0 hidden overflow-y-auto mt-8  ">
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+            <h2 class="text-xl font-bold mb-4">Edit Offer</h2>
+            
+            <form id="editOfferForm">
+                <input type="hidden"   id="editOfferId" name="offerId">
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="offerTitle">Offer For</label>
+                    <input type="text"  readonly id="editOfferFor" name="title" class="border rounded w-full py-2 px-3" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="offerTitle">Offer Title</label>
+                    <input type="text" id="editOfferTitle" name="title" class="border rounded w-full py-2 px-3" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="offerType">Offer Type</label>
+                    <select id="editOfferType" class="border p-2 rounded" required>
+                        <option value="" disabled selected>Select offer Type</option>
+                        <option value="percentage">Percentage</option>
+                        <option value="price">Price</option>
+                    </select>
+                    <!-- <input type="text" id="editOfferType" name="offerType" class="border rounded w-full py-2 px-3" required> -->
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="discountValue">Discount Value</label>
+                    <input type="number" id="editDiscountValue" name="discountValue" class="border rounded w-full py-2 px-3" required>
+                </div>
+                
+                <div hidden>
+                    <input type="text"  id="editOfferId" >
+                </div>
 
-                    <!-- Discount -->
-                    <div class="mb-4">
-                        <label for="discount" class="block text-gray-700 text-sm font-bold mb-2">Discount
-                            Percentage:</label>
-                        <input type="number" min="1" max="100" id="discount" name="discount"
-                            class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white"
-                            required>
-                    </div>
-
-                    <!-- Referral Bonus -->
-                    <div class="mb-4">
-                        <label for="bonus" class="block text-gray-700 text-sm font-bold mb-2">Referral Bonus for
-                            Referrer:</label>
-                        <input type="number" id="bonus" name="bonus"
-                            class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white"
-                            required>
-                    </div>
-
-                    <!-- Date Range -->
-                    <div class="mb-4 flex justify-between space-x-4">
-                        <div class="w-1/2">
-                            <label for="startDate" class="block text-gray-700 text-sm font-bold mb-2">Start
-                                Date:</label>
-                            <input type="date" id="startDate" name="startDate"
-                                class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white"
-                                required>
-                        </div>
-                        <div class="w-1/2">
-                            <label for="endDate" class="block text-gray-700 text-sm font-bold mb-2">End Date:</label>
-                            <input type="date" id="endDate" name="endDate"
-                                class="block appearance-none w-full bg-gray-200 border border-gray-200 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white"
-                                required>
-                        </div>
-                    </div>
-
-                    <button type="submit"
-                        class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
-                        Add Referral Offer
-                    </button>
-                </form>
-            </div>
+                <div class="flex items-center justify-end">
+                    <button type="button" id="closeModal" onclick=" document.getElementById('editModal').classList.add('hidden')" class="bg-gray-500 text-white p-2 rounded mr-2">Cancel</button>
+                    <button type="button" id="postEditOffer" class="bg-blue-500 text-white p-2 rounded">Save Changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+        </div>
+    </div>
+</div>
 <script>
+
+
     function switchTab(tab) {
         document.querySelectorAll('.offer-form').forEach(form => form.classList.add('hidden'));
         document.getElementById(`${tab}Form`).classList.remove('hidden');
     }
-
+    //Each product
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('startDate').setAttribute('min', today);
     document.getElementById('endDate').setAttribute('min', today);
@@ -207,14 +245,15 @@
         document.getElementById('endDate').setAttribute('min', start);
 
     })
+
     document.getElementById("productForm").addEventListener("submit", (event) => {
         event.preventDefault()
         const offerTitle = document.getElementById("offerTitle").value
 
         const offerType = document.getElementById("offerType").value
         const discountValue = document.getElementById("discountValue").value
-        const minimumAmount = document.getElementById("minimumAmount").value
-        const usageCount = document.getElementById("usageCount").value
+        // const minimumAmount = document.getElementById("minimumAmount").value
+        // const usageCount = document.getElementById("usageCount").value
         const startDate = document.getElementById("startDate").value
         const endDate = document.getElementById("endDate").value
         const product_id = document.querySelector("select[name='productId']").value
@@ -226,38 +265,76 @@
             valid = false
             console.log("Errr");
         }
-        if ((offerType)=="percentage" && Number(offerType) > 50) {
+        if ((offerType) == "percentage" && Number(offerType) > 50) {
             document.getElementById("discountErr").innerHTML = "*please enter valid discount( upto 50% is allowed)"
             valid = false
             console.log("Errr");
         }
-        if(valid){
-        axios.post("addProductOffer", { product_id,offerTitle,offerType,discountValue, minimumAmount,usageCount, startDate, endDate }).then(async response => {
-            const Toast = await Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 2000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                    toast.onmouseenter = Swal.stopTimer;
-                    toast.onmouseleave = Swal.resumeTimer;
-                }
-            });
-            await Toast.fire({
-                icon: "success",
-                title: "Offer Added"
-            });
-            window.location.reload()
-        }).catch(err => { })}
+        if (valid) {
+            axios.post("addProductOffer", { product_id, offerTitle, offerType, discountValue, startDate, endDate }).then(async response => {
+                const Toast = await Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                await Toast.fire({
+                    icon: "success",
+                    title: "Offer Added"
+                });
+                window.location.reload()
+            }).catch(err => { })
+        }
     })
-    document.getElementById("addCategoryOffer").addEventListener("submit", (event) => {
-        event.preventDefault()
-        const category = document.querySelector("select[name='categoryId']").value
-        console.log(category);
 
-        const discount = document.getElementById("categoryDiscount").value
-        axios.post("addCategoryOffer", { category, discount }).then(async response => {
+    ///CATERGORY OFFER
+    const CATtoday = new Date().toISOString().split('T')[0];
+    document.getElementById('startDateCAT').setAttribute('min', CATtoday);
+    document.getElementById('endDateCAT').setAttribute('min', CATtoday);
+
+    document.getElementById("startDateCAT").addEventListener("change", () => {
+
+        CATstart = document.getElementById('startDateCAT').value
+        console.log(CATstart + "sdfsdfsd");
+
+        document.getElementById('endDateCAT').setAttribute('min', CATstart);
+
+    })
+
+
+    document.getElementById("categoryForm").addEventListener("submit", (event) => {
+        event.preventDefault()
+        const category = document.querySelector("select[name='categoryproductId']").value
+        console.log(category);
+        const offerTitle = document.getElementById("categoryOfferTitle").value
+
+        const offerType = document.getElementById("categoryofferType").value
+        const discountValue = document.getElementById("categorydiscountValue").value
+        const startDate = document.getElementById("startDateCAT").value
+        const endDate = document.getElementById("endDateCAT").value
+        // const product_id = document.querySelector("select[name='categoryproductId']").value
+        // const discount = document.getElementById("productDiscount").value
+        let valid = true
+        // console.log(couponCode, couponType, discountValue, minimumAmount, startDate, endDate);
+        if (Number(discountValue) < 1) {
+            console.log
+            document.getElementById("discountErr").innerHTML = "*please enter valid discount"
+            valid = false
+            console.log("Errr");
+        }
+        console.log(offerType, discountValue, startDate, endDate, category)
+        if ((offerType) == "percentage" && Number(offerType) > 50) {
+            document.getElementById("discountErr").innerHTML = "*please enter valid discount( upto 50% is allowed)"
+            valid = false
+            console.log("Errr");
+        }
+        // const discount = document.getElementById("categoryDiscount").value
+        axios.post("addCategoryOffer", { offerTitle, discountValue,offerType, category, startDate, endDate }).then(async response => {
             const Toast = await Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -276,5 +353,74 @@
             window.location.reload()
         }).catch(err => { })
     })
+
+
+
+
+    document.querySelectorAll("#offer").forEach(offer => {
+    offer.querySelector("#deleteOffer").addEventListener("click", () => {
+    const offerId= offer.querySelector("#offerId").innerHTML.trim()
+     Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+            }).then(async(result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if(result.isConfirmed) {
+                    console.log("woking");
+                    
+                    await Swal.fire("Deleted!", "", "success");
+                    axios.patch("/admin/deleteOffer", { offerId }).then(response => {
+                    console.log(response);
+                    
+                window.location.reload()
+            })
+                } else if (result.isDenied) {
+                    Swal.fire("Changes are not saved", "", "info");
+                }
+            });
+})
+offer.querySelector("#editOffer").addEventListener("click", (event) => {
+    document.getElementById("editModal").classList.remove("hidden")
+    const offerId= offer.querySelector("#offerId").innerHTML.trim()
+    const offerType=offer.querySelector("#offerType").innerHTML.trim()
+    const offerTitle=offer.querySelector("#offerTitle").innerHTML.trim()
+    const discount=offer.querySelector("#discount").innerHTML.trim()
+    const offerFor=offer.querySelector("#offerFor").innerHTML.trim()
+  
+
+    console.log(offerTitle,offerType,discount,offerFor);
+    document.getElementById("editOfferFor").value=offerFor
+    document.getElementById("editOfferTitle").value=offerTitle
+    document.getElementById("editOfferType").value=offerType
+    document.getElementById("editDiscountValue").value=discount
+    document.getElementById("editOfferId").value=offerId
+                  
+})
+    })
+
+document.getElementById("postEditOffer").addEventListener("click",()=>{
+ const offerFor=   document.getElementById("editOfferFor").value
+  const offerTitle = document.getElementById("editOfferTitle").value
+const offerType= document.getElementById("editOfferType").value
+const discount=    document.getElementById("editDiscountValue").value
+const offerId =document.getElementById("editOfferId").value
+
+axios.patch("editOffer",{offerTitle,offerType,discount,offerId}).then(response=>{
+    window.location.reload()
+}).catch(err=>{})
+})
+
+
+
+
+     // Initialize DataTable
+     $(document).ready(function () {
+        $('#myTable').DataTable({
+            responsive: true
+        });
+    });
 
 </script>

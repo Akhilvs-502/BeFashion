@@ -1,5 +1,7 @@
 import usermodel from "../../models/userModel.js"
 import cartModel from "../../models/cartSchema.js"
+import offerModel from "../../models/offerSchema.js"
+import productModel from "../../models/productSchema.js"
 
 export const checkOutStep1 = async (req, res) => {
     try {
@@ -16,8 +18,11 @@ export const checkOutStep1 = async (req, res) => {
         const products = cart.products.forEach(product => {
             totalPrice += product.productId.price * product.quantity
         })
+        let productIds=[]
         cart.products.forEach(product => {
             discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
+            productIds.push(product.productId._id)
+
         })
         shippingFee = totalPrice < 500 ? 40 : 0
         shippingFee = totalPrice == 0 ? 0 : shippingFee
@@ -27,11 +32,35 @@ export const checkOutStep1 = async (req, res) => {
         discountPrice.toFixed(2)
         //address
         const dataBase = await usermodel.findOne({ email: user.email })
-        console.log(dataBase);
+        // console.log(dataBase);
+         ////OFFER
+         let offerDiscount=0
+         for(const productId of productIds){
+            const offerData= await offerModel.find({'offerFor.offerGive':productId})
+           if(offerData.length>0){
+           for(const offer of offerData){
+                  if( offer.offerType=="price"){
+                   offerDiscount+=offer.discountValue
+                  }
+                  else{
+       let productPrice  =await productModel.find({_id:productId})
+       let discountPrice =(productPrice[0].price) * ((productPrice[0].discount) / 100)
+           discountPrice=productPrice[0].price-discountPrice
+           offerDiscount+=discountPrice*((offer.discountValue)/100)
+       }
+   }
+}
+}
 
-        res.render("user/checkoutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase })
+console.log(offerDiscount);
+
+total=total-offerDiscount
+
+        res.render("user/checkoutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase,offerDiscount })
     }
-    catch {
+    catch(err) {
+        console.log(err);
+        
 
     }
 }
@@ -82,8 +111,11 @@ export const cartSummary = async (req, res) => {
         const products = cart.products.forEach(product => {
             totalPrice += product.productId.price * product.quantity
         })
+        let productIds=[]
         cart.products.forEach(product => {
             discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
+            productIds.push(product.productId._id)
+
         })
         shippingFee = totalPrice < 500 ? 40 : 0
         shippingFee = totalPrice == 0 ? 0 : shippingFee
@@ -91,9 +123,32 @@ export const cartSummary = async (req, res) => {
         total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
         total = total - couponDiscount
         discountPrice.toFixed(2)
-        res.render("user/orderSummary", { user, total, couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID })
+
+             ////OFFER
+             let offerDiscount=0
+             for(const productId of productIds){
+                const offerData= await offerModel.find({'offerFor.offerGive':productId})
+               if(offerData.length>0){
+               for(const offer of offerData){
+                      if( offer.offerType=="price"){
+                       offerDiscount+=offer.discountValue
+                      }
+                      else{
+           let productPrice  =await productModel.find({_id:productId})
+           let discountPrice =(productPrice[0].price) * ((productPrice[0].discount) / 100)
+               discountPrice=productPrice[0].price-discountPrice
+               offerDiscount+=discountPrice*((offer.discountValue)/100)
+           }
+       }
+    }
+    }
+total=total-offerDiscount
+    
+        res.render("user/orderSummary", { user, total, couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID ,offerDiscount})
     }
     catch(err) {
+        console.log(err);
+        
         res.render("user/500")
 
     }

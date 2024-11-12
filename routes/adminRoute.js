@@ -41,6 +41,8 @@ routes.patch("/deleteCoupn",adminAuth,coupon.deleteCoupn)
 routes.get("/offers",adminAuth,offer.showOffers)
 routes.post("/addProductOffer",adminAuth,offer.addProductOffer)
 routes.post("/addCategoryOffer",adminAuth,offer.addCategoryOffer)
+routes.patch("/deleteOffer",adminAuth,offer.deleteOffer)
+routes.patch("/editOffer",adminAuth,offer.editOffer)
 
 routes.get("/salesReport",adminAuth,sales.salesReport)
 routes.get("/downloadPdf",adminAuth,sales.downloadPdf)
@@ -48,4 +50,6 @@ routes.get("/downloadExcel",adminAuth,sales.downloadExcel)
 
 routes.get("/ViewDashboard",adminAuth,dashboard.ViewDashboard)
 routes.post("/getChartData",adminAuth,dashboard.getChartData)
+
+
 export default routes

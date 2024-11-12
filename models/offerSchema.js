@@ -6,17 +6,21 @@ const offerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    offer:[{
-        offerTarget:{
-            type:String,
-            enum:["product","category"],
-            required:true
-        },
+    offerFor:[{
         offerGive:{
             type:mongoose.Schema.Types.ObjectId,
-            required:true
+            required:true,
+            ref:"productModel"
         }
     }],
+    offerTarget:{
+        type:String,
+        enum:["product","category"],
+        default:"category"
+    },
+    targetName:{
+        type:"String"
+    },
     offerType: {
         type: String,
         enum: ["percentage", "price"],
@@ -28,7 +32,7 @@ const offerSchema = new mongoose.Schema({
     },
     minimumAmount: {
         type: Number,
-        required: true,
+        // required: true,
         min: 0
     },
     startDate: {
@@ -38,6 +42,7 @@ const offerSchema = new mongoose.Schema({
     endDate: {
         type: Date
     },
+
     usageCount: {
         type: Number,
         default: 0
@@ -58,14 +63,15 @@ const offerSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    product:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"productModel"
-    },
-    category:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"categoryModel"
-    }
+
+    // product:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:"productModel"
+    // },
+    // category:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:"categoryModel"
+    // }
 }, { timestamps: true })
 
 const offerModel = mongoose.model("offer", offerSchema)

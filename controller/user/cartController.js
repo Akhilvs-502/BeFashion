@@ -3,6 +3,7 @@ import usermodel from "../../models/userModel.js"
 import couponModel from "../../models/couponSchema.js"
 import productModel from "../../models/productSchema.js"
 import e from "express"
+import offerModel from "../../models/offerSchema.js"
 
 
 
@@ -81,14 +82,17 @@ export const showCart = async (req, res) => {
             console.log("cart ");
             if (cart.products.length == 0) {
                 await cartModel.findOneAndUpdate({ userId: userData._id }, { couponDiscount: 0 })
-
+            
             }
             const products = cart.products.forEach(product => {
                 totalPrice += product.productId.price * product.quantity
             })
+            let productIds=[]
             cart.products.forEach(product => {
                 discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
+                productIds.push(product.productId._id)
             })
+
             shippingFee = totalPrice < 500 ? 40 : 0
             shippingFee = totalPrice == 0 ? 0 : shippingFee
             couponDiscount = (cart.couponDiscount).toFixed(2)
@@ -96,14 +100,44 @@ export const showCart = async (req, res) => {
             total = total - couponDiscount
             discountPrice.toFixed(2)
             const coupon = await couponModel.find({ block: false })
-            console.log(coupon);
+            
+            
+            ////OFFER
+            let offerDiscount=0
+             for(const productId of productIds){
+                 const offerData= await offerModel.find({'offerFor.offerGive':productId})
+                if(offerData.length>0){
+                for(const offer of offerData){
+                       if( offer.offerType=="price"){
+                        offerDiscount+=offer.discountValue
+                       }
+                       else{
+            let productPrice  =await productModel.find({_id:productId})
+            let discountPrice =(productPrice[0].price) * ((productPrice[0].discount) / 100)
+                discountPrice=productPrice[0].price-discountPrice
+                offerDiscount+=discountPrice*((offer.discountValue)/100)
+                
+                
+            }
+            
+            
+        }
+    }
+}
 
-            res.render('user/showCart', { user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon })
+
+total=total-offerDiscount
+
+          
+            
+
+
+            res.render('user/showCart', { user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon,offerDiscount })
         } else {
             console.log("ShowCart");
             const coupon = await couponModel.find({ block: false })
-
-            res.render('user/showCart', { user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon })
+           let offerDiscount=0
+            res.render('user/showCart', { user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon,offerDiscount })
 
         }
 

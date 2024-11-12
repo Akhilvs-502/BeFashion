@@ -658,7 +658,9 @@ export const productView = async (req, res) => {
         ///JWT token checking
         const token = req.cookies.token
         const secretKey = process.env.SECRET_KEY
-        const offer=await offerModel.find({'offer.offerGive':id})
+        console.log(id);
+        
+        const offer=await offerModel.find({'offerFor.offerGive':id})
         console.log(offer);
         
         if (token) {
@@ -697,7 +699,8 @@ export const productView = async (req, res) => {
 
             })
         } else {
-            res.render('user/productView', { product, products, user: false,offer})
+            wishlistProduct=[]
+            res.render('user/productView', { product, products, user: false,offer,wishlistProduct})
         }
     }
     catch {
