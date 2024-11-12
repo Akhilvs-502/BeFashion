@@ -661,7 +661,7 @@ export const productView = async (req, res) => {
         console.log(id);
 
         const offer = await offerModel.find({ 'offerFor.offerGive': id })
-        console.log(offer);
+        console.log(offer+"offeres");
         var wishlistProduct = []
 
         if (token) {
