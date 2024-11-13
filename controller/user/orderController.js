@@ -313,8 +313,10 @@ export const orderCancel = async (req, res) => {
         const order = await orderModel.findOne({ user: userId, 'products._id': product_id }, { 'products.$': 1 })
         const ship = await orderModel.findOne({ user: userId, 'products._id': product_id })
         console.log(order.products[0].paymentStatus);
+        console.log(order.products[0].paymentStatus);
+
         console.log(ship.shippingFee);
-        const RefundRupee = (((order.products[0].discountedPrice) * (order.products[0].quantity)) - order.products[0].couponAdded) + ship.shippingFee
+        const RefundRupee = (order.products[0].totalPay) + ship.shippingFee
 
         //if paid refund
         if (order.products[0].paymentStatus == "paid") {

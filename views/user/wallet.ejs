@@ -39,8 +39,8 @@
                 <tbody>
                     <% wallet.transactions.forEach(transation=>{%>
                         <tr class="border-b hover:bg-gray-100">
-                            <td class="py-2 px-4">
-                                <%=transation.trasactionsDate.toLocaleString()%>
+                            <td class="py-2 px-4 transaction-date" data-date="<%= transation.trasactionsDate %>">
+                                <!-- <%=transation.trasactionsDate.toLocaleString()%> -->
                             </td>
                             <td class="py-2 px-4 text-<%=transation.trasactionType=='debited' ? 'red' :'green' %>-500">
                                 <%=transation.trasactionType%>
@@ -73,11 +73,23 @@
 <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
 <script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+     const dateElements = document.querySelectorAll(".transaction-date");
+
+dateElements.forEach(element => {
+  const dateString = element.getAttribute("data-date");
+  const date = new Date(dateString); // Parse the ISO date
+  // Format the date to local string and set as content
+  element.textContent = date.toLocaleString();
+});
+})
+
   // Initialize DataTable
   $(document).ready(function() {
     $('#myTable').DataTable({
       responsive: true,
-      order:[[0,'asc']]
+      order:[[0,'desc']]
     });
   });
 </script>
