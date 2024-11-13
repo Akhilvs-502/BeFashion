@@ -33,12 +33,36 @@ export const orderUpdate = async (req, res) => {
         let shippingFee = 0
         let discountedPrice = 0
         let productCoupon = (cart.couponDiscount) / ((cart.products).length)
-        let productIds=[]
+        let productIds = []
+        
         if (cart.products) {
-            cart.products.forEach(async product => {
-                totalOrderPrice += Number(((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)) * product.quantity
-                let discountedPrice = ((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)
-                productIds.push(product.productId._id)
+            //   cart.products.forEach(async product => {
+                for( const product of cart.products ){
+                    totalOrderPrice += Number(((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)) * product.quantity
+                    let discountedPrice = ((product.productId.price) - ((product.productId.price) * (product.productId.discount / 100))).toFixed(2)
+                    productIds.push(product.productId._id)
+                    //OFFER
+                    let offerDiscount = 0
+                    const offerData = await offerModel.find({ 'offerFor.offerGive': product.productId._id })
+                    if (offerData.length > 0) {
+                        for (const offer of offerData) {
+                            if (offer.offerType == "price") {
+                                offerDiscount += offer.discountValue
+                        }
+                        else {
+                            let productPrice = await productModel.find({ _id: product.productId._id })
+                            let discountPrice = (productPrice[0].price) * ((productPrice[0].discount) / 100)
+                            discountPrice = productPrice[0].price - discountPrice
+                            offerDiscount += discountPrice * ((offer.discountValue) / 100)
+
+
+                        }
+                    }
+                }
+
+                offerDiscount = Math.round(offerDiscount)
+
+                console.log(offerDiscount + "offer");
 
                 const data = {
                     product: product.productId._id,
@@ -49,8 +73,9 @@ export const orderUpdate = async (req, res) => {
                     orderStatus: "processing",
                     color: product.productId.color[0],
                     size: product.size,
+                    offerAdded: offerDiscount,
                     couponAdded: productCoupon,
-                    totalPay: ((discountedPrice) * (product.quantity)) - productCoupon
+                    totalPay: ((discountedPrice) * (product.quantity)) - productCoupon-offerDiscount
                 }
 
 
@@ -59,28 +84,30 @@ export const orderUpdate = async (req, res) => {
                 productArray.push(data)
                 await productModel.findOneAndUpdate({ _id: product.productId._id }, { $set: { stock: newStock } })
                 //updating the coupon
-                console.log(userID);
 
-                const couponStatus=await couponModel.findOne({couponCode: cart.couponCode,'usedBy.userId': userID})
+                const couponStatus = await couponModel.findOne({ couponCode: cart.couponCode, 'usedBy.userId': userID })
                 let couponUpdate
-                if(!couponStatus){
+                if (!couponStatus) {
                     console.log("user first time apply coupon");
-             couponUpdate = await couponModel.findOneAndUpdate(
-                    { couponCode: cart.couponCode},
-                    {$push:{usedBy:{userId: userID,usedCount: 1} }},
-                    { new: true }
-                )
-            }else{
-                console.log(couponStatus);
-                couponUpdate=   await couponModel.findOneAndUpdate({couponCode:cart.couponCode,'usedBy.userId':userID},{$inc:{'usedBy.$.usedCount':1}})
-            }
-            console.log(couponUpdate);
-                
-                
+                    couponUpdate = await couponModel.findOneAndUpdate(
+                        { couponCode: cart.couponCode },
+                        { $push: { usedBy: { userId: userID, usedCount: 1 } } },
+                        { new: true }
+                    )
+                } else {
+                    console.log(couponStatus);
+                    couponUpdate = await couponModel.findOneAndUpdate({ couponCode: cart.couponCode, 'usedBy.userId': userID }, { $inc: { 'usedBy.$.usedCount': 1 } })
+                }
+                console.log(couponUpdate);
 
-           
 
-            })
+
+
+
+         }
+
+            console.log(productArray + "array");
+
             totalOrderPrice < 500 ? shippingFee = 40 : shippingFee = 0
             const order = new orderModel({
                 user: userID,
@@ -100,32 +127,32 @@ export const orderUpdate = async (req, res) => {
             totalOrderPrice += shippingFee
             console.log(shippingFee);
             totalOrderPrice = totalOrderPrice.toFixed(2)
-      ////OFFER
-      let offerDiscount=0
-      for(const productId of productIds){
-         const offerData= await offerModel.find({'offerFor.offerGive':productId})
-        if(offerData.length>0){
-        for(const offer of offerData){
-               if( offer.offerType=="price"){
-                offerDiscount+=offer.discountValue
-               }
-               else{
-    let productPrice  =await productModel.find({_id:productId})
-    let discountPrice =(productPrice[0].price) * ((productPrice[0].discount) / 100)
-        discountPrice=productPrice[0].price-discountPrice
-        offerDiscount+=discountPrice*((offer.discountValue)/100)
-    }
-}
-}
-}
+            //// total OFFER
+            let offerDiscount = 0
+            for (const productId of productIds) {
+                const offerData = await offerModel.find({ 'offerFor.offerGive': productId })
+                if (offerData.length > 0) {
+                    for (const offer of offerData) {
+                        if (offer.offerType == "price") {
+                            offerDiscount += offer.discountValue
+                        }
+                        else {
+                            let productPrice = await productModel.find({ _id: productId })
+                            let discountPrice = (productPrice[0].price) * ((productPrice[0].discount) / 100)
+                            discountPrice = productPrice[0].price - discountPrice
+                            offerDiscount += discountPrice * ((offer.discountValue) / 100)
+                        }
+                    }
+                }
+            }
+            offerDiscount = Math.round(offerDiscount)
+            totalOrderPrice = totalOrderPrice - offerDiscount
 
-totalOrderPrice=totalOrderPrice-offerDiscount
 
-            
             ////Response to cod
             if (orderType == 'cod') {
                 if (totalOrderPrice < 1000) {
-                 await order.save()
+                    await order.save()
                     console.log(orderType);
                     const update = await cartModel.deleteOne({ userId: userID })  //delete user cart
                     res.status(201).json({ orderId: orderId, message: "order created", orderType, user, totalOrderPrice })
@@ -155,7 +182,7 @@ totalOrderPrice=totalOrderPrice-offerDiscount
                         console.error("Error in creating order:", err);
                         res.status(500).send('Something went wrong');
                     } else {
-                         await order.save()
+                        await order.save()
                         console.log(order);
                         const update = await cartModel.deleteOne({ userId: userID })   //delete user cart
 

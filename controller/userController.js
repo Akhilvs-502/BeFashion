@@ -704,7 +704,7 @@ export const productView = async (req, res) => {
         }
     }
     catch (err) {
-        console.log(e);
+        console.log(err);
 
         res.render("user/500")
 

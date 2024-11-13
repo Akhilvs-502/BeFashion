@@ -684,6 +684,10 @@ video {
   top: 1rem;
 }
 
+.z-10 {
+  z-index: 10;
+}
+
 .z-30 {
   z-index: 30;
 }
@@ -1448,6 +1452,10 @@ video {
 
 .overflow-x-auto {
   overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
 }
 
 .whitespace-nowrap {

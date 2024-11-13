@@ -52,8 +52,8 @@ export const checkOutStep1 = async (req, res) => {
 }
 }
 
-console.log(offerDiscount);
 
+offerDiscount=Math.round(offerDiscount)
 total=total-offerDiscount
 
         res.render("user/checkoutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase,offerDiscount })
@@ -142,6 +142,8 @@ export const cartSummary = async (req, res) => {
        }
     }
     }
+offerDiscount=Math.round(offerDiscount)
+
 total=total-offerDiscount
     
         res.render("user/orderSummary", { user, total, couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID ,offerDiscount})

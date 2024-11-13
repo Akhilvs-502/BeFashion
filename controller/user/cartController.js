@@ -8,6 +8,7 @@ import offerModel from "../../models/offerSchema.js"
 
 
 
+
 export const addToCart = async (req, res) => {
     try {
 
@@ -105,7 +106,7 @@ export const showCart = async (req, res) => {
             ////OFFER
             let offerDiscount=0
              for(const productId of productIds){
-                 const offerData= await offerModel.find({'offerFor.offerGive':productId})
+                const offerData= await offerModel.find({'offerFor.offerGive':productId})
                 if(offerData.length>0){
                 for(const offer of offerData){
                        if( offer.offerType=="price"){
@@ -118,14 +119,12 @@ export const showCart = async (req, res) => {
                 offerDiscount+=discountPrice*((offer.discountValue)/100)
                 
                 
-            }
-            
-            
+            } 
         }
     }
 }
 
-
+offerDiscount=Math.round(offerDiscount)
 total=total-offerDiscount
 
           
