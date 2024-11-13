@@ -12,12 +12,11 @@
 
     <div class=" w-full ml-56 ">
 
-        <h1 class="font-bold text-2xl ml-32 mt-4">My orders</h1>
+        <h1 class="font-bold text-2xl ml-32 mt-4">My Coupons</h1>
 
 <div class="mt-4">
     <% coupon.forEach(each=>{%>
-
-    <div class="max-w-xl bg-white p-4 rounded-lg shadow-lg flex items-center  ml-48 space-x-4">
+    <div class="max-w-xl bg-white p-4 rounded-lg shadow-lg flex items-center mt-2 ml-48 space-x-4">
         <div>
             <p class="text-green-600 font-semibold text-lg">Coupon Code:<%= each.couponCode %> <span class=" ml-2 text-green-600"> <%=each.discountValue%><%= each.couponType=="price" ?  ' Rs' : '%' %> off </span></p>
             <p class="text-gray-700 mt-1">
