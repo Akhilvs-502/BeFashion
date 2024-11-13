@@ -939,6 +939,54 @@ video {
   margin-left: 1.5rem;
 }
 
+.mt-\[\] {
+  margin-top: ;
+}
+
+.mt-\[1\] {
+  margin-top: 1;
+}
+
+.mt-\[10\] {
+  margin-top: 10;
+}
+
+.mt-\[100\] {
+  margin-top: 100;
+}
+
+.mt-\[4\] {
+  margin-top: 4;
+}
+
+.mt-\[400\] {
+  margin-top: 400;
+}
+
+.mt-\[400p\] {
+  margin-top: 400p;
+}
+
+.mt-\[400px\] {
+  margin-top: 400px;
+}
+
+.mt-\[00px\] {
+  margin-top: 00px;
+}
+
+.mt-\[300px\] {
+  margin-top: 300px;
+}
+
+.mt-\[100px\] {
+  margin-top: 100px;
+}
+
+.mt-\[40\] {
+  margin-top: 40;
+}
+
 .block {
   display: block;
 }
