@@ -188,7 +188,7 @@ export const updateQuantity = async (req, res) => {
             console.log(value);
             const productDetails = await productModel.findOne({ _id: productId })
             if(Number(value+1)>=5){
-            return  res.status(409).json({ message: "Only 5 quantites allowed to buy" })
+            return  res.status(409).json({ message: "Only 4 quantites allowed to buy" })
 
             }
          else if (productDetails.stock <= value) {
