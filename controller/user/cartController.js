@@ -66,8 +66,6 @@ export const addToCart = async (req, res) => {
         return res.status(409).json({ message: "Something went wrong please try again " })
     }
 }
-
-
 export const showCart = async (req, res) => {
     try {
         
@@ -189,7 +187,6 @@ export const updateQuantity = async (req, res) => {
             const productDetails = await productModel.findOne({ _id: productId })
             if(Number(value+1)>=5){
             return  res.status(409).json({ message: "Only 4 quantites allowed to buy" })
-
             }
          else if (productDetails.stock <= value) {
                 console.log("err");
@@ -207,7 +204,6 @@ export const updateQuantity = async (req, res) => {
 
                 res.json({ totalPrice, total, shippingFee, discountPrice, productPrice, productDiscountPrice })
             }
-
 
         }
         else if (action === "quantityDecreasing") {
