@@ -463,7 +463,9 @@ try{
     // console.log(user.user);
     const userId = user.user
 
-    const RefundRupee = update.products[0].discountedPrice
+    // const RefundRupee = update.products[0].discountedPrice
+    const RefundRupee =( (update.products[0].totalPay)* update.products[0].quantity)
+
 
     const wallet = await walletModel.findOne({ userId: userId })
     if (wallet) {

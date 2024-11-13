@@ -316,7 +316,7 @@ export const orderCancel = async (req, res) => {
         console.log(order.products[0].paymentStatus);
 
         console.log(ship.shippingFee);
-        const RefundRupee = (order.products[0].totalPay) + ship.shippingFee
+        const RefundRupee =( (order.products[0].totalPay)* order.products[0].quantity)+ ship.shippingFee
 
         //if paid refund
         if (order.products[0].paymentStatus == "paid") {
