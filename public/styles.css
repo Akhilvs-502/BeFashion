@@ -863,6 +863,10 @@ video {
   margin-left: 2rem;
 }
 
+.ml-96 {
+  margin-left: 24rem;
+}
+
 .ml-auto {
   margin-left: auto;
 }
@@ -929,6 +933,10 @@ video {
 
 .mt-auto {
   margin-top: auto;
+}
+
+.ml-6 {
+  margin-left: 1.5rem;
 }
 
 .block {
@@ -1246,6 +1254,10 @@ video {
 
 .max-w-sm {
   max-width: 24rem;
+}
+
+.max-w-xl {
+  max-width: 36rem;
 }
 
 .flex-1 {
@@ -1964,6 +1976,10 @@ video {
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .font-\[sans-serif\] {

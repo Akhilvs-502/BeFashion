@@ -84,3 +84,12 @@ try{
 }
 
 
+export const showCoupons=async(req,res)=>{
+  
+    const userEmail = req.userData.email
+    const user = await usermodel.findOne({ email: userEmail })
+    const coupon = await couponModel.find({ block: false })
+    
+    res.render("user/coupons",{user,coupon})
+}
+

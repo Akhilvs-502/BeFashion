@@ -73,6 +73,7 @@ routes.post("/removeFromWhishlist",auth,wishlist.removeFromWishlist)
 // coupon
 routes.post("/applyCoupon",auth,coupon.applyCoupon)
 routes.post("/removeCoupon",auth,coupon.removeCoupon)
+routes.get("/showCoupons",auth,coupon.showCoupons)
 
 //PAYMENT
 routes.post("/paymentVerificaton",auth,payment.paymentVerificaton)
