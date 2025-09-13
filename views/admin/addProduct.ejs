@@ -180,7 +180,7 @@
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+<script src="https://unpkg.com/cropperjs@1.5.13/dist/cropper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
 
@@ -252,6 +252,9 @@ const sizesContainer = document.getElementById('sizes-container');
   function openCropModal(imageUrl) {
       cropImage.src = imageUrl;
       cropModal.style.display = 'block';
+      if (cropper) {
+        cropper.destroy(); // destroy any existing cropper instance before initializing a new one
+    }
       cropper = new Cropper(cropImage, {
           aspectRatio: 1,
           viewMode: 1
@@ -260,8 +263,11 @@ const sizesContainer = document.getElementById('sizes-container');
 
   cropButton.addEventListener('click', function(event) {
     event.preventDefault()
-      const croppedCanvas = cropper.getCroppedCanvas();
-
+    if (!cropper) {
+      console.error('Cropper not initialized!');
+      return;
+    }
+    const croppedCanvas = cropper.getCroppedCanvas();
       // Convert the cropped canvas to a Blob
       croppedCanvas.toBlob(function(blob) {
           const formData = new FormData();
