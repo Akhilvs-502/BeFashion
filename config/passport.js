@@ -31,7 +31,7 @@ console.log(Gcallback);
 passport.use(new GoogleStrategy({
     clientID: clientId,  // Your Google Client ID
     clientSecret: clientSecret,  // Your Google Client Secret
-    callbackURL: Gcallback ,  // Callback URL
+    callbackURL:process.env.GOOGLE_CALLBACK // Callback URL
 },
     (accessToken, refreshToken, profile, done) => {
         usermodel.findOne({ $or: [{ googleId: profile.id }, { email: profile.emails[0].value }] }).then(user => {
