@@ -35,7 +35,7 @@ const clientSecret = process.env.Client_Secret
 passport.use(new GoogleStrategy({
     clientID: clientId,  // Your Google Client ID
     clientSecret: clientSecret,  // Your Google Client Secret
-    callbackURL: 'http://localhost:8000/auth/google/callback'  // Callback URL
+    callbackURL:process.env.GOOGLE_CALLBACK // Callback URL
 },
     (accessToken, refreshToken, profile, done) => {
         usermodel.findOne({ $or: [{ googleId: profile.id }, { email: profile.emails[0].value }] }).then(user => {
