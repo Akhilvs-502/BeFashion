@@ -301,7 +301,9 @@ export const postMailforotp = async (req, res) => {
 
             }
             catch (error) {
-                console.log('Err sending otp  to the email');
+                
+                console.log(error,"err");
+                console.log('Err sending otp  to the emaill');
 
             }
 
@@ -310,8 +312,8 @@ export const postMailforotp = async (req, res) => {
         sendOTPEmail(email, otp)
         res.redirect('/user/getotp')
     }
-    catch {
-
+    catch(error) {
+        console.log("post main for otp",error)
     }
 }
 
@@ -409,8 +411,9 @@ export const postForgotpassword = async (req, res) => {
         const transpoter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'getupsignin@gmail.com',
-                pass: 'xoep evgg bbkm pfsa'
+                user: process.env.MODEMAILER_EMAIL,
+                // pass: 'xoep evgg bbkm pfsa'
+                pass: process.env.NODEMAILER_PASS
             }
         });
 
@@ -428,6 +431,8 @@ export const postForgotpassword = async (req, res) => {
 
             }
             catch (error) {
+                console.log(error);
+                
                 console.log('Err sending otp  to the email');
 
             }
