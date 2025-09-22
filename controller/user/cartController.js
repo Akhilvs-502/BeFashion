@@ -149,6 +149,7 @@ total=total-offerDiscount
 
 export const updateQuantity = async (req, res) => {
     try {
+        console.log("update quantity")
         console.log(req.body);
 
         const jwtUser = req.userData
@@ -163,12 +164,14 @@ export const updateQuantity = async (req, res) => {
         let total = 0
         async function newCart() {
             const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: 'products.productId', model: 'product' })
+            let productIds=[]
             if (cart) {
                 const products = cart.products.forEach(product => {
                     totalPrice += product.productId.price * product.quantity
                 })
                 cart.products.forEach(product => {
                     discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
+                       productIds.push(product.productId._id)
                 })
                 shippingFee = totalPrice < 500 ? 40 : 0
                 shippingFee = totalPrice == 0 ? 0 : shippingFee
@@ -176,6 +179,34 @@ export const updateQuantity = async (req, res) => {
                 total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
                 total = total - couponDiscount
                 discountPrice.toFixed(2)
+                 const coupon = await couponModel.find({ block: false })
+
+      ////OFFER
+            let offerDiscount=0
+             for(const productId of productIds){
+                const offerData= await offerModel.find({'offerFor.offerGive':productId})
+                if(offerData.length>0){
+                for(const offer of offerData){
+                       if( offer.offerType=="price"){
+                        offerDiscount+=offer.discountValue
+                       }
+                       else{
+            let productPrice  =await productModel.find({_id:productId})
+            let discountPrice =(productPrice[0].price) * ((productPrice[0].discount) / 100)
+                discountPrice=productPrice[0].price-discountPrice
+                offerDiscount+=discountPrice*((offer.discountValue)/100)
+                
+                
+            } 
+        }
+    }
+}
+
+offerDiscount=Math.round(offerDiscount)
+total=total-offerDiscount
+
+
+                
 
             }
 
@@ -201,6 +232,8 @@ export const updateQuantity = async (req, res) => {
                 const productDiscountPrice = productPrice - (productPrice * (productDetails.discount / 100))
 
                 await newCart()
+
+                console.log(total)
 
                 res.json({ totalPrice, total, shippingFee, discountPrice, productPrice, productDiscountPrice })
             }

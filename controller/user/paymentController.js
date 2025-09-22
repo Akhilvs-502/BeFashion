@@ -3,6 +3,7 @@ import Razorpay from 'razorpay'
 import cartModel from "../../models/cartSchema.js"
 import usermodel from "../../models/userModel.js"
 import { createHmac } from 'crypto';  // for verifiction in razorpay 
+import mongoose from "mongoose";
 
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
@@ -14,46 +15,39 @@ let razorpayInstance = new Razorpay({
 
 
 
+export const paymentVerification = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-
-export const paymentVerificaton = async (req, res) => {
     try {
-
-        const user = req.userData
-        const userData = await usermodel.find({ email: user.email })
-        const userId = userData[0]._id
         const { order_id, payment_id, signature, orderId } = req.body;
-        console.log("verification");
-        const hmac = createHmac('sha256', RAZORPAY_KEY_SECRET); 
+
+        const hmac = createHmac('sha256', RAZORPAY_KEY_SECRET);
         hmac.update(order_id + "|" + payment_id);
         const generated_signature = hmac.digest('hex');
-        if (generated_signature === signature) {
-            console.log("sign");
-            
-            const event = req.body.event;
 
-            if (event === 'payment.failed') {
-                const paymentInfo = req.body.payload.payment.entity;
-                console.log('Payment Failed:', paymentInfo);
-                const update = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].paymentStatus': 'pending', 'products.$[].orderStatus': 'pending' } }, { new: true })
-            }
-            // Payment verification successful
-            const update = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].paymentStatus': 'paid', 'products.$[].orderStatus': 'processing'} }, { new: true })
-            console.log('Payment verified successfully!');
-            res.json({ status: 'success', message: 'Payment verified and updated in database.', orderId });
-        } else {
-            const update = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].orderStatus': 'pending' } }, { new: true })
-            // Payment verification failed
-            console.error('Payment verification failed.');
-            res.json({ status: 'failure', message: 'Payment verification failed.' });
+        if (generated_signature !== signature) {
+            await session.abortTransaction();
+            session.endSession();
+            return res.status(400).json({ status: 'failure', message: 'Payment verification failed.' });
         }
-    }
-    catch(err) {
-    console.log(err);
 
-    }
+        
+        await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].paymentStatus': 'paid', 'products.$[].orderStatus': 'processing' } }).session(session);
 
-}
+        await session.commitTransaction();
+        session.endSession();
+
+        res.json({ status: 'success', message: 'Payment verified', orderId });
+
+    } catch (err) {
+        await session.abortTransaction();
+        session.endSession();
+        console.log(err);
+        res.status(500).json({ message: "Error in payment verification" });
+    }
+};
+
 
 
 

@@ -76,7 +76,7 @@ routes.post("/removeCoupon",auth,coupon.removeCoupon)
 routes.get("/showCoupons",auth,coupon.showCoupons)
 
 //PAYMENT
-routes.post("/paymentVerificaton",auth,payment.paymentVerificaton)
+routes.post("/paymentVerificaton",auth,payment.paymentVerification)
 routes.patch("/paymentFailed",auth,payment.paymentFailed)
 routes.patch("/repayment",auth,payment.repayment)
 export default routes

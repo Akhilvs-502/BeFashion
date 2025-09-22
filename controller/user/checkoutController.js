@@ -73,7 +73,7 @@ export const postCheckOutStep1 = async (req, res) => {
         const { addressID } = req.body
         let data = await usermodel.findOne({ email: jwtUser.email, 'address._id': addressID }, { 'address.$': 1 })
         res.json({ addressID })
-} catch {
+} catch(err) {
 
     }
 
@@ -88,7 +88,7 @@ export const selectPayment = (req, res) => {
         const user = req.userData
         res.render("user/selectPayment", { user, addressID })
     }
-    catch {
+    catch(err) {
         res.render("user/home", { user: false })
     }
 }

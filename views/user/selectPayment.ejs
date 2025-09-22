@@ -122,6 +122,8 @@
 
                     axios.post('/user/orderUpdate', { orderType, addressID }).then(async response => {
 
+                        console.log("response form order update",response);
+                        
                         console.log(response.data.user);
                         const orderId = response.data.orderId
                         const totalOrderPrice = response.data.totalOrderPrice

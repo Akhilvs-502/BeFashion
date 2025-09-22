@@ -282,7 +282,7 @@ export const postMailforotp = async (req, res) => {
         const transpoter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                 user: process.env.MODEMAILER_EMAIL,
+                 user: process.env.NODEMAILER_EMAIL,
                 // pass: 'xoep evgg bbkm pfsa'
                 pass: process.env.NODEMAILER_PASS
             }
@@ -412,7 +412,7 @@ export const postForgotpassword = async (req, res) => {
         const transpoter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: process.env.MODEMAILER_EMAIL,
+                user: process.env.NODEMAILER_EMAIL,
                 // pass: 'xoep evgg bbkm pfsa'
                 pass: process.env.NODEMAILER_PASS
             }
