@@ -129,7 +129,7 @@
                   console.log(data);
 
              const statusCell = btn.closest("tr").querySelector(".status");
-                  if (data.data.status.blocked === true) {
+                  if (data.data.status === true) {
                     btn.checked = true;   // user blocked
               statusCell.innerText = "Blocked";
             } else {
