@@ -91,10 +91,10 @@ export const blockUser = async (req, res) => {
         const sucess = await usermodel.findOne({ email })
         if (sucess.blocked) {
             await usermodel.findOneAndUpdate({ email }, { blocked: false })
-            res.json({ message: sucess })
+            res.json({ message: 'User Unblocked', status: sucess.blocked })
         } else {
             await usermodel.findOneAndUpdate({ email }, { blocked: true })
-            res.json({ message: sucess })
+            res.json({ message: 'User Blocked', status: sucess.blocked })
 
         }
     }
@@ -315,11 +315,11 @@ try{
     const product = await productModel.findOne({ _id: productID, block: false })
     if (product) {
         await productModel.findOneAndUpdate({ _id: productID }, { block: true })
-        res.json({ message: 'sucess' })
+        res.json({ message: 'sucess', blocked:true })
 
     } else {
         await productModel.findOneAndUpdate({ _id: productID }, { block: false })
-        res.json({ message: 'sucess' })
+        res.json({ message: 'sucess', blocked: false })
 
     }
     console.log(product);

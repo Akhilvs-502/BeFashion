@@ -60,15 +60,14 @@
                     <p><%- user.joined.toDateString() %></p>
 
                   </td>
-                  <td class="p-4 text-[15px] text-gray-800">
-                    <% if(user.blocked) {%>
-                      <p>Blocked</p>
-                      <%} else{%>
+               <td class="p-4 text-[15px] text-gray-800">
+              <% if(user.blocked) { %>
+                 <p class="status">Blocked</p>
+                  <% } else { %>
+                      <p class="status">Active</p>
+                    <% } %>
+                      </td>
 
-                        <p> Active</p>
-                        <%} %>
-
-                  </td>
                   <td class="p-4">
                     <div class="flex items-center">
 
@@ -127,15 +126,24 @@
                   icon: "success"
                 });
                 setTimeout(()=>{
-                  location.reload()
+                  console.log(data);
+
+             const statusCell = btn.closest("tr").querySelector(".status");
+                  if (data.data.status.blocked === true) {
+                    btn.checked = true;   // user blocked
+              statusCell.innerText = "Blocked";
+            } else {
+              btn.checked = false;  // user unblocked
+              statusCell.innerText = "Active";
+            }
                 },1000)
               }).catch(data => {
-
+               btn.checked = !btn.checked;
               })
 
           }
           else if(result.dismiss){
-            location.reload()
+                  btn.checked = !btn.checked;
           }
         });
 

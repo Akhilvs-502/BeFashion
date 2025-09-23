@@ -97,11 +97,11 @@
                     </td>
                     <td class="p-4 text-[15px] text-gray-800">
                       <% if(product.block) {%>
-                        <p>Blocked</p>
+                        <p class="status">Blocked</p>
                         <%}
                         else{%>
 
-                            <p> Active</p>
+                            <p class="status"> Active</p>
                             <%} %>
                     </td>
                     <td class="p-4">
@@ -223,17 +223,28 @@
                     title: "Updated!",
                     icon: "success"
                   });
-                  setTimeout(() => {
-                    location.reload()
-                  }, 1000)
+            
+                    console.log(data);
+                    
+     const statusCell = btn.closest("tr").querySelector(".status");
+            if (data.data.blocked === true) {
+              btn.checked = true;   // user blocked
+              statusCell.innerText = "Blocked";
+            } else {
+              btn.checked = false;  // user unblocked
+              statusCell.innerText = "Active";
+            }
+
+      
 
                 }).catch(data => {
-
+                  btn.checked = !btn.checked;
                 })
 
             }
             else if(result.dismiss){
-              location.reload()
+             
+                  btn.checked = !btn.checked;
               
             }
           });

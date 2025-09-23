@@ -63,11 +63,11 @@
                     </td>
                     <td class="p-4 text-[15px] text-gray-800">
                              <% if(category.block) {%>
-                                <p>Blocked</p>
+                                <p class="status">Blocked</p>
                                 <%}
                                 else{%>
-        
-                                    <p> Active</p>
+
+                                    <p class="status"> Active</p>
                                     <%} %>
        
                     </td>
@@ -157,22 +157,41 @@
     console.log(category);
     
         btn.addEventListener('change',()=>{
-        console.log("Changed");
+
+            Swal.fire({
+            title: "Are you sure?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, Change!"
+          }).then((result) => {
+            if (result.isConfirmed) {
         
         axios.patch('/admin/blockCategory',{category})
-        .then(data=>{
-            location.reload()
-
+        .then(res=>{
+         
+          const statusCell = btn.closest("tr").querySelector(".status");
+          console.log(statusCell,res.data.message.block,"status cell");
+          
+          if (res.data.message.block !== true) {
+            btn.checked = true;   
+            statusCell.innerText = "Blocked";
+          } else {
+            btn.checked = false;  
+            statusCell.innerText = "Active";
+          }
         }).catch(data=>{
-
+          btn.checked = !btn.checked;
         })
-    })
 
+      }
+      else if(result.dismiss){
+        btn.checked = !btn.checked;
+      }
+    })}
 
-
-    })
-
- 
+    ) })
 
 
 </script>
