@@ -60,7 +60,7 @@
                                         <p class="text-sm font-semibold text-gray-500 mt-2 flex items-center gap-2">
                                             Color:
                                             <%=product.color%><span
-                                                    class="inline-block w-5 h-5 rounded-md bg-<%=product.product.color[0]%>-600"></span>
+                                                    class="inline-block w-5 h-5 rounded-md bg-<%=product.color%>-600"></span>
                                         </p>
                                         <div class="flex">
                                             <div>Size:</div>
@@ -129,7 +129,7 @@
                                     </h3>
 
                                 </div>
-                                <div id="viewDetails" class="text-blue-500 ml-5">
+                                <div id="viewDetails" class="text-blue-500 ml-5 cursor-pointer">
                                     view details
                                 </div>
 
@@ -153,7 +153,7 @@
                                 <a href="#" class="hover:underline">My Orders</a> >
                                 <span>Order #<%=userOrders._id%></span>
                             </nav>
-                            <div id="closeModal" class="font-bold">Close</div>
+                            <div id="closeModal" class="font-bold cursor-pointer">Close</div>
                         </div>
 
                         <!-- Order Details -->

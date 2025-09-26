@@ -1,189 +1,196 @@
 <%- include('../partials/header') %>
-    <div class="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
-        <h1 class="text-2xl font-extrabold text-gray-800">Order Summary</h1>
-        <div class="grid md:grid-cols-3 gap-4 mt-8">
-            <div class="md:col-span-2 space-y-4">
+<div class="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
+    <h1 class="text-2xl font-extrabold text-gray-800">Order Summary</h1>
+    <div class="grid md:grid-cols-3 gap-4 mt-8">
+        <div class="md:col-span-2 space-y-4">
 
-
-
-
-
-                <!-- //////////////////////STEPPER -->
-                <div class="flex items-start max-w-screen-lg mx-auto">
-                    <div class="w-full">
-                        <div class="flex items-center w-full">
-                            <div
-                                class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
-                                <span class="text-base text-white font-bold">1</span>
-                            </div>
-                            <div class="w-full h-1 mx-4 rounded-lg bg-cyan-500"></div>
+            <!-- //////////////////////STEPPER -->
+            <div class="flex items-start max-w-screen-lg mx-auto">
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div
+                            class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
+                            <span
+                                class="text-base text-white font-bold">1</span>
                         </div>
-                        <div class="mt-2 mr-4">
-                            <h6 class="text-base font-bold text-cyan-800">Delivery Address</h6>
-                            <p class="text-xs text-gray-400">Completed</p>
-
-                        </div>
+                        <div
+                            class="w-full h-1 mx-4 rounded-lg bg-cyan-500"></div>
                     </div>
-                    <div class="w-full">
-                        <div class="flex items-center w-full">
-                            <div
-                                class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
-                                <span class="text-base text-white font-bold">2</span>
-                            </div>
-                            <div class="w-full h-1 mx-4 rounded-lg bg-gray-400"></div>
-                        </div>
-                        <div class="mt-2 mr-4">
-                            <h6 class="text-base font-bold text-cyan-800">Order Summary</h6>
-                        
-                            <p class="text-xs text-gray-400">Pending</p>
-                        </div>
-                    </div>
-                    <div class="w-full">
-                        <div class="flex items-center w-full">
-                            <div
-                                class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
-                                <span class="text-base text-white font-bold">2</span>
-                            </div>
-                        
-                        </div>
-                        <div class="mt-2 mr-4">
-                            <h6 class="text-base font-bold text-cyan-800">Payment Method</h6>
-                            <p class="text-xs text-gray-400">Pending</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="flex items-center">
-                        
-                        </div>
-                      
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Delivery
+                            Address</h6>
+                        <p class="text-xs text-gray-400">Completed</p>
+
                     </div>
                 </div>
-                <!-- /////////////////////////////////////////////// -->
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div
+                            class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
+                            <span
+                                class="text-base text-white font-bold">2</span>
+                        </div>
+                        <div
+                            class="w-full h-1 mx-4 rounded-lg bg-gray-400"></div>
+                    </div>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Order
+                            Summary</h6>
 
-                <% cart.products.forEach(product=>{%>
+                        <p class="text-xs text-gray-400">Pending</p>
+                    </div>
+                </div>
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div
+                            class="w-8 h-8 shrink-0 mx-[-1px] bg-gray-300 p-1.5 flex items-center justify-center rounded-full">
+                            <span
+                                class="text-base text-white font-bold">2</span>
+                        </div>
 
+                    </div>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Payment
+                            Method</h6>
+                        <p class="text-xs text-gray-400">Pending</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center">
 
-                    <div id="products"
-                        class="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
-                        <div class="flex gap-4">
-                            <div class="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
-                                <img src='<%=product.productId.images[0]%>' class="w-full h-full object-contain" />
-                                <p></p>
-                            </div>
-                            <div class="flex flex-col gap-4">
-                                <div>
-                                    <h3 class="text-base font-bold text-gray-800">
-                                        <%=product.productId.productName%>
-                                    </h3>
-                                    <p class="text-sm font-semibold text-gray-500 mt-2 flex items-center gap-2">Color:
-                                        <%=product.productId.color[0]%><span
-                                                class="inline-block w-5 h-5 rounded-md bg-<%=product.productId.color[0]%>-600"></span>
-                                    </p>
-                                    <div>
-                                        <label for="">Size</label>
-                                        <select id="selectSize">
-                                            <% product.productId.size.forEach(value=>{%>
+                    </div>
 
-                                                <option value="<%=value%>" <%=product.size===value ? 'selected' :" " %> ><%= value %></option>
-                                    <%}) %>
-                                </select>
-                               
+                </div>
+            </div>
+            <!-- /////////////////////////////////////////////// -->
+
+            <% cart.products.forEach(product=>{%>
+
+            <div id="products"
+                class="flex gap-4 bg-white px-4 py-6 rounded-md shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+                <div class="flex gap-4">
+                    <div class="w-28 h-28 max-sm:w-24 max-sm:h-24 shrink-0">
+                        <img src='<%=product.productId.images[0]%>'
+                            class="w-full h-full object-contain" />
+                        <p></p>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <div>
+                            <h3 class="text-base font-bold text-gray-800">
+                                <%=product.productId.productName%>
+                            </h3>
+                            <p
+                                class="text-sm font-semibold text-gray-500 mt-2 flex items-center gap-2">Color:
+                                <%=product.color%><span
+                                    class="inline-block w-5 h-5 rounded-md bg-<%=product.color%>-600"></span>
+                            </p>
+                            <div>
+                                <p
+                                    class="text-sm font-semibold text-gray-500 mt-2 flex items-center gap-2">Size:
+                                    <%=product.size%><span
+                                        class="inline-block w-5 h-5 rounded-md bg-<%=product.size%>-600"></span>
+                                </p>
+
                             </div>
                         </div>
 
                         <div class=" mt-auto flex items-center gap-3">
-                                                  
-                                                    <span id="quantity" class="font-bold text-sm leading-[18px]">
-                                                      Quantity:  <%=product.quantity%>
-                                                    </span>
-                                                   
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="ml-auto flex flex-col">
-                                <div class="flex items-start gap-4 justify-end">
-                                  
+                            <span id="quantity"
+                                class="font-bold text-sm leading-[18px]">
+                                Quantity: <%=product.quantity%>
+                            </span>
 
-                        
-                                </div>
-                                <div class="mt-auto flex p-4">
-                                    <h3 id="discountPrice" class="text-base font-bold text-gray-800 p-1">
-                                        ₹<%=((product.productId.price-(product.productId.price)*(product.productId.discount
-                                            /100))*product.quantity).toFixed(2)%></h3>
-                                    <strike>
-                                        <h3 id="orginal" class="text-base font-semibold text-gray-800 p-1 ">
-                                            ₹<%=(product.productId.price)*product.quantity.toLocaleString('en-IN')%>
-                                        </h3>
-                                    </strike>
-                                    <h3 id="" class="text-base font-bold text-red-600 p-1">
-                                        <%=(product.productId.discount)%>%Off
-                                    </h3>
-
-                                </div>
-                            </div>
-                            <input hidden value="<%=product.productId._id%>" id="product_id" type="text">
-                        </div>
-
-                        <% }) %>
-
-
-
-
-
-
-
-
-                    </div>
-
-                    <div class="bg-white rounded-md px-4 py-6 h-max shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
-                        <ul class="text-gray-800 space-y-4">
-                            <li class="flex flex-wrap gap-4 text-sm">Total MRP <span id="totalMrp"
-                                    class="ml-auto font-bold">₹<%=totalPrice%></span></li>
-                            <li class="flex flex-wrap gap-4 text-sm">Discount on MRP <span id="discountOnMrp"
-                                    class="ml-auto  text-green-500">-₹<%=(discountPrice).toFixed(2)%></span></li>
-                                    <li class="flex flex-wrap gap-4 text-sm">Coupon discount <span id="discountOnMrp"
-                                        class="ml-auto  text-green-500">-₹<%=(couponDiscount)%></span>
-                            
-                                </li>
-                                <li class="flex flex-wrap gap-4 text-sm">offer discount<span id="discountOnMrp"
-                                    class="ml-auto  text-green-500">-₹<%=(offerDiscount)%></span>
-                            </li>
-                            <li class="flex flex-wrap gap-4 text-sm">Shipping Fee <span class="ml-auto font-bold">₹
-                                    <%=shippingFee%>
-                                </span></li>
-                            <hr class="border-gray-300" />
-                            <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span id="total"
-                                    class="ml-auto">₹<%=total%></span>
-                            </li>
-                        </ul>
-
-                        <div class="mt-8 space-y-2">
-                            <a href="/user/selectPayment/<%=addressID%>">
-                                <button type="button"
-                                    class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md">Contine</button>
-                            </a>
-                          
-                        </div>
-
-                        <div class="mt-4 flex flex-wrap justify-center gap-4">
-                            <img src='https://readymadeui.com/images/master.webp' alt="card1"
-                                class="w-10 object-contain" />
-                            <img src='https://readymadeui.com/images/visa.webp' alt="card2"
-                                class="w-10 object-contain" />
-                            <img src='https://readymadeui.com/images/american-express.webp' alt="card3"
-                                class="w-10 object-contain" />
                         </div>
                     </div>
+                </div>
+
+                <div class="ml-auto flex flex-col">
+                    <div class="flex items-start gap-4 justify-end">
+
+                    </div>
+                    <div class="mt-auto flex p-4">
+                        <h3 id="discountPrice"
+                            class="text-base font-bold text-gray-800 p-1">
+                            ₹<%=((product.productId.price-(product.productId.price)*(product.productId.discount
+                            /100))*product.quantity).toFixed(2)%></h3>
+                        <strike>
+                            <h3 id="orginal"
+                                class="text-base font-semibold text-gray-800 p-1 ">
+                                ₹<%=(product.productId.price)*product.quantity.toLocaleString('en-IN')%>
+                            </h3>
+                        </strike>
+                        <h3 id class="text-base font-bold text-red-600 p-1">
+                            <%=(product.productId.discount)%>%Off
+                        </h3>
+
+                    </div>
+                </div>
+                <input hidden value="<%=product.productId._id%>" id="product_id"
+                    type="text">
+            </div>
+
+            <% }) %>
+
+        </div>
+
+        <div
+            class="bg-white rounded-md px-4 py-6 h-max shadow-[0_2px_12px_-3px_rgba(6,81,237,0.3)]">
+            <ul class="text-gray-800 space-y-4">
+                <li class="flex flex-wrap gap-4 text-sm">Total MRP <span
+                        id="totalMrp"
+                        class="ml-auto font-bold">₹<%=totalPrice%></span></li>
+                <li class="flex flex-wrap gap-4 text-sm">Discount on MRP <span
+                        id="discountOnMrp"
+                        class="ml-auto  text-green-500">-₹<%=(discountPrice).toFixed(2)%></span></li>
+                <li class="flex flex-wrap gap-4 text-sm">Coupon discount <span
+                        id="discountOnMrp"
+                        class="ml-auto  text-green-500">-₹<%=(couponDiscount)%></span>
+
+                </li>
+                <li class="flex flex-wrap gap-4 text-sm">offer discount<span
+                        id="discountOnMrp"
+                        class="ml-auto  text-green-500">-₹<%=(offerDiscount)%></span>
+                </li>
+                <li class="flex flex-wrap gap-4 text-sm">Shipping Fee <span
+                        class="ml-auto font-bold">₹
+                        <%=shippingFee%>
+                    </span></li>
+                <hr class="border-gray-300" />
+                <li class="flex flex-wrap gap-4 text-sm font-bold">Total <span
+                        id="total"
+                        class="ml-auto">₹<%=total%></span>
+                </li>
+            </ul>
+
+            <div class="mt-8 space-y-2">
+                <a href="/user/selectPayment/<%=addressID%>">
+                    <button type="button"
+                        class="text-sm px-4 py-2.5 w-full font-semibold tracking-wide bg-gray-800 hover:bg-gray-900 text-white rounded-md">Contine</button>
+                </a>
+
+            </div>
+
+            <div class="mt-4 flex flex-wrap justify-center gap-4">
+                <img src='https://readymadeui.com/images/master.webp'
+                    alt="card1"
+                    class="w-10 object-contain" />
+                <img src='https://readymadeui.com/images/visa.webp' alt="card2"
+                    class="w-10 object-contain" />
+                <img src='https://readymadeui.com/images/american-express.webp'
+                    alt="card3"
+                    class="w-10 object-contain" />
             </div>
         </div>
-        <div>
-            <input hidden id="addressID" type="text" value="<%=addressID%>">
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </div>
+</div>
+<div>
+    <input hidden id="addressID" type="text" value="<%=addressID%>">
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
 
             document.addEventListener("DOMContentLoaded", () => {
                 window.onload = () => {

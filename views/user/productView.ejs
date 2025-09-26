@@ -140,7 +140,7 @@
                       <% variantSizes.forEach((size) => { %>
                         <label class="cursor-pointer">
                           <input type="radio" name="selectedSize" value="<%= size %>" class="hidden peer select" />
-                          <div class="w-10 h-10 border-2 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">
+                          <div class="w-10 h-10 border-2 font-semibold text-sm rounded-full flex items-center justify-center shrink-0 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600">
                             <%= size %>
                           </div>
                         </label>
@@ -160,6 +160,7 @@
                       <% }) %>
                     </div>
                   </div>
+                  <p id="variantStockMsg" class="mt-2 text-sm font-medium"></p>
                   <div class="mt-3 ">
                     <p class="text-base font-medium text-gray-800">Available offers</p>
                         <p class="text-green-500 mt-1">  <%=offer && offer.length===0 ? "No offer available right now" :"" %></p>
@@ -252,109 +253,7 @@
                           <li>Easy 14 days returns and exchanges</li>
                         </ul>
                       </div>
-                      <!-- REVIEWS/////////////////////////////////////////////////////////////////////// -->
-                      <div class="mt-8">
-                        <h3 class="text-xl font-bold text-gray-800">Reviews(10)</h3>
-                        <div class="space-y-3 mt-4">
-                            <div class="flex items-center">
-                                <p class="text-sm text-gray-800 font-bold">5.0</p>
-                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                </svg>
-                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
-                                    <div class="w-2/3 h-full rounded bg-orange-400"></div>
-                                </div>
-                                <p class="text-sm text-gray-800 font-bold ml-3">66%</p>
-                            </div>
-
-                            <div class="flex items-center">
-                                <p class="text-sm text-gray-800 font-bold">4.0</p>
-                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                </svg>
-                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
-                                    <div class="w-1/3 h-full rounded bg-orange-400"></div>
-                                </div>
-                                <p class="text-sm text-gray-800 font-bold ml-3">33%</p>
-                            </div>
-
-                            <div class="flex items-center">
-                                <p class="text-sm text-gray-800 font-bold">3.0</p>
-                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                </svg>
-                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
-                                    <div class="w-1/6 h-full rounded bg-orange-400"></div>
-                                </div>
-                                <p class="text-sm text-gray-800 font-bold ml-3">16%</p>
-                            </div>
-
-                            <div class="flex items-center">
-                                <p class="text-sm text-gray-800 font-bold">2.0</p>
-                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                </svg>
-                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
-                                    <div class="w-1/12 h-full rounded bg-orange-400"></div>
-                                </div>
-                                <p class="text-sm text-gray-800 font-bold ml-3">8%</p>
-                            </div>
-
-                            <div class="flex items-center">
-                                <p class="text-sm text-gray-800 font-bold">1.0</p>
-                                <svg class="w-5 fill-orange-400 ml-1" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                </svg>
-                                <div class="bg-gray-300 rounded w-full h-2 ml-3">
-                                    <div class="w-[6%] h-full rounded bg-orange-400"></div>
-                                </div>
-                                <p class="text-sm text-gray-800 font-bold ml-3">6%</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start mt-8">
-                            <img src="https://readymadeui.com/team-2.webp" class="w-12 h-12 rounded-full border-2 border-white" />
-                            <div class="ml-3">
-                                <h4 class="text-sm font-bold">John Doe</h4>
-                                <div class="flex space-x-1 mt-1">
-                                    <svg class="w-4 fill-orange-400" viewBox="0 0 14 13" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                    </svg>
-                                    <svg class="w-4 fill-orange-400" viewBox="0 0 14 13" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                    </svg>
-                                    <svg class="w-4 fill-orange-400" viewBox="0 0 14 13" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                    </svg>
-                                    <svg class="w-4 fill-[#CED5D8]" viewBox="0 0 14 13" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                    </svg>
-                                    <svg class="w-4 fill-[#CED5D8]" viewBox="0 0 14 13" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M7 0L9.4687 3.60213L13.6574 4.83688L10.9944 8.29787L11.1145 12.6631L7 11.2L2.8855 12.6631L3.00556 8.29787L0.342604 4.83688L4.5313 3.60213L7 0Z" />
-                                    </svg>
-                                    <p class="text-xs !ml-2 font-semibold">2 mins ago</p>
-                                </div>
-                                <p class="text-xs mt-4">The service was amazing. I never had to wait that long for my food. The staff was friendly and attentive, and the delivery was impressively prompt.</p>
-                            </div>
-                        </div>
-                        <button type="button" class="w-full mt-8 px-4 py-2.5 bg-transparent border border-orange-400 text-gray-800 font-semibold rounded-lg">Read all reviews</button>
-                    </div>
-                      <!-- ////////////////////////////////////////////////////////// -->
+   
 
 
 
@@ -366,63 +265,6 @@
     </div>
   </div>
 
-
-
-
-<!-- 
-  <section>
-    <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
-      <h2 class="text-2xl font-extrabold text-gray-800 mb-12">Similar products</h2>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <% products.forEach(product=>{%>
-          <a href="/user/productView/<%=product._id %>">
-            <div class="bg-white rounded overflow-hidden shadow-md cursor-pointer hover:scale-[1.02] transition-all">
-              <div class="w-full aspect-w-4 aspect-h-3 lg:h-60">
-                <img src="<%=product.images[0] %>" alt="Product 1" class="h-full w-full object-cover object-top" />
-              </div>
-
-            
-              <div class="p-4">
-                <h3 class="text-lg font-bold text-gray-800">
-                  <%=product.productName %>
-                </h3>
-                <p>
-                  <%=product.description %>
-                </p>
-                <div class="mt-4 flex items-center flex-wrap gap-2">
-                  <h4 class="text-lg font-bold text-gray-800">₹<%=product.price %>
-                  </h4>
-                  <h4 class="text-lg font-light line-through text-red-500">
-                    <%=product.discount %>%
-                  </h4>
-
-                  <div
-                    class="bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer ml-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" class="fill-gray-800 inline-block"
-                      viewBox="0 0 64 64">
-                      <path
-                        d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                        data-original="#000000"></path>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </a>
-          
-          <%}) %>
-
-            <div>
-              <input type="text" value="<%=product._id %>" id="productId" hidden>
-            </div>
-
-
-      </div>
-    </div>
-
-  </section> -->
   <section>
     <div class="font-sans p-4 mx-auto lg:max-w-5xl md:max-w-3xl sm:max-w-full">
   
@@ -530,21 +372,106 @@
 
     let selectSize=""
     let selectColor=""
-    document.querySelectorAll('.select').forEach(selecter => {
-        selecter.addEventListener('change', (req, res) => {
-           selectSize = document.querySelector('input[name="selectedSize"]:checked').value
-        })
-      })
+    const variants = JSON.parse('<%- JSON.stringify(product.variants || []) %>')
+
+    function updateAvailability() {
+      // compute availability based on current selections
+      const sizeButtons = document.querySelectorAll('input[name="selectedSize"]');
+      const colorButtons = document.querySelectorAll('.variant-color');
+      const stockMsg = document.getElementById('variantStockMsg');
+
+      // Filter size availability when a color is selected
+      sizeButtons.forEach(input => {
+        const size = input.value;
+        const available = selectColor
+          ? variants.some(v => v.size === size && v.color === selectColor && Number(v.stock) > 0)
+          : variants.some(v => v.size === size && Number(v.stock) > 0);
+        const pill = input.nextElementSibling;
+        if (!available) {
+          input.disabled = true;
+          pill.classList.add('opacity-40','cursor-not-allowed');
+        } else {
+          input.disabled = false;
+          pill.classList.remove('opacity-40','cursor-not-allowed');
+        }
+      });
+
+      // Filter color availability when a size is selected
+      colorButtons.forEach(btn => {
+        const color = btn.getAttribute('data-color');
+        const available = selectSize
+          ? variants.some(v => v.color === color && v.size === selectSize && Number(v.stock) > 0)
+          : variants.some(v => v.color === color && Number(v.stock) > 0);
+        if (!available) {
+          btn.disabled = true;
+          btn.classList.add('opacity-40','cursor-not-allowed');
+        } else {
+          btn.disabled = false;
+          btn.classList.remove('opacity-40','cursor-not-allowed');
+        }
+      });
+
+      // Show stock for exact match
+      let matched = null;
+      if (selectSize && selectColor) {
+        matched = variants.find(v => v.size === selectSize && v.color === selectColor);
+      }
+      if (matched) {
+        const s = Number(matched.stock||0);
+        if (s > 0) {
+          stockMsg.textContent = `In stock: ${s}`;
+          stockMsg.className = 'mt-2 text-sm font-medium text-green-600';
+          document.getElementById('addToCart').disabled = false;
+        } else {
+          stockMsg.textContent = 'Out of stock';
+          stockMsg.className = 'mt-2 text-sm font-medium text-red-500';
+          document.getElementById('addToCart').disabled = true;
+        }
+      } else {
+        stockMsg.textContent = '';
+        // disable Add to cart if no valid selection
+        const anyAvailable = variants.some(v => Number(v.stock) > 0);
+        document.getElementById('addToCart').disabled = !anyAvailable;
+      }
+    }
+    // handle size select and allow unselecting the same size
+    document.querySelectorAll('input[name="selectedSize"]').forEach(input => {
+      const pill = input.nextElementSibling;
+      // unselect if clicking the already selected pill
+      pill.addEventListener('click', (e) => {
+        if (input.checked) {
+          e.preventDefault();
+          input.checked = false;
+          selectSize = "";
+          updateAvailability();
+        }
+      });
+      input.addEventListener('change', () => {
+        const checked = document.querySelector('input[name="selectedSize"]:checked');
+        selectSize = checked ? checked.value : "";
+        updateAvailability();
+      });
+    });
 
     // handle color select
     document.querySelectorAll('.variant-color').forEach(btn => {
       btn.addEventListener('click', () => {
-        // toggle active style
-        document.querySelectorAll('.variant-color').forEach(b => b.classList.remove('bg-blue-600','text-white','border-blue-600'))
-        btn.classList.add('bg-blue-600','text-white','border-blue-600')
-        selectColor = btn.getAttribute('data-color')
+        const isSelected = btn.classList.contains('bg-blue-600');
+        if (isSelected) {
+          // unselect color
+          btn.classList.remove('bg-blue-600','text-white','border-blue-600');
+          selectColor = "";
+        } else {
+          // select new color
+          document.querySelectorAll('.variant-color').forEach(b => b.classList.remove('bg-blue-600','text-white','border-blue-600'))
+          btn.classList.add('bg-blue-600','text-white','border-blue-600')
+          selectColor = btn.getAttribute('data-color')
+        }
+        updateAvailability();
       })
     })
+    // initialize availability state on load
+    updateAvailability();
       let clicked=false
     document.getElementById("addToCart").addEventListener("click", () => {
       document.getElementById("selectErr").textContent = ""

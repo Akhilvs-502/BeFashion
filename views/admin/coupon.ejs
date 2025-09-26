@@ -1,9 +1,11 @@
-<link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css" rel="stylesheet">
-<link href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"
+    rel="stylesheet">
+<link
+    href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css"
+    rel="stylesheet">
 <div class=" fixed  top-0 left-0 w-full z-50">
     <%- include('../partials/adminHeader.ejs') %>
 </div>
-
 
 <div class="flex mt-10">
     <div class="fixed">
@@ -13,44 +15,60 @@
     <div class=" absolute w-[980px]  mt-16 right-8">
         <h1 class="text-2xl font-bold text-center mb-6">Coupon Management</h1>
         <div class="flex justify-center hidden" id="addCoupon">
-            <form id="couponForm" class="my-5 p-5 bg-white shadow-md rounded w-6/12 ">
+            <form id="couponForm"
+                class="my-5 p-5 bg-white shadow-md rounded w-6/12 ">
                 <div class="flex justify-between">
-                    <h2 class="text-2xl font-medium text-cyan-500">Add Coupon</h2> <button id="closeBtn"
+                    <h2 class="text-2xl font-medium text-cyan-500">Add
+                        Coupon</h2> <button id="closeBtn"
                         class="bg-red-500 rounded-lg w-12 text-white font-light">Close</button>
                 </div>
                 <div class="flex flex-col space-y-4">
-                    <label for="couponCode" class="font-semibold">Coupon Code</label>
-                    <input type="text" id="couponCode" placeholder="Enter Coupon Code"
+                    <label for="couponCode" class="font-semibold">Coupon
+                        Code</label>
+                    <input type="text" id="couponCode"
+                        placeholder="Enter Coupon Code"
                         class="border p-2 rounded uppercase" required>
-                        <span id="couponErr" class="text-red-400"></span>
+                    <span id="couponErr" class="text-red-400"></span>
 
-                    <label for="couponType" class="font-semibold">Coupon Type</label>
+                    <label for="couponType" class="font-semibold">Coupon
+                        Type</label>
                     <select id="couponType" class="border p-2 rounded" required>
-                        <option value="" disabled selected>Select Coupon Type</option>
+                        <option value disabled selected>Select Coupon
+                            Type</option>
                         <option value="percentage">Percentage</option>
                         <option value="price">Price</option>
                     </select>
 
-                    <label for="discountValue" class="font-semibold">Discount Value</label>
-                    <input type="number" id="discountValue" placeholder="Enter Discount Value"
+                    <label for="discountValue" class="font-semibold">Discount
+                        Value</label>
+                    <input type="number" id="discountValue"
+                        placeholder="Enter Discount Value"
                         class="border p-2 rounded" required>
                     <span id="discountErr" class="text-red-400"></span>
-                    <label for="minimumAmount" class="font-semibold">Minimum Amount</label>
-                    <input type="number" id="minimumAmount" placeholder="Enter Minimum Amount"
+                    <label for="minimumAmount" class="font-semibold">Minimum
+                        Amount</label>
+                    <input type="number" id="minimumAmount"
+                        placeholder="Enter Minimum Amount"
                         class="border p-2 rounded" required>
                     <span id="minimumErr" class="text-red-400"></span>
-                    <label for="usageCount" class="font-semibold">Usage Count</label>
-                    <input type="number" id="usageCount" placeholder="Usage Count"
+                    <label for="usageCount" class="font-semibold">Usage
+                        Count</label>
+                    <input type="number" id="usageCount"
+                        placeholder="Usage Count"
                         class="border p-2 rounded" min="1" max="10" required>
                     <span id="minimumErr" class="text-red-400"></span>
 
-                    <label for="startDate" class="font-semibold">Start Date</label>
-                    <input type="date" id="startDate" class="border p-2 rounded" required>
+                    <label for="startDate" class="font-semibold">Start
+                        Date</label>
+                    <input type="date" id="startDate" class="border p-2 rounded"
+                        required>
 
                     <label for="endDate" class="font-semibold">End Date</label>
-                    <input type="date" id="endDate" class="border p-2 rounded" required>
+                    <input type="date" id="endDate" class="border p-2 rounded"
+                        required>
 
-                    <button type="submit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Add
+                    <button type="submit"
+                        class="bg-blue-500 text-white p-2 rounded hover:bg-blue-700">Add
                         Coupon</button>
                 </div>
             </form>
@@ -72,54 +90,57 @@
             </thead>
             <tbody id="couponList">
                 <% coupons.forEach(coupon=>{%>
-                    <tr id="coupon">
-                        <td class="border px-4 py-2">
-                            <%=coupon.couponCode %>
-                        </td>
-                        <td class="border px-4 py-2">
-                            <%=coupon.couponType %>
-                        </td>
-                        <td class="border px-4 py-2">
-                            <%=coupon.discountValue %>
-                        </td>
-                        <td class="border px-4 py-2">
-                            <%=coupon.minimumAmount %>
-                        </td>
-                        <td class="border px-4 py-2">
-                            <%=coupon.startDate.toLocaleString() %>
-                        </td>
-                        <td class="border px-4 py-2">
-                            <%=coupon.endDate.toLocaleString() %>
-                        </td>
-                        <td class="border px-4 py-2">
-                            <%=coupon.usageCount %>
-                        </td>
-                        <td class="border px-4 py-2">
-                            <button id="changeStatus"
-                                class="bg-<%=(coupon.block) ?'red':'green'%>-600 text-sm text-white p-1 rounded w-16 ">
+                <tr id="coupon">
+                    <td class="border px-4 py-2">
+                        <%=coupon.couponCode %>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <%=coupon.couponType %>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <%=coupon.discountValue %>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <%=coupon.minimumAmount %>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <%=coupon.startDate.toLocaleString() %>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <%=coupon.endDate.toLocaleString() %>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <%=coupon.usageCount %>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <button id="changeStatus"
+                            class="bg-<%=(coupon.block) ?'red':'green'%>-600 text-sm text-white p-1 rounded w-16 ">
                             <%=(coupon.block) ? 'Unblock':'Active'%>
-                            </button>
-                        </td>
-                        <td hidden id="couponId"><%=coupon._id %></td>
-                        <td id="deleteCoupn" class="border px-4 py-2">
-                            <button class="bg-red-500 text-white p-1 rounded hover:bg-red-700">Delete</button>
-                        </td>
-                    </tr>
-                    <%})%>
-
+                        </button>
+                    </td>
+                    <td hidden id="couponId"><%=coupon._id %></td>
+                    <td id="deleteCoupn" class="border px-4 py-2">
+                        <button
+                            class="bg-red-500 text-white p-1 rounded hover:bg-red-700">Delete</button>
+                    </td>
+                </tr>
+                <%})%>
 
             </tbody>
         </table>
-        <div><button id="addBtn" class="bg-cyan-700 mt-2  text-white rounded-lg h-8 w-28">ADD COUPON</button></div>
+        <div><button id="addBtn"
+                class="bg-cyan-700 mt-2  text-white rounded-lg h-8 w-28">ADD
+                COUPON</button></div>
     </div>
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+<script
+    src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+<script
+    src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
 <script>
     // minimum date for the date inputs to today
@@ -233,22 +254,6 @@
         })
 
     })
-
-
-
-    // window.onload()=function(){
-    //     changeStatus
-    // }
-
-
-
-
-
-
-
-
-
-
 
 
     // Initialize DataTable
