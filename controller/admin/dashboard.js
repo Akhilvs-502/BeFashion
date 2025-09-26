@@ -38,11 +38,16 @@ console.log(totalSales);
 
 
 export const getChartData = async (req, res) => {
+
+  try{
+
   let { filter } = req.body
   console.log(filter);
 
   const orders = (await orderModel.find({}).populate("products.product"))
 
+
+  
 
   let salesData = {}
   let categoryData = {}
@@ -71,6 +76,8 @@ export const getChartData = async (req, res) => {
       salesData[label] = total;
     }
     order.products.forEach(item => {
+      console.log(item.product);
+      
       const product = item.product;  // Access the populated product document
       const category = product.category;  // Assume category is a field on the product
 
@@ -115,4 +122,11 @@ export const getChartData = async (req, res) => {
   let newData = { label, data, profit, categoryLabel, category, categoryData, topCategories, topProducts }
 
   res.json({ newData, message: "chart value fectched" })
-}
+
+
+}catch(err){
+      console.log(err);
+      res.status(500).json({ message: "Error in fetching chart data" });
+    }
+
+  }

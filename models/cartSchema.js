@@ -17,6 +17,9 @@ const cartSchema=new mongoose.Schema({
             default:1
         },size:{
             type:String,
+        },
+        color:{
+            type:String,
         }
     }],
     couponDiscount:{

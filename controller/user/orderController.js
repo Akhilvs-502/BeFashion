@@ -88,7 +88,7 @@ export const orderUpdate = async (req, res) => {
         discountedPrice,
         paymentMode: orderType,
         orderStatus: "pending", // initially pending
-        color: product.productId.color[0],
+        color: product.productId.color,
         size: product.size,
         offerAdded: offerDiscount,
         couponAdded: productCoupon,

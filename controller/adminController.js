@@ -278,20 +278,18 @@ export const postUploadImage = async (req, res) => {
 
 export const postAddproduct = async (req, res) => {
     try {
-        console.log("psot add product");
-        
-        const { productName, price, description, quantity, discount, stock, color, size, category, images } = req.body
-        console.log(images + "images");
-        console.log("postADDproduct");
+        console.log("post add product");
+
+        const { productName, price, description, discount, variants, category, images } = req.body
+
+        console.log(req.body, variants);
 
         const product = new productModel({
             productName,
             price,
             description,
-            quantity, discount,
-            stock,
-            color,
-            size,
+             discount,
+            variants,
             category,
             images
         })

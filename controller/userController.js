@@ -489,13 +489,18 @@ export const passwordUpdate = async (req, res) => {
 
 }
 
+
+
+
+
+
 export const allProducts = async (req, res) => {
     try {
 
         let ans = await productModel.find({})
-        // console.log(ans);
+
         let userd = await usermodel.find({})
-        // console.log(userd);
+        
 
         // Get page and limit from query parameters, set default values if not provided
         const page = parseInt(req.query.page) || 1;  // Current page, default is 1
@@ -506,7 +511,7 @@ export const allProducts = async (req, res) => {
         // console.log(req.query)
         let products
         let filters = []
-        let query = { block: false, stock: { $gt: 0 } }
+        let query = { block: false, "variants.stock": { $gt: 0 } }
         let sort = {}
         let categories = []
         if (req.query.men == 'true') {
@@ -530,7 +535,7 @@ export const allProducts = async (req, res) => {
         if (categories.length > 0) {
             query.category = { $in: categories }
         }
-        console.log(filters);
+     
         if ((req.query.price) == 'low-high') {
             filters.push('low-high')
             sort.price = 1
@@ -568,9 +573,10 @@ export const allProducts = async (req, res) => {
         }
 
 
+        console.log(query, "query",skip,limit);
+        
 
-
-
+  
         products = await productModel.find(query).collation({ locale: 'en', strength: 2 }).sort(sort).skip(skip).limit(limit)
 
 
@@ -578,6 +584,8 @@ export const allProducts = async (req, res) => {
         const totalProducts = await productModel.find(query).countDocuments();
 
 
+        // console.log(products);
+        
 
 
 
@@ -593,6 +601,7 @@ export const allProducts = async (req, res) => {
                 if (err) {
 
                     wishlistProduct = []  //solve this err
+                    
                     res.render('user/allProducts', {
                         products, totalPages: Math.ceil(totalProducts / limit),
                         currentPage: page,
@@ -617,7 +626,8 @@ export const allProducts = async (req, res) => {
                         req.session.destroy()
                         res.render('user/blockedUser')
                     } else {
-                        console.log("ser");
+                
+                    console.log(products,"product");
 
 
                         res.render('user/allProducts', {
@@ -658,16 +668,15 @@ export const productView = async (req, res) => {
 
         const product = await productModel.findById(id)
         const categories = product.category
-        // console.log(product.category);
         const products = await productModel.find({ category: categories }).limit(6)
-        // console.log(products);
+
         ///JWT token checking
         const token = req.cookies.token
         const secretKey = process.env.SECRET_KEY
-        console.log(id);
+
 
         const offer = await offerModel.find({ 'offerFor.offerGive': id })
-        console.log(offer+"offeres");
+        // console.log(offer+"offeres");
         var wishlistProduct = []
 
         if (token) {
@@ -676,6 +685,8 @@ export const productView = async (req, res) => {
                     res.render('user/productView', { product, products, user: false, offer, wishlistProduct })
                 }
                 else {
+                    console.log(products,"pro");
+                    
                     const user = await usermodel.findOne({ email: data.email })
                     const wishlist = await wishlistModel.find({ userId: user._id })
 
@@ -694,7 +705,6 @@ export const productView = async (req, res) => {
                         res.render('user/blockedUser')
                     } else {
 
-                        console.log(wishlistProduct);
                         const userData = await usermodel.findOne({ email: data.email })
                         const userCart = await cartModel.findOne({ userId: userData._id, 'products.productId': id })
 

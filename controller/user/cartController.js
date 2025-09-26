@@ -14,9 +14,9 @@ export const addToCart = async (req, res) => {
 
         const jwtUser = req.userData
         const userData = await usermodel.findOne({ email: jwtUser.email })
-        const { productId, selectSize } = req.body
+        const { productId, selectSize,selectColor } = req.body
         console.log(productId);
-        
+        console.log(selectColor);
         console.log(selectSize);
         const userCart = await cartModel.findOne({ userId: userData._id })
 
@@ -25,7 +25,7 @@ export const addToCart = async (req, res) => {
 
             const model = new cartModel({
                 userId: userData._id,
-                products: [{ productId, quantity: 1, size: selectSize }]
+                products: [{ productId, quantity: 1, size: selectSize, color: selectColor }]
             })
             await model.save()
             console.log("Cart created");
@@ -48,7 +48,7 @@ export const addToCart = async (req, res) => {
                     {
                         $addToSet: {
                             products: {
-                                productId, quantity: 1, size: selectSize
+                                productId, quantity: 1, size: selectSize , color: selectColor
                             }
                         }
                     }, { new: true }
