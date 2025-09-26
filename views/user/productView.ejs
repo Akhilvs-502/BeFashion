@@ -132,28 +132,33 @@
                   </div>
                   <span class="text-sm text-green-500 ml-1.5">inclusive of all taxes</span>
 
-                  <!-- Sizes -->
+                  <!-- Sizes from variants -->
                   <div class="mt-3 flex ">
                     <h3 class="text-base font-medium text-gray-800 mt-2">Sizes</h3>
-                    <div class="flex flex-wrap gap-4 ml-3">
-                      <% product.size.forEach((size, index)=> { %>
+                    <div class="flex flex-wrap gap-4 ml-3" id="sizesContainer">
+                      <% const variantSizes = [...new Set((product.variants || []).map(v => v.size))]; %>
+                      <% variantSizes.forEach((size) => { %>
                         <label class="cursor-pointer">
-                          <input type="radio" name="selectedSize" value="<%= size %>" class="hidden peer select"
-                            required />
-                          <div
-                            class="w-10 h-10 border-2 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">
+                          <input type="radio" name="selectedSize" value="<%= size %>" class="hidden peer select" />
+                          <div class="w-10 h-10 border-2 peer-checked:bg-blue-600 peer-checked:text-white peer-checked:border-blue-600 font-semibold text-sm rounded-full flex items-center justify-center shrink-0">
                             <%= size %>
                           </div>
                         </label>
-                        <% }) %>
-                          <p class="text-red-400" id="selectErr"></p>
+                      <% }) %>
+                      <p class="text-red-400" id="selectErr"></p>
                     </div>
-
                   </div>
-                  <div class="mt-2 flex ">
-                    <p class="text-base font-medium text-gray-800 mt-4"> colors</p>
-                    <button  type="button"
-                      class="w-10 mt-2 ml-2  h-10 bg-<%=product.color%>-500 border-2 hover:border-blue-600 font-light text-sm rounded-full flex items-center justify-center shrink-0"><%=product.color%></button>
+                  <!-- Colors from variants -->
+                  <div class="mt-2 flex items-center">
+                    <p class="text-base font-medium text-gray-800 mr-2">Colors</p>
+                    <div id="colorsContainer" class="flex gap-2">
+                      <% const variantColors = [...new Set((product.variants || []).map(v => v.color))]; %>
+                      <% variantColors.forEach((color) => { %>
+                        <button type="button" data-color="<%= color %>" class="variant-color px-3 py-2 border rounded-full text-sm">
+                          <%= color %>
+                        </button>
+                      <% }) %>
+                    </div>
                   </div>
                   <div class="mt-3 ">
                     <p class="text-base font-medium text-gray-800">Available offers</p>
@@ -218,16 +223,17 @@
 
                   <!-- Add to Cart Button -->
 
-                  <% if (product.stock===0) { %>
+                  <% const totalVariantStock = (product.variants || []).reduce((s,v)=> s + (v.stock||0), 0); %>
+                  <% if (totalVariantStock===0) { %>
                     <p class="mt-2 font-medium text-red-400">Out of stock</p>
                     <% }%>
-                    <% if(product.stock< 6 && product.stock>0){%>
-                    <p class="text-green-500 font-medium">Only <%= product.stock%> product left</p>
+                    <% if(totalVariantStock< 6 && totalVariantStock>0){%>
+                    <p class="text-green-500 font-medium">Only <%= totalVariantStock %> product left</p>
                     <% } %>
                       <a id="goCart">
                         <button type="button" id="addToCart" class="w-full mt-8 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-md
                          disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400"
-                          <%=product.stock===0 ? 'disabled' : '' %>
+                          <%= totalVariantStock===0 ? 'disabled' : '' %>
                           >
                           Add to cart
                         </button>
@@ -523,11 +529,22 @@
 
 
     let selectSize=""
+    let selectColor=""
     document.querySelectorAll('.select').forEach(selecter => {
         selecter.addEventListener('change', (req, res) => {
            selectSize = document.querySelector('input[name="selectedSize"]:checked').value
         })
       })
+
+    // handle color select
+    document.querySelectorAll('.variant-color').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // toggle active style
+        document.querySelectorAll('.variant-color').forEach(b => b.classList.remove('bg-blue-600','text-white','border-blue-600'))
+        btn.classList.add('bg-blue-600','text-white','border-blue-600')
+        selectColor = btn.getAttribute('data-color')
+      })
+    })
       let clicked=false
     document.getElementById("addToCart").addEventListener("click", () => {
       document.getElementById("selectErr").textContent = ""
@@ -535,10 +552,10 @@
       if(clicked) return
       clicked=true
 
-      if (selectSize) {
+      if (selectSize && selectColor) {
         console.log(selectSize);
         
-        axios.post("/user/addToCart", { productId ,selectSize}).then(data => {
+        axios.post("/user/addToCart", { productId , selectSize, selectColor}).then(data => {
           console.log(data);  
           Swal.fire({
             position: "center",
@@ -557,7 +574,7 @@
           
           })
       } else {
-        document.getElementById("selectErr").textContent = "Select any size*"
+        document.getElementById("selectErr").textContent = "Select size and color*"
       }
     })
 

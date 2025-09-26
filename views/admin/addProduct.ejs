@@ -67,47 +67,36 @@
           <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
         </svg>
       </label>
-      <input type="text" id="discount" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
+      <input type="number"  min="50" id="discount" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
     </div>
-    <div class="w-full relative">
-      <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Stock <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
-        </svg>
-      </label>
-      <input type="text" id="stock" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
+    
     </div>
+  
+  <!-- Variants Section (Color + Size + Stock per variant) -->
+  <div class="w-full relative mb-6">
+    <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">
+      Variants
+      <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
+      </svg>
+    </label>
+    <div id="variants-container">
+      <div class="variant-row flex gap-x-2 mb-2">
+        <input type="text" name="variantColor" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Color">
+        <select name="variantSize" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full focus:outline-none">
+          <option value="" disabled selected>Select size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+        <input type="number" name="variantStock" min="0" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Stock">
+        <button type="button" class="remove-variant text-red-500 ml-2">Remove</button>
+      </div>
     </div>
-    <div class="flex gap-x-6 mb-6">
-    <div class="w-full relative">
-      <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Color <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
-        </svg>
-      </label>
-      <input type="text" id="color" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
-    </div>
-<!-- /////////////////////////////////// -->
-
-<div class="w-full relative">
-  <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">
-    Size
-    <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
-    </svg>
-  </label>
-
-  <!-- Container for size inputs -->
-  <div id="sizes-container">
-    <div class="size-input-group">
-      <input type="text" name="sizes[]" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter size" required="">
-      <button type="button" class="remove-size text-red-500 ml-2">Remove</button>
-    </div>
-  </div>
-
-  <!-- Button to add more sizes -->
-  <button type="button" id="add-size" class="mt-2 px-3 py-1 text-white bg-green-500 rounded-full">Add Size</button>
-</div>
-
-    <!-- ////////////////////////////////////////////////// -->
+    <button type="button" id="add-variant" class="mt-2 px-3 py-1 text-white bg-indigo-500 rounded-full">Add Variant</button>
   </div>
   <p  id="errMsg" class="text-red-500"></p>
 
@@ -115,22 +104,6 @@
 
 
 
-
-<!-- ///////////////////////////////////////////////// -->
-
-<!-- <form id="productForm" enctype="multipart/form-data"> -->
-  <!-- <label for="imageUpload">Upload Image (One by one, minimum 3):</label>
-  <input type="file" id="imageUpload" accept="image/*">
-  <div id="imagePreview"></div> <!-- Container to show cropped images -->
-  
-  <!-- Modal for cropping -->
-  <!-- <div id="cropModal" style="display:none;">
-      <img id="cropImage" src="" alt="Image to Crop">
-      <button id="cropButton">Crop</button>
-      <button id="cancelButton">Cancel</button>
-  </div> -->
-  <!-- <button type="submit">Submit Product</button> -->
-<!-- </form> -->
 
 
 
@@ -186,45 +159,43 @@
 
 
 
-//ADDING THE SIZE BUTTON////////////////////////////////////////////////////
+// Removed old Size dynamic controls
 
 
 
 
-// Get elements
-const sizesContainer = document.getElementById('sizes-container');
-  const addSizeButton = document.getElementById('add-size');
 
-  // Function to add a new size input
-  addSizeButton.addEventListener('click', () => {
-    const sizeInputGroup = document.createElement('div');
-    sizeInputGroup.classList.add('size-input-group');
-    sizeInputGroup.innerHTML = `
-      <input type="text" name="sizes[]" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Enter size" required="">
-      <button type="button" class="remove-size text-red-500 ml-2">Remove</button>
+
+
+// VARIANTS dynamic add/remove //////////////////////////////////////
+  const variantsContainer = document.getElementById('variants-container');
+  const addVariantButton = document.getElementById('add-variant');
+
+  addVariantButton.addEventListener('click', () => {
+    const row = document.createElement('div');
+    row.classList.add('variant-row', 'flex', 'gap-x-2', 'mb-2');
+    row.innerHTML = `
+      <input type="text" name="variantColor" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Color">
+      <select name="variantSize" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full focus:outline-none">
+          <option value="" disabled selected>Select size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      <input type="number" min="0" name="variantStock" min="0" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Stock">
+      <button type="button" class="remove-variant text-red-500 ml-2">Remove</button>
     `;
-    sizesContainer.appendChild(sizeInputGroup);
-
-    // Add event listener to the remove button
-    sizeInputGroup.querySelector('.remove-size').addEventListener('click', () => {
-      sizeInputGroup.remove();
-    });
+    variantsContainer.appendChild(row);
+    row.querySelector('.remove-variant').addEventListener('click', () => row.remove());
   });
 
-  // Initial remove button functionality for the first input
-  document.querySelectorAll('.remove-size').forEach(button => {
-    button.addEventListener('click', (e) => {
-      e.target.closest('.size-input-group').remove();
-    });
+  // initial remove button for first row
+  document.querySelectorAll('.remove-variant').forEach(btn => {
+    btn.addEventListener('click', (e) => e.target.closest('.variant-row').remove());
   });
-
-
-
-////////////////////////////////////////////////////////////////////
-
-
-
-
 
 
 
@@ -380,12 +351,9 @@ const sizesContainer = document.getElementById('sizes-container');
     const description = document.getElementById('description').value.trim();
     // const quantity = document.getElementById('quantity').value.trim();
     const discount = document.getElementById('discount').value.trim();
-    const stock = document.getElementById('stock').value.trim();
-    const color = document.getElementById('color').value.trim();
+    // removed outer stock
     const category = document.getElementById('category').value.trim();
-    // const size = document.getElementById('size').value.trim();
-    //geting the size
-    const sizes = Array.from(document.querySelectorAll('input[name="sizes[]"]')).map(input => input.value);
+    
 
     // Clear previous error messages
     const errshow = document.getElementById('errMsg');
@@ -404,11 +372,6 @@ const sizesContainer = document.getElementById('sizes-container');
         return false; // Validation failed
     }
 
-    // Validate Quantity
-    // if (!Number.isInteger(Number(quantity)) || Number(quantity) <= 0) {
-    //     errshow.innerHTML = "Quantity must be a positive integer.";
-    //     return false; // Validation failed
-    // }
 
     // Validate Discount
     if (isNaN(discount) || parseFloat(discount) < 0 || parseFloat(discount) > 100) {
@@ -416,19 +379,38 @@ const sizesContainer = document.getElementById('sizes-container');
         return false; // Validation failed
     }
 
-    // Validate Stock
-    if (!Number.isInteger(Number(stock)) || Number(stock) < 0) {
-        errshow.innerHTML = "Stock must be a non-negative integer.";
-        return false; // Validation failed
+    // removed outer stock validation
+
+    // Validate variant rows (no duplicate color+size; numeric stock)
+    const variantRows = Array.from(document.querySelectorAll('.variant-row'));
+    const seenCombos = new Set();
+    for (const row of variantRows) {
+      const vColor = row.querySelector('input[name="variantColor"]').value.trim();
+      const vSize = row.querySelector('select[name="variantSize"]').value.trim();
+      const vStockStr = row.querySelector('input[name="variantStock"]').value.trim();
+      if (vColor || vSize || vStockStr) {
+        if (!vColor || !vSize) {
+          errshow.innerHTML = "Each variant needs both color and size.";
+          return false;
+        }
+        const vStock = Number(vStockStr || '0');
+        if (!Number.isInteger(vStock) || vStock < 0) {
+          errshow.innerHTML = "Variant stock must be a non-negative integer.";
+          return false;
+        }
+        const key = `${vColor.toLowerCase()}__${vSize.toLowerCase()}`;
+        if (seenCombos.has(key)) {
+          errshow.innerHTML = "Duplicate variant (color + size) not allowed.";
+          return false;
+        }
+        seenCombos.add(key);
+      }
     }
     if(!category){
       errshow.innerHTML = "Select any category";
         return false; // Validation failed
     }
-    if(new Set(sizes).size!=sizes.length){
-      errshow.innerHTML="Remove same size"
-      return false
-    }
+    // No sizes validation anymore
 
     // Clear error messages and return success if all checks pass
     errshow.innerHTML = "Validation successful";
@@ -493,23 +475,34 @@ document.getElementById('productForm').addEventListener('submit',function(event)
     const description = document.getElementById('description').value.trim();
     // const quantity = document.getElementById('quantity').value.trim();
     const discount = document.getElementById('discount').value.trim();
-    const stock = document.getElementById('stock').value.trim();
-    const color = document.getElementById('color').value.trim();
-    // const size = document.getElementById('size').value.trim();
+    // removed outer stock
     const category = document.getElementById('category').value.trim();
-     //geting the size
-     const sizeInputs = document.querySelectorAll('input[name="sizes[]"]');
-  console.log(sizeInputs);  // This should log a NodeList of input elements
 
-     const sizes = Array.from(document.querySelectorAll('input[name="sizes[]"]')).map(input => input.value);
+     // Collect variants from rows if provided
+     const variantColors = Array.from(document.querySelectorAll('[name="variantColor"]')).map(i => i.value.trim()).filter(v => v !== '');
+     const variantSizes = Array.from(document.querySelectorAll('select[name="variantSize"]')).map(i => i.value.trim()).filter(v => v !== '');
+    const variantStocks = Array.from(document.querySelectorAll('input[name="variantStock"]')).map(i => i.value).filter(v => v !== '');
+     let variants = [];
+     if (variantColors.length || variantSizes.length || variantStocks.length) {
+       const rows = document.querySelectorAll('.variant-row');
+       variants = Array.from(rows).map(r => {
+         const vc = r.querySelector('input[name="variantColor"]').value.trim();
+         const vs = r.querySelector('select[name="variantSize"]').value.trim();
+         const vst = r.querySelector('input[name="variantStock"]').value.trim();
+         return vc && vs ? { color: vc, size: vs, stock: Number(vst || 0) } : null;
+       }).filter(Boolean);
+     }
 
-        axios.post('/admin/addProduct',{ productName,price,description,discount,stock,color,
-          size:sizes,category,
+    // Variants must be provided via rows (no fallback)
+
+        axios.post('/admin/addProduct',{ productName,price,description,discount,
+          category,
+          variants,
           images: imageSrcArray  // Include the image URLs
         })
         .then(data=>{
           setTimeout(()=>{
-            window.location.href = "/admin/productlist"
+            // window.location.href = "/admin/productlist"
               },2000)
         }).catch(data=>{
           console.log(data);
