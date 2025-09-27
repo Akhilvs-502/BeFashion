@@ -33,7 +33,7 @@ routes.post("/orderUpdate",adminAuth,adminOrderUpdate)
 routes.post("/refund",adminAuth,refund)
 
 routes.get("/showCoupon",adminAuth,coupon.showCoupon)
-routes.post("/addCoupon",adminAuth,coupon.addCoupon)
+routes.post("/createCoupon",adminAuth,coupon.createCoupon)
 routes.patch("/changeCouponSts",adminAuth,coupon.changeCouponSts)
 routes.patch("/deleteCoupn",adminAuth,coupon.deleteCoupn)
 

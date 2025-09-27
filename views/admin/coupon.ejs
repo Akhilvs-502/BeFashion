@@ -12,8 +12,11 @@
         <%- include('../partials/adminSlideBar.ejs') %>
     </div>
 
-    <div class=" absolute w-[980px]  mt-16 right-8">
+    <div class=" absolute w-[980px]  mt-16 ml-64">
         <h1 class="text-2xl font-bold text-center mb-6">Coupon Management</h1>
+        <div><button id="addBtn"
+                class="bg-cyan-700 mt-2 mb-2  text-white rounded-lg h-8 w-28">ADD
+                COUPON</button></div>
         <div class="flex justify-center hidden" id="addCoupon">
             <form id="couponForm"
                 class="my-5 p-5 bg-white shadow-md rounded w-6/12 ">
@@ -46,9 +49,15 @@
                         class="border p-2 rounded" required>
                     <span id="discountErr" class="text-red-400"></span>
                     <label for="minimumAmount" class="font-semibold">Minimum
-                        Amount</label>
+                        purchase Amount</label>
                     <input type="number" id="minimumAmount"
-                        placeholder="Enter Minimum Amount"
+                        placeholder="Enter Minimum purchase Amount"
+                        class="border p-2 rounded" required>
+                    <span id="minimumErr" class="text-red-400"></span>
+                    <label for="maxDiscountAmount" class="font-semibold">Max
+                        discount amount</label>
+                    <input type="number" id="maxDiscountAmount"
+                        placeholder="Enter Max discount amount"
                         class="border p-2 rounded" required>
                     <span id="minimumErr" class="text-red-400"></span>
                     <label for="usageCount" class="font-semibold">Usage
@@ -79,7 +88,8 @@
                     <th class="border px-4 py-2">Coupon Code</th>
                     <th class="border px-4 py-2">Coupon Type</th>
                     <th class="border px-4 py-2">Discount Value</th>
-                    <th class="border px-4 py-2">Minimum Amount</th>
+                    <th class="border px-4 py-2">Minimum purchase Amount</th>
+                    <th class="border px-4 py-2"> ⁠Max discount amount</th>
                     <th class="border px-4 py-2">Start Date</th>
                     <th class="border px-4 py-2">End Date</th>
                     <th class="border px-4 py-2">Usage Count</th>
@@ -102,6 +112,9 @@
                     </td>
                     <td class="border px-4 py-2">
                         <%=coupon.minimumAmount %>
+                    </td>
+                    <td class="border px-4 py-2">
+                        <%=coupon.maxDiscountAmount %>
                     </td>
                     <td class="border px-4 py-2">
                         <%=coupon.startDate.toLocaleString() %>
@@ -128,9 +141,7 @@
 
             </tbody>
         </table>
-        <div><button id="addBtn"
-                class="bg-cyan-700 mt-2  text-white rounded-lg h-8 w-28">ADD
-                COUPON</button></div>
+
     </div>
 
 </div>
@@ -168,6 +179,8 @@
         const usageCount = document.getElementById("usageCount").value
         const startDate = document.getElementById("startDate").value
         const endDate = document.getElementById("endDate").value
+        const maxDiscountAmount = document.getElementById("maxDiscountAmount").value
+
         let valid = true
         console.log(couponCode, couponType, discountValue, minimumAmount, startDate, endDate);
         if (Number(discountValue) < 1) {
@@ -181,13 +194,36 @@
             console.log("Errr");
         }
         if (valid) {
-            axios.post("/admin/addCoupon",
-                { couponCode, couponType, discountValue, minimumAmount, startDate, endDate,usageCount }).then(response => {
-                    document.getElementById("addCoupon").classList.add("hidden")
-                    window.location.reload()
-                }).catch(err => {
-                    document.getElementById("couponErr").innerHTML="* Coupon already exists!"
-                })
+            Swal.fire({
+                title: "Do you want to save the changes?",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Save",
+                denyButtonText: `Don't save`
+            }).then(async(result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if(result.isConfirmed) {
+                    console.log("woking");
+                
+                    
+                    
+                    axios.post("/admin/createCoupon",
+                    { couponCode, couponType, discountValue, minimumAmount, startDate, endDate,usageCount, maxDiscountAmount }).then(response => {
+                        document.getElementById("addCoupon").classList.add("hidden")
+                        window.location.reload()
+                    }).catch(err => {
+                        document.getElementById("couponErr").innerHTML="* Coupon already exists!"
+                    })
+                    
+                    
+                    await Swal.fire("Saved!", "", "success");
+                 } else if (result.isDenied) {
+                     Swal.fire("Changes are not saved", "", "info");
+                 }
+             });
+
+
+
         }
     })
 
@@ -214,11 +250,13 @@
             }).then(async(result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if(result.isConfirmed) {
-                    console.log("woking");
-                    
+            
                    await Swal.fire("Saved!", "", "success");
-                axios.patch("/admin/changeCouponSts", { couponId }).then(response => {      
-                window.location.reload()
+                axios.patch("/admin/changeCouponSts", { couponId }).then(response => {  
+                    setTimeout(() => {
+                        console.log(response);
+                        window.location.reload()
+                    }, 1000);    
             })
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
@@ -238,13 +276,15 @@
             }).then(async(result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if(result.isConfirmed) {
-                    console.log("woking");
+            
                     
                    await Swal.fire("Deleted!", "", "success");
                 axios.patch("/admin/deleteCoupn", { couponId }).then(response => {
-                    console.log(response);
+
                     
-                window.location.reload()
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 1000);
             })
                 } else if (result.isDenied) {
                     Swal.fire("Changes are not saved", "", "info");
