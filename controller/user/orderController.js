@@ -92,7 +92,7 @@ export const orderUpdate = async (req, res) => {
         discountedPrice,
         paymentMode: orderType,
         orderStatus: "pending", // initially pending
-        color: product.productId.color,
+        color: product.color,
         size: product.size,
         offerAdded: offerDiscount,
         couponAdded: productCoupon,
@@ -103,9 +103,22 @@ export const orderUpdate = async (req, res) => {
       productArray.push(data);
 
       // Update stock
-      const newStock = product.productId.stock - product.quantity;
+      const variant = product.productId.variants.find(
+        (v) => v.color === product.color && v.size === product.size
+      );
+
+      if (!variant) throw new Error("Variant not found");
+      const newStock = variant.stock - product.quantity;
       await productModel
-        .findOneAndUpdate({ _id: product.productId._id }, { stock: newStock })
+        .findOneAndUpdate(
+          {
+            _id: product.productId._id,
+            variants: {
+              $elemMatch: { color: product.color, size: product.size },
+            },
+          },
+          { $set: { "variants.$.stock": newStock } }
+        )
         .session(session);
 
       // Coupon usage update
@@ -270,11 +283,6 @@ export const orderUpdate = async (req, res) => {
   }
 };
 
-
-
-
-
-
 export const orderSuccess = async (req, res) => {
   try {
     const orderId = req.params.orderId;
@@ -288,12 +296,6 @@ export const orderSuccess = async (req, res) => {
     res.render("user/orderSuccess", { user, orderId, products, order });
   } catch {}
 };
-
-
-
-
-
-
 
 export const showOrders = async (req, res) => {
   try {
@@ -332,12 +334,6 @@ export const showOrders = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
 export const orderCancel = async (req, res) => {
   try {
     const user = req.userData;
@@ -358,8 +354,8 @@ export const orderCancel = async (req, res) => {
     console.log(order.products[0].paymentStatus);
     console.log(order.products[0].paymentStatus);
 
-//shipping fee not included in refund
-    const RefundRupee = order.products[0].totalPay 
+    //shipping fee not included in refund
+    const RefundRupee = order.products[0].totalPay;
     console.log("refund rupee", RefundRupee);
 
     //if paid refund
