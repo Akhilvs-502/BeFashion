@@ -24,11 +24,12 @@ export const checkOutStep1 = async (req, res) => {
             productIds.push(product.productId._id)
 
         })
-        shippingFee = totalPrice < 500 ? 40 : 0
-        shippingFee = totalPrice == 0 ? 0 : shippingFee
+        // shippingFee = totalPrice == 0 ? 0 : shippingFee
         couponDiscount = (cart.couponDiscount).toFixed(2)
-        total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
+        total = ((totalPrice - discountPrice) ).toFixed(2)
+        shippingFee = total < 500 ? 40 : 0
         total = total - couponDiscount
+        total=total+shippingFee
         discountPrice.toFixed(2)
         //address
         const dataBase = await usermodel.findOne({ email: user.email })
@@ -117,11 +118,12 @@ export const cartSummary = async (req, res) => {
             productIds.push(product.productId._id)
 
         })
-        shippingFee = totalPrice < 500 ? 40 : 0
-        shippingFee = totalPrice == 0 ? 0 : shippingFee
+        // shippingFee = totalPrice == 0 ? 0 : shippingFee
         couponDiscount = (cart.couponDiscount).toFixed(2)
-        total = ((totalPrice - discountPrice) + shippingFee).toFixed(2)
+        total = ((totalPrice - discountPrice)).toFixed(2)
         total = total - couponDiscount
+        shippingFee = total < 500 ? 40 : 0
+        total=total+shippingFee
         discountPrice.toFixed(2)
 
              ////OFFER
