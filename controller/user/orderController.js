@@ -137,8 +137,8 @@ export const orderUpdate = async (req, res) => {
     }
 
     // Shipping fee
-    let shippingFee = totalOrderPrice < 500 ? 40 : 0;
     totalOrderPrice = productArray.reduce((sum, p) => sum + p.totalPay, 0);
+    let shippingFee = totalOrderPrice < 500 ? 40 : 0;
     totalOrderPrice += shippingFee;
 
     // Create Order
