@@ -1,112 +1,135 @@
 <%- include('../partials/header') %>
-    <div class="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
-        <h1 class="text-2xl font-extrabold text-gray-800">payment Method</h1>
-        <div class="grid md:grid-cols-3 gap-4 mt-8">
-            <div class="md:col-span-2 space-y-4">
+<div class="font-sans max-w-4xl max-md:max-w-xl mx-auto p-4">
+    <h1 class="text-2xl font-extrabold text-gray-800">payment Method</h1>
+    <div class="grid md:grid-cols-3 gap-4 mt-8">
+        <div class="md:col-span-2 space-y-4">
 
-
-
-
-
-                <!-- //////////////////////STEPPER -->
-                <div class="flex items-start max-w-screen-lg mx-auto">
-                    <div class="w-full">
-                        <div class="flex items-center w-full">
-                            <div
-                                class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
-                                <span class="text-base text-white font-bold">1</span>
-                            </div>
-                            <div class="w-full h-1 mx-4 rounded-lg bg-cyan-500"></div>
+            <!-- //////////////////////STEPPER -->
+            <div class="flex items-start max-w-screen-lg mx-auto">
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div
+                            class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
+                            <span
+                                class="text-base text-white font-bold">1</span>
                         </div>
-                        <div class="mt-2 mr-4">
-                            <h6 class="text-base font-bold text-cyan-800">Delivery Address</h6>
-                            <p class="text-xs text-gray-400">Completed</p>
-
-                        </div>
+                        <div
+                            class="w-full h-1 mx-4 rounded-lg bg-cyan-500"></div>
                     </div>
-                    <div class="w-full">
-                        <div class="flex items-center w-full">
-                            <div
-                                class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
-                                <span class="text-base text-white font-bold">2</span>
-                            </div>
-                            <div class="w-full h-1 mx-4 rounded-lg bg-cyan-500"></div>
-                        </div>
-                        <div class="mt-2 mr-4">
-                            <h6 class="text-base font-bold text-cyan-800">Order Summary</h6>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Delivery
+                            Address</h6>
+                        <p class="text-xs text-gray-400">Completed</p>
 
-                            <p class="text-xs text-gray-400">Completed</p>
-                        </div>
                     </div>
-                    <div class="w-full">
-                        <div class="flex items-center w-full">
-                            <div
-                                class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
-                                <span class="text-base text-white font-bold">2</span>
-                            </div>
-
-                        </div>
-                        <div class="mt-2 mr-4">
-                            <h6 class="text-base font-bold text-cyan-800">Payment Method</h6>
-                            <p class="text-xs text-gray-400">Pending</p>
-                        </div>
-                    </div>
-
                 </div>
-                <!-- /////////////////////////////////////////////// -->
-                <div class=" mx-auto mt-34 p-6 bg-white shadow-lg rounded-lg">
-                    <h2 class=" font- mb-6 font-bold ">Select Payment Method</h2>
-
-                    <form id="form"  class="space-y-4">
-                        <!-- Razorpay Option -->
-                        <div class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
-                            <input id="razorpay" type="radio" name="payment_method" value="razorpay"
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="razorpay" class="ml-3 text-lg font-medium text-gray-700 flex items-center">
-                                <img src="/images/razorpay-logo.svg" alt="Razorpay" class="w-15 h-12 mr-2 ml-3">
-
-                            </label>
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div
+                            class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
+                            <span
+                                class="text-base text-white font-bold">2</span>
                         </div>
+                        <div
+                            class="w-full h-1 mx-4 rounded-lg bg-cyan-500"></div>
+                    </div>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Order
+                            Summary</h6>
 
-                        <!-- Cash on Delivery Option -->
-                        <div class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
-                            <input id="cod" type="radio" name="payment_method" checked value="cod"
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="cod" class="ml-8 text-lg font-medium text-gray-700 flex items-center">
-                                Cash on Delivery
-                            </label>
-                        </div>
-
-                        <!-- Wallet Option -->
-                        <div class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
-                            <input id="wallet" type="radio" name="payment_method" value="wallet"
-                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
-                            <label for="wallet" class="ml-8 text-lg font-medium text-gray-700 flex items-center">
-
-                                Wallet
-                            </label>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="mt-6">
-                            <button type="submit"
-                                class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">Continue</button>
-                        </div>
-                    </form>
+                        <p class="text-xs text-gray-400">Completed</p>
+                    </div>
                 </div>
+                <div class="w-full">
+                    <div class="flex items-center w-full">
+                        <div
+                            class="w-8 h-8 shrink-0 mx-[-1px] bg-cyan-500 p-1.5 flex items-center justify-center rounded-full">
+                            <span
+                                class="text-base text-white font-bold">2</span>
+                        </div>
 
-
+                    </div>
+                    <div class="mt-2 mr-4">
+                        <h6 class="text-base font-bold text-cyan-800">Payment
+                            Method</h6>
+                        <p class="text-xs text-gray-400">Pending</p>
+                    </div>
+                </div>
 
             </div>
-        </div>
-        <div>
-            <input hidden id="addressID" type="text" value="<%=addressID%>">
-        </div>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+            <!-- /////////////////////////////////////////////// -->
+            <div class=" mx-auto mt-34 p-6 bg-white shadow-lg rounded-lg">
+                <h2 class=" font- mb-6 font-bold ">Select Payment Method</h2>
 
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-        <script>
+                <form id="form" class="space-y-4">
+                    <!-- Razorpay Option -->
+                    <div
+                        class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
+                        <input id="razorpay" type="radio" name="payment_method"
+                            value="razorpay"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                        <label for="razorpay"
+                            class="ml-3 text-lg font-medium text-gray-700 flex items-center">
+                            <img src="/images/razorpay-logo.svg" alt="Razorpay"
+                                class="w-15 h-12 mr-2 ml-3">
+
+                        </label>
+                    </div>
+
+                    <!-- Cash on Delivery Option -->
+                    <div
+                        class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
+                        <input id="cod" type="radio" name="payment_method"
+                            checked value="cod"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                        <label for="cod"
+                            class="ml-8 text-lg font-medium text-gray-700 flex items-center">
+                            Cash on Delivery
+                        </label>
+                    </div>
+
+                    <!-- Wallet Option -->
+                    <div
+                        class="flex items-center border p-4 rounded-lg hover:shadow-md transition">
+                        <input id="wallet" type="radio" name="payment_method"
+                            value="wallet"
+                            class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                        <label for="wallet"
+                            class="ml-8 text-lg font-medium text-gray-700 flex items-center">
+
+                            Wallet
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="mt-6 flex">
+                        <button type="submit"
+                            class="w-full flex justify-center bg-blue-600 disabled:bg-blue-200 disabled:cursor-not-allowed  text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition">Continue
+                            <svg
+                                class="loader w-5 h-5 ml-4 text-white hidden animate-spin"
+                                xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12"
+                                    r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor"
+                                    d="M4 12a8 8 0 018-8v8z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+    <div>
+        <input hidden id="addressID" type="text" value="<%=addressID%>">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
 
             document.addEventListener("DOMContentLoaded", () => {
 
@@ -114,6 +137,9 @@
                 const form = document.getElementById("form")
                 form.addEventListener("submit", (event) => {
                     event.preventDefault()
+                    form.querySelector("button[type='submit']").disabled = true;
+                    form.querySelector("button[type='submit']").querySelector(".loader").classList.remove("hidden");
+
                     const input = form.querySelector("input[name='payment_method']:checked")
                     //    console.log(input.value);
                     const orderType = input.value
@@ -130,7 +156,10 @@
                         const userName = response.data.user.name
                         const userEmail = response.data.user.email
                         const RAZORPAY_KEY_ID = response.data.RAZORPAY_KEY_ID
-                        console.log(totalOrderPrice);
+
+                    form.querySelector("button[type='submit']").disabled = false;
+                    form.querySelector("button[type='submit']").querySelector(".loader").classList.add("hidden");
+
 
                         if (response.data.orderType == "razorpay") {
                             console.log("thisi is woked");
@@ -209,7 +238,11 @@
                         }
 
                     }).catch(async err => {
-                        console.log(err);
+                 
+                    form.querySelector("button[type='submit']").disabled = false;
+                    form.querySelector("button[type='submit']").querySelector(".loader").classList.add("hidden");
+
+
                         if (err.response.data.status == "noBalance") {
                             await Swal.fire({
                                 icon: "error",
