@@ -21,7 +21,8 @@
             data-order-status="<%= userOrders.products[0].orderStatus %>"
             class="w-[655px] shadow-[0_-3px_12px_-3px_rgba(6,81,237,0.3)] mx-auto ml-14 p-2 mt-12">
                 <div><span class="font-bold">Order Id:</span>
-                    <%=userOrders._id %>
+                
+                    <%= userOrders._id.toString().slice(-8) %>
                 </div>
                 <div class=" bg-white"><span class="font-bold">Order Date: </span>
                     <%=userOrders.createdAt.toLocaleString() %>
@@ -151,7 +152,7 @@
                                 <a href="#" class="hover:underline">Home</a> >
                                 <a href="#" class="hover:underline">My Account</a> >
                                 <a href="#" class="hover:underline">My Orders</a> >
-                                <span>Order #<%=userOrders._id%></span>
+                                <span>Order #<%= userOrders._id.toString().slice(-8) %></span>
                             </nav>
                             <div id="closeModal" class="font-bold cursor-pointer">Close</div>
                         </div>
@@ -172,9 +173,9 @@
                                                         <span>Phone: 9876543210</span>
                                     </p>
 
-                                    <span>Order Id:<%=userOrders._id%>
+                                    <span>Order Id:<%= userOrders._id.toString().slice(-8) %>
                                     </span>
-                                    <spand hidden id="orderId">
+                                    <span hidden id="orderId">
                                         <%=userOrders._id%></span>
                                 </div>
 
