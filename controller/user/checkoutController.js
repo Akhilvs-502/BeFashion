@@ -2,6 +2,7 @@ import usermodel from "../../models/userModel.js"
 import cartModel from "../../models/cartSchema.js"
 import offerModel from "../../models/offerSchema.js"
 import productModel from "../../models/productSchema.js"
+import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js"
 
 export const checkOutStep1 = async (req, res) => {
     try {
@@ -18,7 +19,7 @@ export const checkOutStep1 = async (req, res) => {
         const products = cart.products.forEach(product => {
             totalPrice += product.productId.price * product.quantity
         })
-        let productIds=[]
+        let productIds = []
         cart.products.forEach(product => {
             discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
             productIds.push(product.productId._id)
@@ -26,42 +27,42 @@ export const checkOutStep1 = async (req, res) => {
         })
         // shippingFee = totalPrice == 0 ? 0 : shippingFee
         couponDiscount = (cart.couponDiscount).toFixed(2)
-        total = ((totalPrice - discountPrice) ).toFixed(2)
+        total = ((totalPrice - discountPrice)).toFixed(2)
         shippingFee = total < 500 ? 40 : 0
         total = total - couponDiscount
-        total=total+shippingFee
+        total = total + shippingFee
         discountPrice.toFixed(2)
         //address
         const dataBase = await usermodel.findOne({ email: user.email })
         // console.log(dataBase);
-         ////OFFER
-         let offerDiscount=0
-         for(const productId of productIds){
-            const offerData= await offerModel.find({'offerFor.offerGive':productId})
-           if(offerData.length>0){
-           for(const offer of offerData){
-                  if( offer.offerType=="price"){
-                   offerDiscount+=offer.discountValue
-                  }
-                  else{
-       let productPrice  =await productModel.find({_id:productId})
-       let discountPrice =(productPrice[0].price) * ((productPrice[0].discount) / 100)
-           discountPrice=productPrice[0].price-discountPrice
-           offerDiscount+=discountPrice*((offer.discountValue)/100)
-       }
-   }
-}
-}
+        ////OFFER
+        let offerDiscount = 0
+        for (const productId of productIds) {
+            const offerData = await offerModel.find({ 'offerFor.offerGive': productId })
+            if (offerData.length > 0) {
+                for (const offer of offerData) {
+                    if (offer.offerType == "price") {
+                        offerDiscount += offer.discountValue
+                    }
+                    else {
+                        let productPrice = await productModel.find({ _id: productId })
+                        let discountPrice = (productPrice[0].price) * ((productPrice[0].discount) / 100)
+                        discountPrice = productPrice[0].price - discountPrice
+                        offerDiscount += discountPrice * ((offer.discountValue) / 100)
+                    }
+                }
+            }
+        }
 
 
-offerDiscount=Math.round(offerDiscount)
-total=total-offerDiscount
+        offerDiscount = Math.round(offerDiscount)
+        total = total - offerDiscount
 
-        res.render("user/checkoutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase,offerDiscount })
+        res.render("user/checkoutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase, offerDiscount })
     }
-    catch(err) {
-        console.log(err);
-        
+    catch (err) {
+       
+
 
     }
 }
@@ -69,13 +70,13 @@ total=total-offerDiscount
 
 
 export const postCheckOutStep1 = async (req, res) => {
- try {
+    try {
         const jwtUser = req.userData
         const { addressID } = req.body
         let data = await usermodel.findOne({ email: jwtUser.email, 'address._id': addressID }, { 'address.$': 1 })
-        res.json({ addressID })
-} catch(err) {
-
+        res.status(HttpStatusCode.OK).json({ addressID })
+    } catch (err) {
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in selecting address" })
     }
 
 }
@@ -89,7 +90,7 @@ export const selectPayment = (req, res) => {
         const user = req.userData
         res.render("user/selectPayment", { user, addressID })
     }
-    catch(err) {
+    catch (err) {
         res.render("user/home", { user: false })
     }
 }
@@ -112,7 +113,7 @@ export const cartSummary = async (req, res) => {
         const products = cart.products.forEach(product => {
             totalPrice += product.productId.price * product.quantity
         })
-        let productIds=[]
+        let productIds = []
         cart.products.forEach(product => {
             discountPrice += (product.productId.price * product.quantity) * ((product.productId.discount) / 100)
             productIds.push(product.productId._id)
@@ -123,36 +124,36 @@ export const cartSummary = async (req, res) => {
         total = ((totalPrice - discountPrice)).toFixed(2)
         total = total - couponDiscount
         shippingFee = total < 500 ? 40 : 0
-        total=total+shippingFee
+        total = total + shippingFee
         discountPrice.toFixed(2)
 
-             ////OFFER
-             let offerDiscount=0
-             for(const productId of productIds){
-                const offerData= await offerModel.find({'offerFor.offerGive':productId})
-               if(offerData.length>0){
-               for(const offer of offerData){
-                      if( offer.offerType=="price"){
-                       offerDiscount+=offer.discountValue
-                      }
-                      else{
-           let productPrice  =await productModel.find({_id:productId})
-           let discountPrice =(productPrice[0].price) * ((productPrice[0].discount) / 100)
-               discountPrice=productPrice[0].price-discountPrice
-               offerDiscount+=discountPrice*((offer.discountValue)/100)
-           }
-       }
-    }
-    }
-offerDiscount=Math.round(offerDiscount)
+        ////OFFER
+        let offerDiscount = 0
+        for (const productId of productIds) {
+            const offerData = await offerModel.find({ 'offerFor.offerGive': productId })
+            if (offerData.length > 0) {
+                for (const offer of offerData) {
+                    if (offer.offerType == "price") {
+                        offerDiscount += offer.discountValue
+                    }
+                    else {
+                        let productPrice = await productModel.find({ _id: productId })
+                        let discountPrice = (productPrice[0].price) * ((productPrice[0].discount) / 100)
+                        discountPrice = productPrice[0].price - discountPrice
+                        offerDiscount += discountPrice * ((offer.discountValue) / 100)
+                    }
+                }
+            }
+        }
+        offerDiscount = Math.round(offerDiscount)
 
-total=total-offerDiscount
-    
-        res.render("user/orderSummary", { user, total, couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID ,offerDiscount})
+        total = total - offerDiscount
+
+        res.render("user/orderSummary", { user, total, couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID, offerDiscount })
     }
-    catch(err) {
-        console.log(err);
-        
+    catch (err) {
+      
+
         res.render("user/500")
 
     }

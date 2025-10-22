@@ -1,10 +1,17 @@
 import usermodel from "../../models/userModel.js"
+import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js"
 
 
 export const profile = async (req, res) => {
-    const user = req.userData
-    const dataBase = await usermodel.findOne({ email: user.email })
-    res.render('user/profile', { user: dataBase, dataBase })
+    try {
+
+        const user = req.userData
+        const dataBase = await usermodel.findOne({ email: user.email })
+        res.render('user/profile', { user: dataBase, dataBase })
+    } catch (err) {
+        console.log(err);
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in loading profile" })
+    }
 }
 
 
@@ -52,9 +59,9 @@ export const patchEditProfile = async (req, res) => {
             console.log(gender);
             const user = await usermodel.updateOne({ email: email }, { gender })
         }
-        res.json({ message: 'successfully updated profile' })
+        res.status(HttpStatusCode.OK).json({ message: 'successfully updated profile' })
     }
     catch {
-        res.status.json({ message: "error in update profile" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in update profile" })
     }
 }

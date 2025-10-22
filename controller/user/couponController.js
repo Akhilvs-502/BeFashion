@@ -54,14 +54,14 @@ export const applyCoupon = async (req, res) => {
                     res.json({ message: "coupon applyed" })
                 }
                 else {
-                    res.status(409).json({ message: "mininum cart value Error ", status: "noMinium", minimumAmount: coupon.minimumAmount })
+                    res.status(HttpStatusCode.CONFLICT).json({ message: "mininum cart value Error ", status: "noMinium", minimumAmount: coupon.minimumAmount })
                 }
             }
             else {
-                res.status(409).json({ message: "coupon expired", status: "expireCoupn" })
+                res.status(HttpStatusCode.CONFLICT).json({ message: "coupon expired", status: "expireCoupn" })
             }
         } else {
-            res.status(409).json({ message: "no coupn found", status: "noCoupn" })
+            res.status(HttpStatusCode.CONFLICT).json({ message: "no coupn found", status: "noCoupn" })
         }
 
 
@@ -74,26 +74,38 @@ export const applyCoupon = async (req, res) => {
 
 
 export const removeCoupon = async (req, res) => {
+
     try {
         const userEmail = req.userData.email
         const user = await usermodel.findOne({ email: userEmail })
         const cartUpdate = await cartModel.findOneAndUpdate({ userId: user._id }, { couponDiscount: 0, couponCode: "" })
-        res.json({ message: "coupon removed" })
+        res.status(HttpStatusCode.OK).json({ message: "coupon removed" })
 
 
     } catch (err) {
         console.log(err);
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in removing coupon" })
 
     }
 }
 
 
+
 export const showCoupons = async (req, res) => {
+    
+    try {
 
-    const userEmail = req.userData.email
-    const user = await usermodel.findOne({ email: userEmail })
-    const coupon = await couponModel.find({ block: false })
+        const userEmail = req.userData.email
+        const user = await usermodel.findOne({ email: userEmail })
+        const coupon = await couponModel.find({ block: false })
+        
+        res.render("user/coupons", { user, coupon })
 
-    res.render("user/coupons", { user, coupon })
+    }catch (err) {
+        
+        console.log(err);
+        res.render("user/500")
+}
+
 }
 

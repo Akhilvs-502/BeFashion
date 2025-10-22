@@ -4,6 +4,7 @@ import cartModel from "../../models/cartSchema.js"
 import usermodel from "../../models/userModel.js"
 import { createHmac } from 'crypto';  // for verifiction in razorpay 
 import mongoose from "mongoose";
+import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
 
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
@@ -44,7 +45,7 @@ export const paymentVerification = async (req, res) => {
         await session.abortTransaction();
         session.endSession();
         console.log(err);
-        res.status(500).json({ message: "Error in payment verification" });
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "Error in payment verification" });
     }
 };
 
@@ -55,6 +56,7 @@ export const paymentFailed = async (req, res) => {
     try {
         const { orderId } = req.body
         const updateorder = await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { "products.$[].paymentStatus": "pending" } }, { new: true })
+
         await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { "products.$[].orderStatus": "pending" } }, { new: true })
 
         console.log(orderId);
@@ -63,6 +65,9 @@ export const paymentFailed = async (req, res) => {
 
     }
 }
+
+
+
 
 export const repayment = async (req, res) => {
     try {
@@ -113,7 +118,7 @@ export const repayment = async (req, res) => {
 
     } catch (err) {
         console.log(err);
-
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "Error in payment processing" });
     }
 
 }

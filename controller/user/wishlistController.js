@@ -1,6 +1,7 @@
 
 import usermodel from "../../models/userModel.js";
 import wishlistModel from "../../models/whishlistModel.js";
+import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
 
 export const addToWishlist = async (req, res) => {
     try {
@@ -10,7 +11,6 @@ export const addToWishlist = async (req, res) => {
         const { productID } = req.body
         const user = await usermodel.findOne({ email: userEmail })
         const wishlist = await wishlistModel.findOne({ userId: user._id })
-
 
 
         if (wishlist) {
@@ -33,7 +33,7 @@ export const addToWishlist = async (req, res) => {
 
             create.save()
         }
-        return res.json({ message: "product added to wishlist" })
+        return res.status(HttpStatusCode.OK).json({ message: "product added to wishlist" })
     }
     catch (err) {
         console.log(err);
@@ -45,15 +45,24 @@ export const addToWishlist = async (req, res) => {
 }
 
 
-export const showWishlist = async (req, res) => {
-    const userEmail = req.userData.email
-    const user = await usermodel.findOne({ email: userEmail })
-    console.log(user);
 
-    let products = await wishlistModel.findOne({ userId: user._id }).populate("products.productId")
-    products = products ? products.products : products = []
-    res.render("user/wishlist", { products, user })
+
+export const showWishlist = async (req, res) => {
+    try {
+
+        const userEmail = req.userData.email
+        const user = await usermodel.findOne({ email: userEmail })
+        console.log(user);
+
+        let products = await wishlistModel.findOne({ userId: user._id }).populate("products.productId")
+        products = products ? products.products : products = []
+        res.render("user/wishlist", { products, user })
+    } catch (err) {
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: " error in showing wishlist" })
+    }
 }
+
+
 
 
 export const removeFromWishlist = async (req, res) => {
@@ -64,10 +73,10 @@ export const removeFromWishlist = async (req, res) => {
         console.log(productID);
 
         await wishlistModel.findOneAndUpdate({ userId: user._id }, { $pull: { products: { productId: productID } } })
-        res.json({ message: "product removed form the whishlist" })
+        res.status(HttpStatusCode.OK).json({ message: "product removed form the whishlist" })
 
     } catch (err) {
-        console.log(err);
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: " error in product removed form the whishlist" })
 
     }
 

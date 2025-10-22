@@ -60,11 +60,13 @@ export const home = async (req, res) => {
     }
     catch (err) {
         console.log(err);
-
         res.render("user/500")
 
     }
 }
+
+
+
 
 export const login = (req, res) => {
     try {
@@ -93,8 +95,6 @@ export const login = (req, res) => {
             })
         } else {
             res.render('user/login')
-
-
         }
     }
     catch {
@@ -134,14 +134,14 @@ export const postLogin = async (req, res) => {
                     token: token
                 })
             } else {
-                res.status(401).json({
+                res.status(HttpStatusCode.UNAUTHORIZED).json({
                     message: "*Invalid password"
                 })
             }
         }
 
         else {
-            res.status(401).json({
+            res.status(HttpStatusCode.UNAUTHORIZED).json({
                 message: "*Invalid user.please enter the correct email and password"
             })
         }
@@ -213,7 +213,7 @@ export const postSignup = async (req, res) => {
 
 
         } else {
-            res.status(409).json({
+            res.status(HttpStatusCode.CONFLICT).json({
                 Message: 'User alredy exists*'
             })
         }
@@ -226,9 +226,14 @@ export const postSignup = async (req, res) => {
 
 
 export const mailforotp = (req, res) => {
-    const email = req.params.email
-    req.session.userEmail = email
-    res.render('user/mailforotp', { email })
+    try{
+
+        const email = req.params.email
+        req.session.userEmail = email
+        res.render('user/mailforotp', { email })
+    }catch(err){
+        res.render("user/500")
+    }
 
 }
 
@@ -238,11 +243,16 @@ export const mailforotp = (req, res) => {
 
 export const getotp = async (req, res) => {
 
-    const email = req.session.userEmail
+    try{
 
-    console.log("getotpemail" + email);
-    res.render('user/otp', { email })
-}
+        const email = req.session.userEmail
+        
+        console.log("getotpemail" + email);
+        res.render('user/otp', { email })
+
+    }catch(err){
+        res.render("user/500")
+    }
 
 
 
@@ -315,6 +325,7 @@ export const postMailforotp = async (req, res) => {
     }
     catch(error) {
         console.log("post main for otp",error)
+        res.render("user/500")
     }
 }
 
@@ -449,14 +460,23 @@ export const postForgotpassword = async (req, res) => {
     }
 }
 
+
+
+
 export const resetPassword = (req, res) => {
     const email = req.session.userEmail
     res.render('user/resetPassword', { email })
 }
 
+
+
+
 export const changePassword = (req, res) => {
     res.render('user/changePassword')
 }
+
+
+
 
 export const passwordUpdate = async (req, res) => {
     try {
@@ -586,12 +606,6 @@ export const allProducts = async (req, res) => {
 
         // console.log(products);
         
-
-
-
-
-
-
 
         ///JWT token checking
         const token = req.cookies.token
@@ -730,13 +744,6 @@ export const productView = async (req, res) => {
 
 
 
-
-
-
-
-
-
-
 export const wallet = async (req, res) => {
     try {
 
@@ -753,7 +760,6 @@ export const wallet = async (req, res) => {
             return res.render("user/wallet", { user, wallet: walletSave })
 
         }
-
 
         res.render("user/wallet", { user, wallet })
     }
