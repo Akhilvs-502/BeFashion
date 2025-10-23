@@ -1,4 +1,5 @@
 import couponModel from "../../models/couponSchema.js"
+import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js"
 
 
 
@@ -11,11 +12,12 @@ export const showCoupon = async (req, res) => {
         res.render("admin/coupon", { coupons })
     }
     catch (err) {
-        res.status(500).json({ message: "internal server error" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
     }
 
 
 }
+
 
 
 export const createCoupon = async (req, res) => {
@@ -36,19 +38,20 @@ export const createCoupon = async (req, res) => {
                 , startDate, endDate, usageCount
             })
             await coupon.save()
-            res.status(201).json({ messagae: "coupon added" })
+            res.status(HttpStatusCode.CREATED).json({ message: "coupon added" })
 
         } else {
-            res.status(409).json({ message: "coupon code already added", status: "alreadyAdded" })
+            res.status(HttpStatusCode.CONFLICT).json({ message: "coupon code already added", status: "alreadyAdded" })
         }
 
     } catch (err) {
         console.log(err);
         
-        res.status(500).json({ message: "internal server error" })
+        res.status(HttpStatusCode.BAD_REQUEST).json({ message: "internal server error" })
 
     }
 }
+
 
 
 export const changeCouponSts = async (req, res) => {
@@ -63,25 +66,28 @@ export const changeCouponSts = async (req, res) => {
             await couponModel.findOneAndUpdate({ _id: couponId }, { block: true })
         }
 
-        res.json({ messagae: "coupon Status changed" })
+        res.status(HttpStatusCode.OK).json({ message: "coupon Status changed" })
     }
 
     catch (err) {
-        console.log(err);
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
 
     }
 }
 
 
+
 export const deleteCoupn = async (req, res) => {
     try {
         const { couponId } = req.body
+
         const coupon = await couponModel.findOneAndDelete({ _id: couponId })
-        res.json({ messagae: "coupon deleted" })
+
+        res.status(HttpStatusCode.OK).json({ message: "coupon deleted" })
     }
     catch (err) {
 
-        res.status(500).json({ message: "internal server error" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
 
     }
 }

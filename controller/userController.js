@@ -255,6 +255,8 @@ export const getotp = async (req, res) => {
     }
 
 
+}
+
 
 
 
@@ -392,6 +394,8 @@ export const postOtp = async (req, res) => {
 export const forgotpassword = (req, res) => {
     res.render("user/forgotpassword",)
 }
+
+
 
 export const postForgotpassword = async (req, res) => {
     try {
