@@ -4,6 +4,7 @@ import couponModel from "../../models/couponSchema.js";
 import productModel from "../../models/productSchema.js";
 import e from "express";
 import offerModel from "../../models/offerSchema.js";
+import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
 
 export const addToCart = async (req, res) => {
   try {
@@ -18,13 +19,10 @@ export const addToCart = async (req, res) => {
     if (!userCart) {
       console.log("thre is no user cart");
 
-      const model = new cartModel({
-        userId: userData._id,
-        products: [
-          { productId, quantity: 1, size: selectSize, color: selectColor },
-        ],
-      });
+      const model = new cartModel({ userId: userData._id, products: [{ productId, quantity: 1, size: selectSize, color: selectColor },], });
+
       await model.save();
+
       console.log("Cart created");
 
       return res.status(201).json({ message: "new cart created" });
@@ -40,42 +38,31 @@ export const addToCart = async (req, res) => {
 
       if (productIndex == -1) {
         console.log("product creating");
-        const product = await cartModel.findOneAndUpdate(
-          { userId: userData._id },
+        const product = await cartModel.findOneAndUpdate({ userId: userData._id },
           {
             $addToSet: {
-              products: {
-                productId,
-                quantity: 1,
-                size: selectSize,
-                color: selectColor,
-              },
+              products: { productId, quantity: 1, size: selectSize, color: selectColor, },
             },
           },
           { new: true }
         );
-        return res
-          .status(201)
-          .json({ message: "new product added to the cart" });
+        return res.status(HttpStatusCode.CREATED).json({ message: "new product added to the cart" });
       } else {
-        return res.status(409).json({ message: "already added" });
+        return res.status(HttpStatusCode.CONFLICT).json({ message: "already added" });
       }
     }
   } catch (err) {
     console.log(err);
 
-    return res
-      .status(409)
-      .json({ message: "Something went wrong please try again " });
+    return res.status(HttpStatusCode.CONFLICT).json({ message: "Something went wrong please try again " });
+
   }
 };
 export const showCart = async (req, res) => {
   try {
     const user = req.userData;
     const userData = await usermodel.findOne({ email: user.email });
-    const cart = await cartModel
-      .findOne({ userId: userData._id })
-      .populate({ path: "products.productId", model: "product" });
+    const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: "products.productId", model: "product" });
     let totalPrice = 0;
     let shippingFee = 0;
     let discountPrice = 0;
@@ -83,21 +70,13 @@ export const showCart = async (req, res) => {
     let total = 0;
     if (cart) {
       console.log("cart ");
-      if (cart.products.length == 0) {
-        await cartModel.findOneAndUpdate(
-          { userId: userData._id },
-          { couponDiscount: 0 }
-        );
-      }
-      const products = cart.products.forEach((product) => {
-        totalPrice += product.productId.price * product.quantity;
-      });
+      if (cart.products.length == 0) { await cartModel.findOneAndUpdate({ userId: userData._id }, { couponDiscount: 0 }); }
+
+      const products = cart.products.forEach((product) => { totalPrice += product.productId.price * product.quantity; });
+
       let productIds = [];
       cart.products.forEach((product) => {
-        discountPrice +=
-          product.productId.price *
-          product.quantity *
-          (product.productId.discount / 100);
+        discountPrice += product.productId.price * product.quantity * (product.productId.discount / 100);
         productIds.push(product.productId._id);
       });
 
@@ -196,14 +175,14 @@ export const updateQuantity = async (req, res) => {
             (product.productId.discount / 100);
           productIds.push(product.productId._id);
         });
-     
+
         // shippingFee = totalPrice == 0 ? 0 : shippingFee;
         couponDiscount = cart.couponDiscount.toFixed(2);
         total = (totalPrice - discountPrice).toFixed(2);
         total = total - couponDiscount;
 
         shippingFee = total < 500 ? 40 : 0;
-        total = total+shippingFee;
+        total = total + shippingFee;
         discountPrice.toFixed(2);
         const coupon = await couponModel.find({ block: false });
 
@@ -238,12 +217,12 @@ export const updateQuantity = async (req, res) => {
       const productDetails = await productModel.findOne({ _id: productId });
       if (Number(value + 1) >= 5) {
         return res
-          .status(409)
+          .status(HttpStatusCode.CONFLICT)
           .json({ message: "Only 4 quantites allowed to buy" });
       } else if (productDetails.stock <= value) {
         console.log("err");
         res
-          .status(409)
+          .status(HttpStatusCode.CONFLICT)
           .json({
             message:
               "The product is currently out of stock! You can't add any more to the quantity",
@@ -307,23 +286,14 @@ export const updateQuantity = async (req, res) => {
         },
         { $set: { "products.$.size": value } }
       );
-      res.json({
-        message: "size changed",
-      });
+      res.json({ message: "size changed" });
     } else if (action === "delete") {
-      await cartModel.findOneAndUpdate(
-        {
-          userId: userData._id,
-        },
-        { $pull: { products: { productId: productId } } }
-      );
-      res.json({
-        message: "product deleted",
-      });
+      await cartModel.findOneAndUpdate({ userId: userData._id, }, { $pull: { products: { productId: productId } } });
+      res.status(HttpStatusCode.OK).json({ message: "product deleted" });
     }
   } catch (err) {
     console.log(err);
 
-    res.status(500).json({ message: "server error" });
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "server error" });
   }
 };

@@ -13,6 +13,7 @@ export const showOffers = async (req, res) => {
         console.log(offers);
 
         res.render("admin/offer", { products, categories, offers })
+        
     } catch (err) {
         console.log(err);
         res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
@@ -45,8 +46,9 @@ export const addProductOffer = async (req, res) => {
         })
         await offer.save()
 
-        console.log("Wr");
+    
         res.status(HttpStatusCode.OK).json({ message: "coupon added" })
+
         // }else{
         // res.status(409).json({messagae:"coupon code already added",status:"alredyAddded"})
         // }
@@ -71,12 +73,13 @@ export const addCategoryOffer = async (req, res) => {
         const products = await productModel.find({ category: category })
 
         const offerFor = products.map(product => {
-            // console.log(product._id);
+    
+
 
             return { offerGive: product._id }
         })
 
-        console.log(offerFor);
+   
 
         const offer = await new offerModel({
             title: offerTitle, offerType,
@@ -86,10 +89,7 @@ export const addCategoryOffer = async (req, res) => {
             offerFor
         })
         await offer.save()
-        // const {category,discount}=req.body
-        // console.log(category,discount);
-        // const update =await productModel.updateMany({category:category},{discount:discount},{new:true})
-        // console.log(update);
+  
         res.status(HttpStatusCode.OK).json({ message: "discount updated" })
 
 
@@ -106,9 +106,11 @@ export const deleteOffer = async (req, res) => {
     try{
 
         const { offerId } = req.body
+        
         const deleteOffer = await offerModel.findOneAndDelete({ _id: offerId })
 
         res.status(HttpStatusCode.OK).json({ message: "offer Deleted" })
+
     }catch(err){
         res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
     }
@@ -121,6 +123,7 @@ export const editOffer = async (req, res) => {
     try{
 
         const { offerTitle, offerType, discount, offerId } = req.body
+
         console.log(offerId);
         
         const offer = await offerModel.findOneAndUpdate({ _id: offerId }, { title: offerTitle, offerType, discountValue: discount })

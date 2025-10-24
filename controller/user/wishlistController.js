@@ -4,8 +4,8 @@ import wishlistModel from "../../models/whishlistModel.js";
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
 
 export const addToWishlist = async (req, res) => {
-    try {
 
+    try {
 
         const userEmail = req.userData.email
         const { productID } = req.body

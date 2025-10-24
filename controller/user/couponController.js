@@ -67,6 +67,8 @@ export const applyCoupon = async (req, res) => {
 
     } catch (err) {
         console.log(err);
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in applying coupon" })
+
 
     }
 
