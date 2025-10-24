@@ -1,154 +1,172 @@
 <%- include('../partials/adminHeader.ejs') %>
 <!-- Add Cropper.js CDN -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
 <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script> -->
 
 <section class="flex">
 
-<%- include('../partials/adminSlideBar.ejs') %>
+  <%- include('../partials/adminSlideBar.ejs') %>
 
-<div class=" my-auto mx-auto w-6/12">
-    
-<form  id="productForm" enctype="multipart/form-data">
-    <div class="flex gap-x-6 mb-6">
-    <div class="w-full relative">
-      <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Product Name <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
-        </svg>
-      </label>
-      <input type="text" id="productname" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
-    </div>
-    <div class="w-full relative">
-      <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Price in Rupee <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
-        </svg>
-      </label>
-      <input type="text" id="price" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
-    </div>
-    </div>
- 
-  
-   <div class="flex gap-x-6 mb-6">
-    <div class="w-full relative">
-      <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Description <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
-        </svg>
-      </label>
-      <input type="text" id="description" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
-    </div>
-  <div class="w-full relative">
-    <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">
-      Category <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444"/>
-      </svg>
-    </label>
-    <select id="category" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full focus:outline-none">
-      <option value="" disabled selected>Select a category</option>
-    
-      <%categories.forEach(category=>{ %>
-        <option value="<%=category.categoryName %>"> <%=category.categoryName %></option>
-      <%}) %>
-      
-    </select>
-  </div>
-  
+  <div class=" my-auto mx-auto w-6/12">
 
-  
-</div>
-
-
-
-
-    <div class="flex gap-x-6 mb-6">
-    <div class="w-full relative">
-      <label class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Discount in percentage <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
-        </svg>
-      </label>
-      <input type="number"  max="70" id="discount" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none " placeholder="" required="">
-    </div>
-    
-    </div>
-  
-  <!-- Variants Section (Color + Size + Stock per variant) -->
-  <div class="w-full relative mb-6">
-    <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">
-      Variants
-      <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z" fill="#EF4444" />
-      </svg>
-    </label>
-    <div id="variants-container">
-      <div class="variant-row flex gap-x-2 mb-2">
-        <input type="text" name="variantColor" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Color">
-        <select name="variantSize" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full focus:outline-none">
-          <option value="" disabled selected>Select size</option>
-          <option value="XS">XS</option>
-          <option value="S">S</option>
-          <option value="M">M</option>
-          <option value="L">L</option>
-          <option value="XL">XL</option>
-          <option value="XXL">XXL</option>
-        </select>
-        <input type="number" name="variantStock" min="0" class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none" placeholder="Stock">
-        <button type="button" class="remove-variant text-red-500 ml-2">Remove</button>
+    <form id="productForm" enctype="multipart/form-data">
+      <div class="flex gap-x-6 mb-6">
+        <div class="w-full relative">
+          <label
+            class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Product
+            Name <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                fill="#EF4444" />
+            </svg>
+          </label>
+          <input type="text" id="productname"
+            class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none "
+            placeholder required>
+        </div>
+        <div class="w-full relative">
+          <label
+            class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Price
+            in Rupee <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                fill="#EF4444" />
+            </svg>
+          </label>
+          <input type="text" id="price"
+            class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none "
+            placeholder required>
+        </div>
       </div>
-    </div>
-    <button type="button" id="add-variant" class="mt-2 px-3 py-1 text-white bg-indigo-500 rounded-full">Add Variant</button>
-  </div>
-  <p  id="errMsg" class="text-red-500"></p>
 
+      <div class="flex gap-x-6 mb-6">
+        <div class="w-full relative">
+          <label
+            class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Description
+            <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                fill="#EF4444" />
+            </svg>
+          </label>
+          <input type="text" id="description"
+            class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none "
+            placeholder required>
+        </div>
+        <div class="w-full relative">
+          <label
+            class="flex items-center mb-2 text-gray-600 text-sm font-medium">
+            Category <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7"
+              fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                fill="#EF4444" />
+            </svg>
+          </label>
+          <select id="category"
+            class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full focus:outline-none">
+            <option value disabled selected>Select a category</option>
 
+            <%categories.forEach(category=>{ %>
+            <option value="<%=category.categoryName %>">
+              <%=category.categoryName %></option>
+            <%}) %>
 
+          </select>
+        </div>
 
+      </div>
 
+      <div class="flex gap-x-6 mb-6">
+        <div class="w-full relative">
+          <label
+            class="flex  items-center mb-2 text-gray-600 text-sm font-medium">Discount
+            in percentage <svg width="7" height="7" class="ml-1"
+              viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+                fill="#EF4444" />
+            </svg>
+          </label>
+          <input type="number" max="70" id="discount"
+            class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none "
+            placeholder required>
+        </div>
 
+      </div>
 
+      <!-- Variants Section (Color + Size + Stock per variant) -->
+      <div class="w-full relative mb-6">
+        <label class="flex items-center mb-2 text-gray-600 text-sm font-medium">
+          Variants
+          <svg width="7" height="7" class="ml-1" viewBox="0 0 7 7" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M3.11222 6.04545L3.20668 3.94744L1.43679 5.08594L0.894886 4.14134L2.77415 3.18182L0.894886 2.2223L1.43679 1.2777L3.20668 2.41619L3.11222 0.318182H4.19105L4.09659 2.41619L5.86648 1.2777L6.40838 2.2223L4.52912 3.18182L6.40838 4.14134L5.86648 5.08594L4.09659 3.94744L4.19105 6.04545H3.11222Z"
+              fill="#EF4444" />
+          </svg>
+        </label>
+        <div id="variants-container">
+          <div class="variant-row flex gap-x-2 mb-2">
+            <input type="text" name="variantColor"
+              class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+              placeholder="Color">
+            <select name="variantSize"
+              class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full focus:outline-none">
+              <option value disabled selected>Select size</option>
+              <option value="XS">XS</option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
+            </select>
+            <input type="number" name="variantStock" min="0"
+              class="block w-full h-11 px-5 py-2.5 bg-white leading-7 text-base font-normal shadow-xs text-gray-900 bg-transparent border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none"
+              placeholder="Stock">
+            <button type="button"
+              class="remove-variant text-red-500 ml-2">Remove</button>
+          </div>
+        </div>
+        <button type="button" id="add-variant"
+          class="mt-2 px-3 py-1 text-white bg-indigo-500 rounded-full">Add
+          Variant</button>
+      </div>
+      <p id="errMsg" class="text-red-500"></p>
 
+      <label for="imageUpload"
+        class="text-base text-gray-500 font-semibold mb-2 block">Upload
+        file</label>
+      <input type="file" id="imageUpload" accept="image/*"
+        class="w-full text-gray-400 font-semibold text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-3 file:px-4 file:mr-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-gray-500 rounded" />
+      <p class="text-xs text-gray-400 mt-2">PNG, JPG SVG, WEBP, and GIF are
+        Allowed.</p>
 
-  
-    <label for="imageUpload" class="text-base text-gray-500 font-semibold mb-2 block">Upload file</label>
-    <input type="file"  id="imageUpload" accept="image/*"
-      class="w-full text-gray-400 font-semibold text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-3 file:px-4 file:mr-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-gray-500 rounded" />
-    <p class="text-xs text-gray-400 mt-2">PNG, JPG SVG, WEBP, and GIF are Allowed.</p>
+      <div class="flex px-4" id="imagePreview"></div>
+      <!-- Container to show cropped images -->
 
-  <div class="flex px-4" id="imagePreview"></div> <!-- Container to show cropped images -->
+      <!-- Modal for cropping -->
+      <div id="cropModal" style="display:none;">
+        <img id="cropImage" src alt="Image to Crop">
+        <button id="cropButton"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"">Crop</button>
+        <button id="cancelButton"
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
+      </div>
 
-  <!-- Modal for cropping -->
-  <div id="cropModal" style="display:none;" >
-      <img id="cropImage" src=""  alt="Image to Crop">
-      <button id="cropButton"   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"">Crop</button>
-      <button id="cancelButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Cancel</button>
-  </div>
+      <!-- ///////////////////////////////////// -->
 
-
-
-
-
-
-<!-- ///////////////////////////////////// -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    <button type="submit" class="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7">Submit</button>
+      <button type="submit"
+        class="w-52 h-12 shadow-sm rounded-full bg-indigo-600 hover:bg-indigo-800 transition-all duration-700 text-white text-base font-semibold leading-7">Submit</button>
     </form>
 
-</div>
-
+  </div>
 
 </section>
 

@@ -258,15 +258,9 @@ export const postEditCategory = async (req, res) => {
 
 export const postUploadImage = async (req, res) => {
     try {
-        // The uploaded image's URL is available in req.file.path
+        
         const imageUrl = req.file.path;
-        console.log(req.body.productId); // Check the productId being passed
-        console.log(imageUrl);
-
-        // /ait product.save();
-        console.log("imaged saved in monogo");
-
-
+    
         // Send success response to the frontend
         res.json({ success: true, imageUrl });
     } catch (error) {
@@ -359,22 +353,17 @@ export const searchProduct = async (req, res) => {
     try {
 
         const { search } = req.body
-        console.log(search);
 
-        // Get page and limit from query parameters, set default values if not provided
-        const page = parseInt(req.query.page) || 1;  // Current page, default is 1
-        const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
+        const page = parseInt(req.query.page) || 1; 
+        const limit = parseInt(req.query.limit) || 10; 
 
-        // Calculate the number of documents to skip
         const skip = (page - 1) * limit;
 
-        // Fetch the total number of products for calculating the total pages
         const totalProducts = await productModel.find({ productName: { $regex: search, $options: 'i' } }).countDocuments();
 
-
-
         const products = await productModel.find({ productName: { $regex: search, $options: 'i' } }).skip(skip).limit(limit)
-        console.log(products);
+        
+
         const route = "searchProduct"
         res.render('admin/productList', {
             products, route, totalPages: Math.ceil(totalProducts / limit),
@@ -391,16 +380,16 @@ export const searchProduct = async (req, res) => {
 export const orderList = async (req, res) => {
     try {
 
-        // Get page and limit from query parameters, set default values if not provided
-        const page = parseInt(req.query.page) || 1;  // Current page, default is 1
-        const limit = parseInt(req.query.limit) || 10; // Number of items per page, default is 10
+     
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
 
-        // Calculate the number of documents to skip
+       
         const skip = (page - 1) * limit;
 
         const orderData = await orderModel.find({}).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel }).skip(skip).limit(limit)
         console.log(orderData[0]);
-        // res.render("user/showOrders", { user, orderData })
+ 
         let totalPages = 0
 
         const orderData2 = await orderModel.find({})
@@ -450,10 +439,13 @@ export const adminOrderUpdate = async (req, res) => {
     catch (err) {
         console.log(err);
 
-        res.status(409).json({ message: "err" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "err" })
     }
 
 }
+
+
+
 
 export const refund = async (req, res) => {
     try {
@@ -507,6 +499,8 @@ export const refund = async (req, res) => {
 
     } catch (err) {
         console.log(err);
+
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
 
     }
 }
