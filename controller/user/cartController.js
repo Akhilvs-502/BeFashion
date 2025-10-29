@@ -5,6 +5,7 @@ import productModel from "../../models/productSchema.js";
 import e from "express";
 import offerModel from "../../models/offerSchema.js";
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js";
 
 export const addToCart = async (req, res) => {
   try {
@@ -28,13 +29,12 @@ export const addToCart = async (req, res) => {
       return res.status(201).json({ message: "new cart created" });
     } else {
       console.log("user cart is exit");
-      console.log(userData._id);
 
       const model = await cartModel.findOne({ userId: userData._id });
       const productIndex = model.products.findIndex(
         (item) => item.productId == productId
       );
-      console.log(productIndex);
+
 
       if (productIndex == -1) {
         console.log("product creating");
@@ -58,6 +58,9 @@ export const addToCart = async (req, res) => {
 
   }
 };
+
+
+
 export const showCart = async (req, res) => {
   try {
     const user = req.userData;
@@ -114,41 +117,27 @@ export const showCart = async (req, res) => {
       total = total - offerDiscount;
 
       res.render("user/showCart", {
-        user,
-        cart,
-        totalPrice,
-        total,
-        discountPrice,
-        shippingFee,
-        couponDiscount,
-        coupon,
-        offerDiscount,
+        user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon, offerDiscount,
       });
     } else {
-      console.log("ShowCart");
+
       const coupon = await couponModel.find({ block: false });
       let offerDiscount = 0;
       res.render("user/showCart", {
-        user,
-        cart,
-        totalPrice,
-        total,
-        discountPrice,
-        shippingFee,
-        couponDiscount,
-        coupon,
-        offerDiscount,
+        user, cart, totalPrice, total, discountPrice, shippingFee, couponDiscount, coupon, offerDiscount,
       });
     }
   } catch (err) {
     console.log(err);
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR, ErrorMessages.SYSTEM.INTERNAL_ERROR)
   }
 };
 
+
+
+
 export const updateQuantity = async (req, res) => {
   try {
-    console.log("update quantity");
-    console.log(req.body);
 
     const jwtUser = req.userData;
     const userData = await usermodel.findOne({ email: jwtUser.email });
@@ -160,9 +149,7 @@ export const updateQuantity = async (req, res) => {
     let couponDiscount = 0;
     let total = 0;
     async function newCart() {
-      const cart = await cartModel
-        .findOne({ userId: userData._id })
-        .populate({ path: "products.productId", model: "product" });
+      const cart = await cartModel.findOne({ userId: userData._id }).populate({ path: "products.productId", model: "product" });
       let productIds = [];
       if (cart) {
         const products = cart.products.forEach((product) => {
@@ -216,17 +203,10 @@ export const updateQuantity = async (req, res) => {
       console.log(value);
       const productDetails = await productModel.findOne({ _id: productId });
       if (Number(value + 1) >= 5) {
-        return res
-          .status(HttpStatusCode.CONFLICT)
-          .json({ message: "Only 4 quantites allowed to buy" });
+        return res.status(HttpStatusCode.CONFLICT).json({ message: "Only 4 quantites allowed to buy" });
       } else if (productDetails.stock <= value) {
         console.log("err");
-        res
-          .status(HttpStatusCode.CONFLICT)
-          .json({
-            message:
-              "The product is currently out of stock! You can't add any more to the quantity",
-          });
+        res.status(HttpStatusCode.CONFLICT).json({ message: "The product is currently out of stock! You can't add any more to the quantity" });
       } else {
         const cart = await cartModel.findOneAndUpdate(
           {
@@ -246,12 +226,7 @@ export const updateQuantity = async (req, res) => {
         console.log(total);
 
         res.json({
-          totalPrice,
-          total,
-          shippingFee,
-          discountPrice,
-          productPrice,
-          productDiscountPrice,
+          totalPrice, total, shippingFee, discountPrice, productPrice, productDiscountPrice,
         });
       }
     } else if (action === "quantityDecreasing") {
@@ -294,6 +269,6 @@ export const updateQuantity = async (req, res) => {
   } catch (err) {
     console.log(err);
 
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "server error" });
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR });
   }
 };

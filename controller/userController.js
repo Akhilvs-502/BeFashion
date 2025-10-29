@@ -10,6 +10,7 @@ const secretKey = process.env.SECRET_KEY
 import walletModel from "../models/walletModel.js";
 import wishlistModel from "../models/whishlistModel.js";
 import offerModel from "../models/offerSchema.js";
+import { HttpStatusCode } from "../shared/constants/HttpStatusCode.js";
 
 
 
@@ -67,171 +68,13 @@ export const home = async (req, res) => {
 
 
 
-
-export const login = (req, res) => {
-    try {
-
-        console.log(req.cookies.token);
-        const token = req.cookies.token
-        const secretKey = process.env.SECRET_KEY
-        if (token) {
-            jwt.verify(token, secretKey, async (err, data) => {
-                if (err) {
-                    res.render('user/login')
-                }
-                else {
-                    const user = await usermodel.findOne({ email: data.email })
-                    console.log(user);
-
-                    if (user.blocked) {
-                        res.clearCookie('token');
-                        req.session.destroy()
-                        res.render('user/blockedUser')
-                    } else {
-                        res.redirect('/user/home')
-
-                    }
-                }
-            })
-        } else {
-            res.render('user/login')
-        }
-    }
-    catch {
-
-    }
-}
-
-
-
-
-export const postLogin = async (req, res) => {
-    try {
-
-        const { email, password, rememberme } = req.body
-        const userDatabase = await usermodel.findOne({ email: email, verified: true })
-
-
-        if (userDatabase) {
-            const isMatch = await bcrypt.compare(password, userDatabase.password,)
-            if (isMatch) {
-                console.log("password matched");
-
-                const expiresIn = rememberme ? '7d' : '1h'
-                // console.log(expiresIn);
-                // console.log(secretKey);
-
-                const token = jwt.sign({ email: userDatabase.email, name: userDatabase.name }, secretKey, { expiresIn })
-
-                res.cookie('token', token, {
-                    httpOnly: true,
-                    secure: process.env.NODE_ENV === 'production',  // Only set cookie over HTTPS in production
-                    maxAge: 100000000,
-                    sameSite: 'Strict'
-                })
-                res.json({
-                    message: 'Login Successful',
-                    token: token
-                })
-            } else {
-                res.status(HttpStatusCode.UNAUTHORIZED).json({
-                    message: "*Invalid password"
-                })
-            }
-        }
-
-        else {
-            res.status(HttpStatusCode.UNAUTHORIZED).json({
-                message: "*Invalid user.please enter the correct email and password"
-            })
-        }
-    }
-    catch {
-        res.render("user/500")
-
-    }
-}
-
-
-
-export const signUp = async (req, res) => {
-    try {
-        res.render('user/signup')
-    } catch (err) {
-        res.render("user/500")
-
-    }
-}
-
-
-
-
-export const logout = (req, res) => {
-    try {
-        res.clearCookie('token');
-        req.session.destroy()
-        res.redirect('/user/login')
-    } catch (err) {
-        res.render("user/500")
-
-    }
-}
-
-export const postSignup = async (req, res) => {
-    try {
-
-        const { email, phone, name, password } = req.body
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds)
-        const emailPresent = await usermodel.findOne({ email })
-        const phonePresent = await usermodel.findOne({ phone })
-        const emailVerifed = await usermodel.findOne({ email, verified: true })
-        const phoneVerifed = await usermodel.findOne({ email, verified: true })
-        console.log(emailPresent, phonePresent);
-
-        if (!emailPresent && !phonePresent) {
-            const newUser = new usermodel({
-                name: name,
-                phone: phone,
-                email: email,
-                password: hashedPassword,
-                verified: false,
-            })
-            await newUser.save();
-
-            res.json({
-                message: 'New account created',
-                email: email
-            })
-        }
-        else if (!emailVerifed && !phoneVerifed) {
-
-            res.json({
-                message: 'user exists  with notverifed',
-                email: email
-            })
-
-
-        } else {
-            res.status(HttpStatusCode.CONFLICT).json({
-                Message: 'User alredy exists*'
-            })
-        }
-
-    }
-    catch {
-
-    }
-}
-
-
 export const mailforotp = (req, res) => {
-    try{
+    try {
 
         const email = req.params.email
         req.session.userEmail = email
         res.render('user/mailforotp', { email })
-    }catch(err){
+    } catch (err) {
         res.render("user/500")
     }
 
@@ -243,14 +86,14 @@ export const mailforotp = (req, res) => {
 
 export const getotp = async (req, res) => {
 
-    try{
+    try {
 
         const email = req.session.userEmail
-        
+
         console.log("getotpemail" + email);
         res.render('user/otp', { email })
 
-    }catch(err){
+    } catch (err) {
         res.render("user/500")
     }
 
@@ -294,7 +137,7 @@ export const postMailforotp = async (req, res) => {
         const transpoter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                 user: process.env.NODEMAILER_EMAIL,
+                user: process.env.NODEMAILER_EMAIL,
                 // pass: 'xoep evgg bbkm pfsa'
                 pass: process.env.NODEMAILER_PASS
             }
@@ -314,8 +157,8 @@ export const postMailforotp = async (req, res) => {
 
             }
             catch (error) {
-                
-                console.log(error,"err");
+
+                console.log(error, "err");
                 console.log('Err sending otp  to the emaill');
 
             }
@@ -325,8 +168,8 @@ export const postMailforotp = async (req, res) => {
         sendOTPEmail(email, otp)
         res.redirect('/user/getotp')
     }
-    catch(error) {
-        console.log("post main for otp",error)
+    catch (error) {
+        console.log("post main for otp", error)
         res.render("user/500")
     }
 }
@@ -448,7 +291,7 @@ export const postForgotpassword = async (req, res) => {
             }
             catch (error) {
                 console.log(error);
-                
+
                 console.log('Err sending otp  to the email');
 
             }
@@ -524,7 +367,7 @@ export const allProducts = async (req, res) => {
         let ans = await productModel.find({})
 
         let userd = await usermodel.find({})
-        
+
 
         // Get page and limit from query parameters, set default values if not provided
         const page = parseInt(req.query.page) || 1;  // Current page, default is 1
@@ -559,7 +402,7 @@ export const allProducts = async (req, res) => {
         if (categories.length > 0) {
             query.category = { $in: categories }
         }
-     
+
         if ((req.query.price) == 'low-high') {
             filters.push('low-high')
             sort.price = 1
@@ -597,10 +440,10 @@ export const allProducts = async (req, res) => {
         }
 
 
-        console.log(query, "query",skip,limit);
-        
+        console.log(query, "query", skip, limit);
 
-  
+
+
         products = await productModel.find(query).collation({ locale: 'en', strength: 2 }).sort(sort).skip(skip).limit(limit)
 
 
@@ -609,7 +452,7 @@ export const allProducts = async (req, res) => {
 
 
         // console.log(products);
-        
+
 
         ///JWT token checking
         const token = req.cookies.token
@@ -619,7 +462,7 @@ export const allProducts = async (req, res) => {
                 if (err) {
 
                     wishlistProduct = []  //solve this err
-                    
+
                     res.render('user/allProducts', {
                         products, totalPages: Math.ceil(totalProducts / limit),
                         currentPage: page,
@@ -644,8 +487,8 @@ export const allProducts = async (req, res) => {
                         req.session.destroy()
                         res.render('user/blockedUser')
                     } else {
-                
-                    console.log(products,"product");
+
+                        console.log(products, "product");
 
 
                         res.render('user/allProducts', {
@@ -703,8 +546,8 @@ export const productView = async (req, res) => {
                     res.render('user/productView', { product, products, user: false, offer, wishlistProduct })
                 }
                 else {
-                    console.log(products,"pro");
-                    
+                    console.log(products, "pro");
+
                     const user = await usermodel.findOne({ email: data.email })
                     const wishlist = await wishlistModel.find({ userId: user._id })
 

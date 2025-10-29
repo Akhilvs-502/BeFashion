@@ -10,15 +10,16 @@ import * as checkout from "../controller/user/checkoutController.js"
 import * as cart from "../controller/user/cartController.js"
 import * as address from "../controller/user/addressController.js"
 import * as profile from "../controller/user/profileContoller.js"
+import * as authController from "../controller/user/authController.js"
 const routes=express.Router()
 
 
 routes.get("/home",home)
-routes.get('/login',login)
-routes.post('/login',postLogin)
-routes.get('/signup',signUp)
-routes.get('/logout',logout)
-routes.post('/postSignup',postSignup)
+routes.get('/login',authController.login)
+routes.post('/login',authController.postLogin)
+routes.get('/signup',authController.signUp)
+routes.get('/logout',authController.logout)
+routes.post('/postSignup',authController.postSignup)
 routes.get('/mailforotp/:email',mailforotp)
 routes.post('/mailforotp',postMailforotp)
 routes.post('/postOtp',postOtp)

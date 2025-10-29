@@ -153,7 +153,6 @@ export const cartSummary = async (req, res) => {
     }
     catch (err) {
       
-
         res.render("user/500")
 
     }

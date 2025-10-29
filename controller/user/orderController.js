@@ -12,6 +12,7 @@ import offerModel from "../../models/offerSchema.js";
 
 import mongoose from "mongoose";
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js";
 
 
 
@@ -59,7 +60,7 @@ export const orderUpdate = async (req, res) => {
     let productIds = [];
     let productCoupon = (cart.couponDiscount || 0) / cart.products.length;
 
-    
+
     for (const product of cart.products) {
       let discountedPrice =
         product.productId.price -
@@ -293,11 +294,11 @@ export const orderSuccess = async (req, res) => {
 
 export const showOrders = async (req, res) => {
   try {
-  
-    const page = parseInt(req.query.page) || 1; 
-    const limit = parseInt(req.query.limit) || 10; 
 
-  
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+
     const skip = (page - 1) * limit;
 
     const user = req.userData;
@@ -310,7 +311,7 @@ export const showOrders = async (req, res) => {
 
     let totalPages = 0;
 
-    orderData2.forEach((userOrders) => {totalPages += userOrders.products.length;});
+    orderData2.forEach((userOrders) => { totalPages += userOrders.products.length; });
 
     console.log(totalPages);
 
@@ -354,7 +355,7 @@ export const orderCancel = async (req, res) => {
       user: userId,
       "products._id": product_id,
     });
- 
+
 
     //shipping fee not included in refund
     const RefundRupee = order.products[0].totalPay;
@@ -421,7 +422,7 @@ export const returnOrder = async (req, res) => {
 
 
     console.log(error);
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "Error occurred while processing your request" });
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR});
   }
 };
 
