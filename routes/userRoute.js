@@ -1,4 +1,4 @@
-import express, { Router } from 'express'
+import express from 'express'
 import auth from '../middewares/authenticate.js'
 import { home,login,postLogin,signUp,logout,postSignup,mailforotp,postMailforotp,postOtp,getotp,forgotpassword,postForgotpassword,
     resetPassword,passwordUpdate,changePassword,allProducts,productView,wallet} from '../controller/userController.js'
@@ -11,6 +11,8 @@ import * as cart from "../controller/user/cartController.js"
 import * as address from "../controller/user/addressController.js"
 import * as profile from "../controller/user/profileContoller.js"
 import * as authController from "../controller/user/authController.js"
+import * as otpController from "../controller/user/otpController.js"
+
 const routes=express.Router()
 
 
@@ -20,10 +22,10 @@ routes.post('/login',authController.postLogin)
 routes.get('/signup',authController.signUp)
 routes.get('/logout',authController.logout)
 routes.post('/postSignup',authController.postSignup)
-routes.get('/mailforotp/:email',mailforotp)
-routes.post('/mailforotp',postMailforotp)
-routes.post('/postOtp',postOtp)
-routes.get('/getotp',getotp)
+routes.get('/mailforotp/:email',otpController.mailforotp)
+routes.post('/mailforotp',otpController.postMailforotp)
+routes.post('/postOtp',otpController.postOtp)
+routes.get('/getotp',otpController.getotp)
 routes.get('/forgotpassword',forgotpassword)
 routes.post('/postForgotpassword',postForgotpassword)
 routes.get('/resetPassword',resetPassword)
