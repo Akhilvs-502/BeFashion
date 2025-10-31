@@ -44,7 +44,7 @@ export const login = (req, res) => {
     }
     catch {
         res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
-            message: "server error"
+            message: ErrorMessages.SYSTEM.INTERNAL_ERROR
         })
     }
 }
@@ -120,7 +120,7 @@ export const logout = (req, res) => {
         req.session.destroy()
         res.redirect('/user/login')
     } catch (err) {
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in logout" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 }

@@ -2,6 +2,7 @@ import { escapeRegExpChars } from "ejs/lib/utils.js";
 import cartModel from "../../models/cartSchema.js";
 import couponModel from "../../models/couponSchema.js";
 import usermodel from "../../models/userModel.js";
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js";
 
 
 export const applyCoupon = async (req, res) => {
@@ -37,7 +38,7 @@ export const applyCoupon = async (req, res) => {
                 let couponStatus = await couponModel.findOne({ couponCode, 'usedBy.userId': user._id }, { usedBy: { $elemMatch: { userId: user._id } } })
                 if (couponStatus) {
                     if (couponStatus.usedBy[0].usedCount >= coupon.usageCount) {
-                       
+
                         return res.status(409).json({ message: "Coupon usage limit exceeded. This coupon is no longer available for use", status: "limitExceeded" })
                     }
                 }
@@ -86,7 +87,7 @@ export const removeCoupon = async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in removing coupon" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 }
@@ -94,20 +95,20 @@ export const removeCoupon = async (req, res) => {
 
 
 export const showCoupons = async (req, res) => {
-    
+
     try {
 
         const userEmail = req.userData.email
         const user = await usermodel.findOne({ email: userEmail })
         const coupon = await couponModel.find({ block: false })
-        
+
         res.render("user/coupons", { user, coupon })
 
-    }catch (err) {
-        
+    } catch (err) {
+
         console.log(err);
         res.render("user/500")
-}
+    }
 
 }
 

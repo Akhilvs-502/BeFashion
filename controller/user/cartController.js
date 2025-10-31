@@ -269,6 +269,6 @@ export const updateQuantity = async (req, res) => {
   } catch (err) {
     console.log(err);
 
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR });
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR });
   }
 };

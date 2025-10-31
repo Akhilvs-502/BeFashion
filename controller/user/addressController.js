@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import usermodel from "../../models/userModel.js";
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js";
 
 export const showAddress = async (req, res) => {
     const user = req.userData
@@ -22,8 +23,12 @@ export const addAddress = async (req, res) => {
         res.render('user/addAddress', { user, dataBase })
     }
     catch (err) {
+        if (err.status == 409) {
 
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error getting  address" })
+            res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "otp is invalid" })
+        }
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
+
 
     }
 }
@@ -70,7 +75,7 @@ export const deleteAddress = async (req, res) => {
     }
 
     catch {
-        res.status(HttpStatusCode.BAD_REQUEST).json({ message: "error in adding address" })
+        res.status(HttpStatusCode.BAD_REQUEST).json({ message: ErrorMessages.SYSTEM.BAD_REQUEST })
 
     }
 }
@@ -91,7 +96,7 @@ export const editAddress = async (req, res) => {
         ]);
 
         dataBase = dataBase[0]
-        
+
         console.log(dataBase);
 
         res.render('user/editAddress', { user, dataBase })
@@ -99,7 +104,7 @@ export const editAddress = async (req, res) => {
     }
     catch {
 
-        res.status(HttpStatusCode.BAD_REQUEST).json({ message: "error edit address" })
+        res.status(HttpStatusCode.BAD_REQUEST).json({ message: ErrorMessages.SYSTEM.BAD_REQUEST })
 
     }
 }
@@ -136,7 +141,7 @@ export const patchAddAddress = async (req, res) => {
         res.json({ messsae: "success" })
     }
     catch {
-        res.status(HttpStatusCode.BAD_REQUEST).json({ message: "error in adding address" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 

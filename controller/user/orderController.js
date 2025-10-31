@@ -263,7 +263,7 @@ export const orderUpdate = async (req, res) => {
     await session.abortTransaction();
     session.endSession();
     console.error(err);
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "Something went wrong" });
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR });
   }
 };
 
@@ -285,7 +285,7 @@ export const orderSuccess = async (req, res) => {
 
     res.render("user/orderSuccess", { user, orderId, products, order });
   } catch {
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "Something went wrong" });
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR });
   }
 };
 
@@ -331,7 +331,7 @@ export const showOrders = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "Something went wrong" });
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR });
   }
 };
 
@@ -390,7 +390,7 @@ export const orderCancel = async (req, res) => {
   } catch (err) {
     console.log(err);
 
-    res.status(HttpStatusCode.CONFLICT).json({ message: "err" });
+    res.status(HttpStatusCode.CONFLICT).json({ message: "conflict in order cancellation" });
   }
 };
 
@@ -422,7 +422,7 @@ export const returnOrder = async (req, res) => {
 
 
     console.log(error);
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR});
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR });
   }
 };
 
@@ -563,6 +563,6 @@ export const downloadInvoice = async (req, res) => {
 
   } catch (error) {
     console.log("Error generating invoice:", error);
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "Error generating invoice" });
+    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR });
   }
 };

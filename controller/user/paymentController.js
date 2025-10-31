@@ -5,6 +5,7 @@ import usermodel from "../../models/userModel.js"
 import { createHmac } from 'crypto';  // for verifiction in razorpay 
 import mongoose from "mongoose";
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js";
 
 const RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID
 const RAZORPAY_KEY_SECRET = process.env.RAZORPAY_KEY_SECRET
@@ -33,7 +34,7 @@ export const paymentVerification = async (req, res) => {
             return res.status(400).json({ status: 'failure', message: 'Payment verification failed.' });
         }
 
-        
+
         await orderModel.findOneAndUpdate({ _id: orderId }, { $set: { 'products.$[].paymentStatus': 'paid', 'products.$[].orderStatus': 'processing' } }).session(session);
 
         await session.commitTransaction();
@@ -118,7 +119,7 @@ export const repayment = async (req, res) => {
 
     } catch (err) {
         console.log(err);
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "Error in payment processing" });
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR});
     }
 
 }

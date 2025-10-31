@@ -3,6 +3,7 @@ import cartModel from "../../models/cartSchema.js"
 import offerModel from "../../models/offerSchema.js"
 import productModel from "../../models/productSchema.js"
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js"
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js"
 
 export const checkOutStep1 = async (req, res) => {
     try {
@@ -61,8 +62,9 @@ export const checkOutStep1 = async (req, res) => {
         res.render("user/checkoutStep1", { user, cart, total, totalPrice, couponDiscount, discountPrice, shippingFee, dataBase, offerDiscount })
     }
     catch (err) {
-       
 
+
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 }
@@ -76,7 +78,7 @@ export const postCheckOutStep1 = async (req, res) => {
         let data = await usermodel.findOne({ email: jwtUser.email, 'address._id': addressID }, { 'address.$': 1 })
         res.status(HttpStatusCode.OK).json({ addressID })
     } catch (err) {
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in selecting address" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
     }
 
 }
@@ -152,7 +154,7 @@ export const cartSummary = async (req, res) => {
         res.render("user/orderSummary", { user, total, couponDiscount, cart, totalPrice, discountPrice, shippingFee, addressID, offerDiscount })
     }
     catch (err) {
-      
+
         res.render("user/500")
 
     }

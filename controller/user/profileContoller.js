@@ -1,4 +1,5 @@
 import usermodel from "../../models/userModel.js"
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js"
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js"
 
 
@@ -10,7 +11,7 @@ export const profile = async (req, res) => {
         res.render('user/profile', { user: dataBase, dataBase })
     } catch (err) {
         console.log(err);
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "error in loading profile" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
     }
 }
 

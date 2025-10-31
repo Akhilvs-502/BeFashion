@@ -6,6 +6,7 @@ import orderModel from "../models/orderSchema.js";
 import walletModel from "../models/walletModel.js";
 import jwt from 'jsonwebtoken'
 import { HttpStatusCode } from "../shared/constants/HttpStatusCode.js";
+import { ErrorMessages } from "../shared/constants/ErrorMessages.js";
 
 const secretKey = process.env.SECRET_KEY
 
@@ -112,15 +113,15 @@ export const productList = async (req, res) => {
     try {
 
         // Get page and limit from query parameters,
-        const page = parseInt(req.query.page) || 1;  
-        const limit = parseInt(req.query.limit) || 10; 
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * limit;
 
         const totalProducts = await productModel.countDocuments();
 
         const products = await productModel.find().skip(skip).limit(limit)
         const route = "productList"
-        
+
         res.render('admin/productList', {
             products, route, totalPages: Math.ceil(totalProducts / limit),
             currentPage: page,
@@ -258,9 +259,9 @@ export const postEditCategory = async (req, res) => {
 
 export const postUploadImage = async (req, res) => {
     try {
-        
+
         const imageUrl = req.file.path;
-    
+
         // Send success response to the frontend
         res.json({ success: true, imageUrl });
     } catch (error) {
@@ -336,33 +337,41 @@ export const editProduct = async (req, res) => {
 
 
 export const postEditProduct = async (req, res) => {
-    const { productID, productName, price, description, discount, stock, color, size, category, images } = req.body
-    const update = await productModel.findByIdAndUpdate({ _id: productID }, {
-        productName, price, description, discount, stock, color, size, category, images
-    })
-    console.log("PostEditProduct");
+    try {
 
-    res.json({
-        message: "product_edited"
-    })
+        const { productID, productName, price, description, discount, stock, color, size, category, images } = req.body
+        const update = await productModel.findByIdAndUpdate({ _id: productID }, {
+            productName, price, description, discount, stock, color, size, category, images
+        })
+        console.log("PostEditProduct");
+
+        res.json({
+            message: "product_edited"
+        })
+
+    } catch (err) {
+        console.log(err);
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+            message: ErrorMessages.SYSTEM.INTERNAL_ERROR
+        })
+    }
 
 }
-
 
 export const searchProduct = async (req, res) => {
     try {
 
         const { search } = req.body
 
-        const page = parseInt(req.query.page) || 1; 
-        const limit = parseInt(req.query.limit) || 10; 
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
 
         const skip = (page - 1) * limit;
 
         const totalProducts = await productModel.find({ productName: { $regex: search, $options: 'i' } }).countDocuments();
 
         const products = await productModel.find({ productName: { $regex: search, $options: 'i' } }).skip(skip).limit(limit)
-        
+
 
         const route = "searchProduct"
         res.render('admin/productList', {
@@ -372,6 +381,7 @@ export const searchProduct = async (req, res) => {
         })
     } catch (err) {
         console.log(err);
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 }
@@ -380,16 +390,16 @@ export const searchProduct = async (req, res) => {
 export const orderList = async (req, res) => {
     try {
 
-     
+
         const page = parseInt(req.query.page) || 1;
         const limit = parseInt(req.query.limit) || 10;
 
-       
+
         const skip = (page - 1) * limit;
 
         const orderData = await orderModel.find({}).sort({ createdAt: -1 }).populate({ path: 'products.product', model: productModel }).skip(skip).limit(limit)
         console.log(orderData[0]);
- 
+
         let totalPages = 0
 
         const orderData2 = await orderModel.find({})
@@ -407,7 +417,7 @@ export const orderList = async (req, res) => {
     catch (err) {
         console.log(err);
 
-        res.status(409).json({ message: "err" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
     }
 
 
@@ -439,7 +449,7 @@ export const adminOrderUpdate = async (req, res) => {
     catch (err) {
         console.log(err);
 
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "err" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
     }
 
 }
@@ -500,7 +510,7 @@ export const refund = async (req, res) => {
     } catch (err) {
         console.log(err);
 
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 }
