@@ -1,5 +1,5 @@
 import express from 'express'
-import {login,postLogin,home,blockUser,logout,productList,addProduct,category,addCategory,postAddCategory,blockCategory,editCategory,postEditCategory,postUploadImage,postAddproduct,blockProduct,editProduct,postEditProduct,searchProduct,orderList,adminOrderUpdate,refund} from '../controller/adminController.js'
+import {login,postLogin,home,blockUser,logout,productList,addProduct,postUploadImage,postAddproduct,blockProduct,editProduct,postEditProduct,searchProduct,orderList,adminOrderUpdate,refund} from '../controller/adminController.js'
 const routes=express.Router()
 import { storage } from '../config/gridFs.js';
 import multer from 'multer';
@@ -9,6 +9,7 @@ import * as coupon from "../controller/admin/coupon.js"
 import * as offer from "../controller/admin/offeresController.js"
 import * as sales from "../controller/admin/salesReport.js"
 import * as dashboard from "../controller/admin/dashboard.js"
+import * as categoryController from "../controller/admin/categoryController.js"
 routes.get('/login',login)
 routes.post('/login',postLogin)
 routes.get('/home',adminAuth,home)
@@ -17,12 +18,18 @@ routes.patch('/blockUser',adminAuth,blockUser)
 routes.get('/productList',adminAuth,productList)
 routes.get('/addProduct',adminAuth,addProduct)
 routes.post('/addProduct',adminAuth,postAddproduct)
-routes.get('/category',adminAuth,category)
-routes.get('/addCategory',adminAuth,addCategory)
-routes.post('/addCategory',adminAuth,postAddCategory)
-routes.patch('/blockCategory',adminAuth,blockCategory)
-routes.get('/editCategory/:category',adminAuth,editCategory)
-routes.post('/editCategory',adminAuth,postEditCategory)
+
+
+// CATEGORY
+routes.get('/category',adminAuth,categoryController.category)
+routes.get('/addCategory',adminAuth,categoryController.addCategory)
+routes.post('/addCategory',adminAuth,categoryController.postAddCategory)
+routes.patch('/blockCategory',adminAuth,categoryController.blockCategory)
+routes.get('/editCategory/:category',adminAuth,categoryController.editCategory)
+routes.post('/editCategory',adminAuth,categoryController.postEditCategory)
+
+
+
 routes.post('/uploadImage',adminAuth,upload.single('croppedImage'),postUploadImage)
 routes.patch('/blockProduct',adminAuth,blockProduct)
 routes.get('/editProduct/:productID',adminAuth,editProduct)
