@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt'
 
 const secretKey = process.env.SECRET_KEY
 
-import { HttpStatusCode } from "../shared/constants/HttpStatusCode.js";
+import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
 import { ErrorMessages } from "../../shared/constants/ErrorMessages.js";
 
 

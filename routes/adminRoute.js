@@ -1,7 +1,7 @@
 import express from 'express'
 import {login,postLogin,home,blockUser,logout,productList,addProduct,postUploadImage,postAddproduct,blockProduct,editProduct,postEditProduct,searchProduct,orderList,adminOrderUpdate,refund} from '../controller/adminController.js'
 const routes=express.Router()
-import { storage } from '../config/gridFs.js';
+import { storage } from '../config/cloudinary.js';
 import multer from 'multer';
 const upload = multer({ storage });
 import adminAuth from '../middewares/adminAuthenticate.js';

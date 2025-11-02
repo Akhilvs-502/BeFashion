@@ -1,6 +1,6 @@
 import express from 'express'
 import auth from '../middewares/authenticate.js'
-import { home,login,postLogin,signUp,logout,postSignup,mailforotp,postMailforotp,postOtp,getotp,forgotpassword,postForgotpassword,
+import { home,forgotpassword,postForgotpassword,
     resetPassword,passwordUpdate,changePassword,allProducts,productView,wallet} from '../controller/userController.js'
 import * as wishlist from "../controller/user/wishlistController.js"
 import * as coupon from "../controller/user/couponController.js"

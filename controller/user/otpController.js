@@ -1,6 +1,6 @@
 
 
-import usermodel from "../models/userModel.js"
+import usermodel from "../../models/userModel.js"
 import dotenv from "dotenv";
 import nodemailer from 'nodemailer'
 dotenv.config()

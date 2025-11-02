@@ -1,3 +1,5 @@
 .env
 node_modules/
 demo.js
+.gitignore
+.pending

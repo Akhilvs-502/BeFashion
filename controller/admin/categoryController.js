@@ -1,3 +1,5 @@
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js";
+import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
 
 
 
@@ -23,91 +25,93 @@ export const category = async (req, res) => {
         })
 
     } catch (err) {
-        res.status(500).json({ message: "Error fetching categories", error: err });
+
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR });
+    }
+}
+
+
+
+
+    export const addCategory = (req, res) => {
+        res.render('admin/addCategory')
     }
 
 
-}
 
+    export const postAddCategory = async (req, res) => {
+        try {
 
-
-
-export const addCategory = (req, res) => {
-    res.render('admin/addCategory')
-}
-
-
-
-export const postAddCategory = async (req, res) => {
-    try {
-
-        const { categoryName } = req.body
-        const category = await categoryModel.findOne({ categoryName: categoryName })
-        console.log(category);
-
-        if (!category) {
+            const { categoryName } = req.body
+            const category = await categoryModel.findOne({ categoryName: categoryName })
             console.log(category);
-            const newCategory = new categoryModel({
-                categoryName: categoryName
+
+            if (!category) {
+                console.log(category);
+                const newCategory = new categoryModel({
+                    categoryName: categoryName
+                })
+                await newCategory.save()
+            }
+
+
+            res.json({ message: 'category added' })
+        }
+        catch {
+            res.status(409).json({ message: "err" })
+        }
+    }
+
+
+
+    export const blockCategory = async (req, res) => {
+        try {
+
+            const { category } = req.body
+            console.log(category);
+            const sucess = await categoryModel.findOne({ categoryName: category })
+            console.log(sucess);
+
+            if (sucess.block) {
+                await categoryModel.findOneAndUpdate({ categoryName: category }, { block: false })
+                res.json({ message: sucess })
+            } else {
+                await categoryModel.findOneAndUpdate({ categoryName: category }, { block: true })
+                res.json({ message: sucess })
+
+            }
+        }
+        catch {
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR });
+         
+        }
+    }
+
+
+
+    export const editCategory = (req, res) => {
+        const category = req.params.category
+        req.session.category = category
+        res.render('admin/editCategory', { category })
+
+    }
+
+
+    export const postEditCategory = async (req, res) => {
+        try {
+
+            const oldCategory = req.session.category
+            const { categoryName } = req.body
+            console.log(categoryName);
+            await categoryModel.findOneAndUpdate({ categoryName: oldCategory }, { categoryName: categoryName })
+            console.log(oldCategory);
+            res.json({
+                message: 'Edited'
             })
-            await newCategory.save()
+        } catch {
+
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR });
+           
         }
 
-
-        res.json({ message: 'category added' })
     }
-    catch {
-        res.status(409).json({ message: "err" })
-    }
-}
-
-
-
-export const blockCategory = async (req, res) => {
-    try {
-
-        const { category } = req.body
-        console.log(category);
-        const sucess = await categoryModel.findOne({ categoryName: category })
-        console.log(sucess);
-
-        if (sucess.block) {
-            await categoryModel.findOneAndUpdate({ categoryName: category }, { block: false })
-            res.json({ message: sucess })
-        } else {
-            await categoryModel.findOneAndUpdate({ categoryName: category }, { block: true })
-            res.json({ message: sucess })
-
-        }
-    }
-    catch {
-
-    }
-}
-
-
-
-export const editCategory = (req, res) => {
-    const category = req.params.category
-    req.session.category = category
-    res.render('admin/editCategory', { category })
-
-}
-
-
-export const postEditCategory = async (req, res) => {
-    try {
-
-        const oldCategory = req.session.category
-        const { categoryName } = req.body
-        console.log(categoryName);
-        await categoryModel.findOneAndUpdate({ categoryName: oldCategory }, { categoryName: categoryName })
-        console.log(oldCategory);
-        res.json({
-            message: 'Edited'
-        })
-    } catch {
-
-    }
-
-}

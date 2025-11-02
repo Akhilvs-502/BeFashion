@@ -1,4 +1,5 @@
 import couponModel from "../../models/couponSchema.js"
+import { ErrorMessages } from "../../shared/constants/ErrorMessages.js"
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js"
 
 
@@ -12,7 +13,7 @@ export const showCoupon = async (req, res) => {
         res.render("admin/coupon", { coupons })
     }
     catch (err) {
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
     }
 
 
@@ -47,7 +48,7 @@ export const createCoupon = async (req, res) => {
     } catch (err) {
         console.log(err);
         
-        res.status(HttpStatusCode.BAD_REQUEST).json({ message: "internal server error" })
+        res.status(HttpStatusCode.BAD_REQUEST).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 }
@@ -70,7 +71,7 @@ export const changeCouponSts = async (req, res) => {
     }
 
     catch (err) {
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 }
@@ -87,7 +88,7 @@ export const deleteCoupn = async (req, res) => {
     }
     catch (err) {
 
-        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: "internal server error" })
+        res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message: ErrorMessages.SYSTEM.INTERNAL_ERROR })
 
     }
 }
