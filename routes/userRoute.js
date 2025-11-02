@@ -12,7 +12,7 @@ import * as address from "../controller/user/addressController.js"
 import * as profile from "../controller/user/profileContoller.js"
 import * as authController from "../controller/user/authController.js"
 import * as otpController from "../controller/user/otpController.js"
-
+import * as passwordController from "../controller/user/passwordController.js"
 const routes=express.Router()
 
 
@@ -26,11 +26,11 @@ routes.get('/mailforotp/:email',otpController.mailforotp)
 routes.post('/mailforotp',otpController.postMailforotp)
 routes.post('/postOtp',otpController.postOtp)
 routes.get('/getotp',otpController.getotp)
-routes.get('/forgotpassword',forgotpassword)
-routes.post('/postForgotpassword',postForgotpassword)
-routes.get('/resetPassword',resetPassword)
-routes.patch('/passwordUpdate',passwordUpdate)
-routes.get('/changePassword',changePassword)
+routes.get('/forgotpassword',passwordController.forgotpassword)
+routes.post('/postForgotpassword',passwordController.postForgotpassword)
+routes.get('/resetPassword',passwordController.resetPassword)
+routes.patch('/passwordUpdate',passwordController.passwordUpdate)
+routes.get('/changePassword',passwordController.changePassword)
 routes.get('/productView/:id',productView)
 routes.get('/allProducts',allProducts)
 
