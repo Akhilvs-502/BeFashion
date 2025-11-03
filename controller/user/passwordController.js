@@ -1,12 +1,12 @@
 
 
-import usermodel from "../models/userModel.js"
 import jwt from 'jsonwebtoken'
 import dotenv from "dotenv";
 import nodemailer from 'nodemailer'
 dotenv.config()
 import bcrypt from 'bcrypt'
 const secretKey = process.env.SECRET_KEY
+import usermodel from "../../models/userModel.js";
 
 
 

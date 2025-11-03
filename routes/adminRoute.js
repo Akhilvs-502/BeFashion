@@ -1,5 +1,5 @@
 import express from 'express'
-import {login,postLogin,home,blockUser,logout,productList,addProduct,postUploadImage,postAddproduct,blockProduct,editProduct,postEditProduct,searchProduct,orderList,adminOrderUpdate,refund} from '../controller/adminController.js'
+import {login,postLogin,home,blockUser,logout,orderList,adminOrderUpdate,refund} from '../controller/adminController.js'
 const routes=express.Router()
 import { storage } from '../config/cloudinary.js';
 import multer from 'multer';
@@ -10,14 +10,13 @@ import * as offer from "../controller/admin/offeresController.js"
 import * as sales from "../controller/admin/salesReport.js"
 import * as dashboard from "../controller/admin/dashboard.js"
 import * as categoryController from "../controller/admin/categoryController.js"
+import * as productController from "../controller/admin/productController.js"
 routes.get('/login',login)
 routes.post('/login',postLogin)
 routes.get('/home',adminAuth,home)
 routes.get('/logout',logout)
 routes.patch('/blockUser',adminAuth,blockUser)
-routes.get('/productList',adminAuth,productList)
-routes.get('/addProduct',adminAuth,addProduct)
-routes.post('/addProduct',adminAuth,postAddproduct)
+
 
 
 // CATEGORY
@@ -29,12 +28,17 @@ routes.get('/editCategory/:category',adminAuth,categoryController.editCategory)
 routes.post('/editCategory',adminAuth,categoryController.postEditCategory)
 
 
+// PRODUCT
+routes.post('/uploadImage',adminAuth,upload.single('croppedImage'),productController.postUploadImage)
+routes.patch('/blockProduct',adminAuth,productController.blockProduct)
+routes.get('/editProduct/:productID',adminAuth,productController.editProduct)
+routes.post('/postEditProduct',adminAuth,productController.postEditProduct)
+routes.post('/searchProduct',adminAuth,productController.searchProduct)
+routes.get('/productList',adminAuth,productController.productList)
+routes.get('/addProduct',adminAuth,productController.addProduct)
+routes.post('/addProduct',adminAuth,productController.postAddproduct)
 
-routes.post('/uploadImage',adminAuth,upload.single('croppedImage'),postUploadImage)
-routes.patch('/blockProduct',adminAuth,blockProduct)
-routes.get('/editProduct/:productID',adminAuth,editProduct)
-routes.post('/postEditProduct',adminAuth,postEditProduct)
-routes.post('/searchProduct',adminAuth,searchProduct)
+
 routes.get("/orderList",adminAuth,orderList)
 routes.post("/orderUpdate",adminAuth,adminOrderUpdate)
 routes.post("/refund",adminAuth,refund)
