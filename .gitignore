@@ -3,3 +3,7 @@ node_modules/
 demo.js
 .gitignore
 .pending
+
+node_modules
+
+

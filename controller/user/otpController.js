@@ -23,8 +23,6 @@ export const mailforotp = (req, res) => {
 
 
 
-
-
 export const getotp = async (req, res) => {
 
     try {
@@ -40,8 +38,6 @@ export const getotp = async (req, res) => {
 
 
 }
-
-
 
 
 

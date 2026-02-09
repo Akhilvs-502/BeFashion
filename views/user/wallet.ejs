@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded",()=>{
 dateElements.forEach(element => {
   const dateString = element.getAttribute("data-date");
   const date = new Date(dateString); // Parse the ISO date
+    element.setAttribute("data-order", date.toISOString());
   // Format the date to local string and set as content
   element.textContent = date.toLocaleString();
 });
