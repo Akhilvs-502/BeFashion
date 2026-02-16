@@ -1,5 +1,6 @@
 import { ErrorMessages } from "../../shared/constants/ErrorMessages.js";
 import { HttpStatusCode } from "../../shared/constants/HttpStatusCode.js";
+import categoryModel from "../../models/categorySchema.js"
 
 
 
@@ -12,7 +13,7 @@ export const category = async (req, res) => {
         const skip = (page - 1) * limit;
 
 
-        const totalCategories = await categoryModel.countDocuments();
+        const totalCategories = await categoryModel .countDocuments();
 
 
         const categories = await categoryModel.find().skip(skip).limit(limit)
@@ -25,7 +26,8 @@ export const category = async (req, res) => {
         })
 
     } catch (err) {
-
+        console.log(err);
+        
         res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({ message:ErrorMessages.SYSTEM.INTERNAL_ERROR });
     }
 }
